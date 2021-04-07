@@ -17,7 +17,6 @@ import static org.springframework.http.ResponseEntity.ok;
 public class GetAuctionsController {
 
     private RetrieveAuctionsUseCase useCase;
-    private Function<Auction, AuctionDto> converter = new DomainToDtoAuctionConverter();
 
     @Autowired
     public GetAuctionsController(
@@ -27,9 +26,9 @@ public class GetAuctionsController {
     }
 
     @GetMapping("/auctions")
-    public ResponseEntity<List<AuctionDto>> getAllAuctions() {
+    public ResponseEntity<List<Auction>> getAllAuctions() {
         List<Auction> auctions = useCase.retrieveAll();
-        return ok(auctions.stream().map(converter).collect(toList()));
+        return ok(auctions);
 
     }
 }

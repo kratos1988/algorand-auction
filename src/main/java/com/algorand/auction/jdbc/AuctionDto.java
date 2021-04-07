@@ -1,4 +1,4 @@
-package com.algorand.auction.rest;
+package com.algorand.auction.jdbc;
 
 public class AuctionDto {
     public final String name;
