@@ -23,5 +23,6 @@
 hs_err_pid*
 
 node_modules/
-/algorand-auction-backend/target/
-/algorand-auction-frontend/target/
+*.iml
+target/
+.idea/
