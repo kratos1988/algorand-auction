@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+  application:
+    name: algorand-auction
