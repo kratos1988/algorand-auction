@@ -21,7 +21,8 @@ class JdbcAuctionRepositoryTest {
     void setUp() {
         DataSource dataSource = new EmbeddedDatabaseBuilder()
                 .setType(H2)
-                .addScript("classpath:jdbc/test-schema-and-data.sql")
+                .addScript("sql/schema.sql")
+                .addScript("jdbc/test-data.sql")
                 .build();
 
         jdbcTemplate = new JdbcTemplate(dataSource);

@@ -21,10 +21,11 @@ public class JdbcAuctionRepository implements AuctionRepository {
     @Override
     public List<Auction> retrieveAll() {
         List<AuctionDto> auctionDtos = jdbcTemplate.query(
-                "SELECT * FROM AUCTIONS",
+                "SELECT ITEM_NAME " +
+                        "FROM AUCTIONS",
                 (rs, rowNum) ->
                         new AuctionDto(
-                                rs.getString("name")
+                                rs.getString("ITEM_NAME")
                         )
         );
         return auctionDtos.stream().map(converter).collect(toList());
