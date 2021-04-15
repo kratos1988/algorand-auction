@@ -3,6 +3,13 @@
     "id": 1,
     "itemName": "AN_ITEM_NAME",
     "itemDescription": "AN_ITEM_DESCRIPTION",
-    "bids": []
+    "bids": [
+      {
+        "auctionId": 1,
+        "amount": 11.99,
+        "status": "INSERTED",
+        "userId": "AN_USER_ID"
+      }
+    ]
   }
 ]

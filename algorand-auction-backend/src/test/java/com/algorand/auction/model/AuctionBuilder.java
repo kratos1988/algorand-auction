@@ -27,8 +27,8 @@ public class AuctionBuilder {
         return this;
     }
 
-    public AuctionBuilder withBids(List<Bid> bids) {
-        this.bids = bids;
+    public AuctionBuilder withBids(Bid bid) {
+        this.bids.add(bid);
         return this;
     }
 

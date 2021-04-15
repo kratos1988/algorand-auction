@@ -11,6 +11,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 
+import static com.algorand.auction.model.BidBuilder.aBid;
 import static java.math.BigDecimal.TEN;
 import static java.util.Collections.emptyMap;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -41,12 +42,12 @@ class JdbcBidRepositoryTest {
     void saveBid() {
         underTest.saveBid(new SaveBidRequest(2, TEN, "ANOTHER_USER_ID"));
         Bid savedBid = jdbcTemplate.queryForObject("SELECT * FROM BID WHERE USER_ID = 'ANOTHER_USER_ID'", emptyMap(), (resultSet, i) -> {
-            Bid bid = new Bid();
-            bid.setAmount(resultSet.getBigDecimal("AMOUNT"));
-            bid.setStatus(resultSet.getString("STATUS"));
-            bid.setAuctionId(resultSet.getInt("AUCTION_ID"));
-            bid.setUserId(resultSet.getString("USER_ID"));
-            return bid;
+            return aBid()
+                    .withAmount(resultSet.getBigDecimal("AMOUNT"))
+                    .withStatus(resultSet.getString("STATUS"))
+                    .withAuctionId(resultSet.getInt("AUCTION_ID"))
+                    .withUserId(resultSet.getString("USER_ID"))
+                    .build();
         });
         assertThat(savedBid, is(notNullValue()));
         assertThat(savedBid.getAmount(), comparesEqualTo(TEN));
