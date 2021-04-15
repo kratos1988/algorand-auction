@@ -36,6 +36,5 @@ class JdbcAuctionRepositoryTest {
         assertThat(retrievedAuctions, is(notNullValue()));
         assertThat(retrievedAuctions, is(not(empty())));
 
-
     }
 }

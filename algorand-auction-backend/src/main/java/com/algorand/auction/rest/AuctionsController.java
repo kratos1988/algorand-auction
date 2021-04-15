@@ -8,18 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.function.Function;
 
-import static java.util.stream.Collectors.toList;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
-public class GetAuctionsController {
+public class AuctionsController {
 
     private RetrieveAuctionsUseCase useCase;
 
     @Autowired
-    public GetAuctionsController(
+    public AuctionsController(
             RetrieveAuctionsUseCase useCase
     ) {
         this.useCase = useCase;

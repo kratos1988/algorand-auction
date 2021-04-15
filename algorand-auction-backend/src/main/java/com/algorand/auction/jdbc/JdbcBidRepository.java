@@ -2,7 +2,6 @@ package com.algorand.auction.jdbc;
 
 import com.algorand.auction.usecase.BidRepository;
 import com.algorand.auction.usecase.SaveBidRequest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -19,7 +18,13 @@ public class JdbcBidRepository implements BidRepository {
 
     @Override
     public void saveBid(SaveBidRequest saveBidRequest) {
-
+        MapSqlParameterSource sqlParams = new MapSqlParameterSource()
+                .addValue("amount", saveBidRequest.amount)
+                .addValue("userId", saveBidRequest.userId)
+                .addValue("auctionId", saveBidRequest.auctionId);
+        jdbcTemplate.update(
+                "INSERT INTO BID (AUCTION_ID, AMOUNT, USER_ID) VALUES (:auctionId, :amount, :userId)",
+                sqlParams);
     }
 
     @Override

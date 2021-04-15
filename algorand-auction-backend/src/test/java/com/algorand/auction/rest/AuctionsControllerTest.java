@@ -9,10 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Collections;
-
 import static com.algorand.auction.model.AuctionBuilder.anAuction;
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -21,8 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(GetAuctionsController.class)
-class GetAuctionsControllerTest {
+@WebMvcTest(AuctionsController.class)
+class AuctionsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

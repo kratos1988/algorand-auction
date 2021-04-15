@@ -1,11 +1,10 @@
-package com.algorand.auction.rest;
+package com.algorand.auction.jdbc;
 
-import com.algorand.auction.jdbc.AuctionDto;
 import com.algorand.auction.model.Auction;
 
 import java.util.function.Function;
 
-public class DtoToDomainAuctionConverter implements Function<AuctionDto, Auction> {
+public class AuctionEntityToDomainConverter implements Function<AuctionDto, Auction> {
 
     @Override
     public Auction apply(AuctionDto auctionDto) {
