@@ -4,7 +4,7 @@ spring:
     driverClassName: org.h2.Driver
     username: sa
     password: password
-    schema: sql/schema.sql
+    schema: classpath:sql/schema.sql
 
   h2:
     console:
