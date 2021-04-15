@@ -23,7 +23,7 @@ public class AuctionsController {
         this.useCase = useCase;
     }
 
-    @GetMapping("/auctions")
+    @GetMapping("/auctions/all")
     public ResponseEntity<List<Auction>> getAllAuctions() {
         List<Auction> auctions = useCase.retrieveAll();
         return ok(auctions);

@@ -9,11 +9,11 @@ import java.math.BigDecimal;
 
 public class JdbcBidRepository implements BidRepository {
 
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public JdbcBidRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+    public JdbcBidRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
 
-        this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class JdbcBidRepository implements BidRepository {
                 .addValue("amount", saveBidRequest.amount)
                 .addValue("userId", saveBidRequest.userId)
                 .addValue("auctionId", saveBidRequest.auctionId);
-        jdbcTemplate.update(
+        namedParameterJdbcTemplate.update(
                 "INSERT INTO BID (AUCTION_ID, AMOUNT, USER_ID) VALUES (:auctionId, :amount, :userId)",
                 sqlParams);
     }
@@ -31,7 +31,7 @@ public class JdbcBidRepository implements BidRepository {
     public BigDecimal getHighestBidFor(int auctionId) {
         MapSqlParameterSource sqlParams = new MapSqlParameterSource()
                 .addValue("auctionId", auctionId);
-        return jdbcTemplate.queryForObject(
+        return namedParameterJdbcTemplate.queryForObject(
                 "SELECT MAX(AMOUNT) FROM BID WHERE AUCTION_ID = :auctionId",
                 sqlParams,
                 BigDecimal.class

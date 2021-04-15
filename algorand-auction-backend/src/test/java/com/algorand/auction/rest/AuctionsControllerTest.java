@@ -31,7 +31,7 @@ class AuctionsControllerTest {
     void getAllAuctions() throws Exception {
 
         when(useCase.retrieveAll()).thenReturn(singletonList(anAuction().withName("A_NAME").build()));
-        mockMvc.perform(get("/auctions").contentType(APPLICATION_JSON))
+        mockMvc.perform(get("/auctions/all").contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{}]"));
     }
