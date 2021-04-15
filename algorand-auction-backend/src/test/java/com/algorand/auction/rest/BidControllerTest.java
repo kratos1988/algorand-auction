@@ -9,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
 import static org.mockito.Mockito.verify;
@@ -32,9 +33,13 @@ class BidControllerTest {
         mockMvc.perform(
                     post("/bid/place")
                         .contentType(APPLICATION_JSON)
-                        .content("{\"userId\":\"AN_USER_ID\",\"amount\":10, \"auctionId\":1}"))
+                        .content(readJson("json/place_bid_request.json")))
                 .andExpect(status().isOk());
 
         verify(useCase).bid(BigDecimal.TEN, 1, "AN_USER_ID");
+    }
+
+    private String readJson(String fileName) throws IOException {
+        return new String(getClass().getClassLoader().getResourceAsStream(fileName).readAllBytes());
     }
 }

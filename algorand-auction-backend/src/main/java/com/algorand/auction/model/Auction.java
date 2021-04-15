@@ -1,13 +1,42 @@
 package com.algorand.auction.model;
 
-public class Auction {
-    private String name;
+import java.util.List;
 
-    public void setName(String name) {
-        this.name = name;
+public class Auction {
+    private int id;
+    private String itemName;
+    private String itemDescription;
+    private List<Bid> bids;
+
+    public int getId() {
+        return id;
     }
 
-    public String getName() {
-        return name;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public String getItemDescription() {
+        return itemDescription;
+    }
+
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
+    }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
     }
 }

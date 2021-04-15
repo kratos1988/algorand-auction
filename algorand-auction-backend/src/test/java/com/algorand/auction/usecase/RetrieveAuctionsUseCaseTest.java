@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -20,9 +21,12 @@ class RetrieveAuctionsUseCaseTest {
     void retrieve() {
         RetrieveAuctionsUseCase useCase = new RetrieveAuctionsUseCase(auctionRepository);
 
-        when(auctionRepository.retrieveAll()).thenReturn(singletonList(new AuctionBuilder().build()));
+        Auction anAuction = new AuctionBuilder().build();
+
+        when(auctionRepository.retrieveAll()).thenReturn(singletonList(anAuction));
         List<Auction> retrievedAuctions = useCase.retrieveAll();
 
-        assertTrue(retrievedAuctions.size() > 0);
+        assertThat(retrievedAuctions, hasSize(1));
+        assertThat(retrievedAuctions.get(0), is(equalTo(anAuction)));
     }
 }

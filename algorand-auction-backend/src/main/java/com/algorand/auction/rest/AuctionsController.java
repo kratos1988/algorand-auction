@@ -25,8 +25,7 @@ public class AuctionsController {
 
     @GetMapping("/auctions/all")
     public ResponseEntity<List<Auction>> getAllAuctions() {
-        List<Auction> auctions = useCase.retrieveAll();
-        return ok(auctions);
+        return ok(useCase.retrieveAll());
 
     }
 }

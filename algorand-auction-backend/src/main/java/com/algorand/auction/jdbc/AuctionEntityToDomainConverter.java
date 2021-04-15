@@ -9,7 +9,7 @@ public class AuctionEntityToDomainConverter implements Function<AuctionDto, Auct
     @Override
     public Auction apply(AuctionDto auctionDto) {
         Auction auction = new Auction();
-        auction.setName(auctionDto.name);
+        auction.setItemName(auctionDto.name);
         return auction;
     }
 }
