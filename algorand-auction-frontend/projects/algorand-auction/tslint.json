@@ -1,0 +1,17 @@
+{
+  "extends": "../../tslint.json",
+  "rules": {
+    "directive-selector": [
+      true,
+      "attribute",
+      "algoAuction",
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      "algo-auction",
+      "kebab-case"
+    ]
+  }
+}

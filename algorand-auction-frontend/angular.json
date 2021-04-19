@@ -3,50 +3,61 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "algorand-auction-frontend": {
-      "root": "",
-      "sourceRoot": "src",
+    "algorand-auction": {
       "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/algorand-auction",
+      "sourceRoot": "projects/algorand-auction/src",
+      "prefix": "algo-auction",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "outputPath": "dist/algorand-auction",
+            "index": "projects/algorand-auction/src/index.html",
+            "main": "projects/algorand-auction/src/main.ts",
+            "polyfills": "projects/algorand-auction/src/polyfills.ts",
+            "tsConfig": "projects/algorand-auction/tsconfig.app.json",
             "aot": true,
-            "outputPath": "../algorand-auction-backend/src/main/resources/static",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "tsConfig": "src/tsconfig.app.json",
-            "polyfills": "src/polyfills.ts",
             "assets": [
-              "src/assets",
-              "src/favicon.ico"
+              "projects/algorand-auction/src/favicon.ico",
+              "projects/algorand-auction/src/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
+              "projects/algorand-auction/src/styles.scss"
             ],
             "scripts": []
           },
           "configurations": {
             "production": {
-              "budgets": [
+              "fileReplacements": [
                 {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "replace": "projects/algorand-auction/src/environments/environment.ts",
+                  "with": "projects/algorand-auction/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "fileReplacements": [
+              "budgets": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
                 }
               ]
             }
@@ -55,86 +66,65 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "algorand-auction-frontend:build"
+            "browserTarget": "algorand-auction:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "algorand-auction-frontend:build:production"
+              "browserTarget": "algorand-auction:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "algorand-auction-frontend:build"
+            "browserTarget": "algorand-auction:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [],
+            "main": "projects/algorand-auction/src/test.ts",
+            "polyfills": "projects/algorand-auction/src/polyfills.ts",
+            "tsConfig": "projects/algorand-auction/tsconfig.spec.json",
+            "karmaConfig": "projects/algorand-auction/karma.conf.js",
+            "assets": [
+              "projects/algorand-auction/src/favicon.ico",
+              "projects/algorand-auction/src/assets"
+            ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
+              "projects/algorand-auction/src/styles.scss"
             ],
-            "assets": [
-              "src/assets",
-              "src/favicon.ico"
-            ]
+            "scripts": []
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
+              "projects/algorand-auction/tsconfig.app.json",
+              "projects/algorand-auction/tsconfig.spec.json",
+              "projects/algorand-auction/e2e/tsconfig.json"
             ],
             "exclude": [
               "**/node_modules/**"
             ]
           }
-        }
-      }
-    },
-    "algorand-auction-frontend-e2e": {
-      "root": "e2e",
-      "sourceRoot": "e2e",
-      "projectType": "application",
-      "architect": {
+        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "algorand-auction-frontend:serve"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "protractorConfig": "projects/algorand-auction/e2e/protractor.conf.js",
+            "devServerTarget": "algorand-auction:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "algorand-auction:serve:production"
+            }
           }
         }
       }
     }
   },
-  "defaultProject": "algorand-auction-frontend",
-  "schematics": {
-    "@schematics/angular:component": {
-      "prefix": "app",
-      "style": "css"
-    },
-    "@schematics/angular:directive": {
-      "prefix": "app"
-    }
-  }
+  "defaultProject": "algorand-auction"
 }
