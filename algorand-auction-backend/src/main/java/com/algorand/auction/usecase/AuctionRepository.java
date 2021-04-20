@@ -1,10 +1,10 @@
 package com.algorand.auction.usecase;
 
-import com.algorand.auction.model.Auction;
+import com.algorand.auction.jdbc.AuctionDto;
 
 import java.util.List;
 
 public interface AuctionRepository {
 
-    List<Auction> retrieveAll();
+    List<AuctionDto> retrieveAll();
 }

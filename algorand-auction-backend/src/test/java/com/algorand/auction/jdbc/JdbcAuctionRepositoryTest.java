@@ -1,12 +1,12 @@
 package com.algorand.auction.jdbc;
 
-import com.algorand.auction.model.Auction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -32,9 +32,16 @@ class JdbcAuctionRepositoryTest {
     void retrieveAll() {
 
         JdbcAuctionRepository underTest = new JdbcAuctionRepository(jdbcTemplate);
-        List<Auction> retrievedAuctions = underTest.retrieveAll();
+
+        List<AuctionDto> retrievedAuctions = underTest.retrieveAll();
         assertThat(retrievedAuctions, is(notNullValue()));
-        assertThat(retrievedAuctions, is(not(empty())));
+
+        assertThat(retrievedAuctions, hasSize(1));
+        AuctionDto auction = retrievedAuctions.get(0);
+        assertThat(auction.id, equalTo(1));
+        assertThat(auction.initialValue, equalTo(new BigDecimal("10.99")));
+        assertThat(auction.itemName, equalTo("AN_ITEM_NAME"));
+        assertThat(auction.itemDescription, equalTo("AN_ITEM_DESCRIPTION"));
 
     }
 }

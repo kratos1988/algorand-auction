@@ -1,5 +1,6 @@
 package com.algorand.auction.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Auction {
@@ -7,6 +8,8 @@ public class Auction {
     private String itemName;
     private String itemDescription;
     private List<Bid> bids;
+    private BigDecimal initialValue;
+    private BigDecimal highestBid;
 
     public int getId() {
         return id;
@@ -38,5 +41,21 @@ public class Auction {
 
     public void setBids(List<Bid> bids) {
         this.bids = bids;
+    }
+
+    public void setInitialValue(BigDecimal initialValue) {
+        this.initialValue = initialValue;
+    }
+
+    public BigDecimal getInitialValue() {
+        return initialValue;
+    }
+
+    public void setHighestBid(BigDecimal highestBid) {
+        this.highestBid = highestBid;
+    }
+
+    public BigDecimal getHighestBid() {
+        return highestBid;
     }
 }
