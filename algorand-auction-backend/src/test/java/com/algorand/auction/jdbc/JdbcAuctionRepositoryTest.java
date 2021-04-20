@@ -1,6 +1,5 @@
 package com.algorand.auction.jdbc;
 
-import com.algorand.auction.model.Auction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,9 +31,10 @@ class JdbcAuctionRepositoryTest {
     void retrieveAll() {
 
         JdbcAuctionRepository underTest = new JdbcAuctionRepository(jdbcTemplate);
-        List<Auction> retrievedAuctions = underTest.retrieveAll();
+        List<AuctionDto> retrievedAuctions = underTest.retrieveAll();
         assertThat(retrievedAuctions, is(notNullValue()));
         assertThat(retrievedAuctions, is(not(empty())));
+        //TODO assertion sui campi
 
     }
 }

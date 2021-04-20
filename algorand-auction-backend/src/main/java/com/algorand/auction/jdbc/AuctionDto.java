@@ -1,9 +1,22 @@
 package com.algorand.auction.jdbc;
 
-public class AuctionDto {
-    public final String name;
+import java.math.BigDecimal;
 
-    public AuctionDto(String name) {
-        this.name = name;
+public class AuctionDto {
+    public final String itemName;
+    public final String itemDescription;
+    public final BigDecimal initialValue;
+    public final int id;
+
+    public AuctionDto(
+            int id,
+            String itemName,
+            String itemDescription,
+            BigDecimal initialValue
+    ) {
+        this.id = id;
+        this.itemName = itemName;
+        this.itemDescription = itemDescription;
+        this.initialValue = initialValue;
     }
 }
