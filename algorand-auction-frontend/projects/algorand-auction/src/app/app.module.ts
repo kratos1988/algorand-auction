@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
 
 import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -34,6 +33,8 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPseudoCheckboxModule } from '@angular/material/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatPseudoCheckboxModule,
@@ -73,8 +74,9 @@ const ANGULAR_MATERIAL_MODULES = [
     AppComponent
   ],
   imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
-    CoreModule,
     ...ANGULAR_MATERIAL_MODULES
   ],
   providers: [],

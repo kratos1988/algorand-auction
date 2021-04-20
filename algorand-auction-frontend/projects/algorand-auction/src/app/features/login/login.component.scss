@@ -1,0 +1,13 @@
+.login-card {
+    padding: 24px;
+    width: 256px;
+    background-color: #fff;
+}
+
+.login-card > *:not(:last-child) {
+    margin-bottom: 16px;
+}
+
+.full-width {
+    width: 100%;
+}

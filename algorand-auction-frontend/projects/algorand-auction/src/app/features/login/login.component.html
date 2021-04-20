@@ -1,0 +1,31 @@
+<ng-container *ngIf="loading$ | async; else showLoader">
+    <mat-spinner></mat-spinner>
+</ng-container>
+<ng-template #showLoader>
+    <section class="login-card">
+        <header>
+            <h1 class="mat-h1">Login</h1>
+            <small class="mat-small">Doesn't have an account yet? <a href="#">Sign up</a></small>
+        </header>
+        <article>
+            <form [formGroup]="loginForm">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Username</mat-label>
+                    <input type="email" matInput value="" placeholder="you@example.com" formControlName="username">
+                    
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Password</mat-label>
+                    <input type="password" matInput minlength="6" value="" formControlName="password">
+                </mat-form-field>
+            </form>
+        </article>
+        <footer>
+            <button 
+                [disabled]="disableLoginBtn()" mat-flat-button 
+                color="primary" class="full-width"
+                (click)="login()">Login</button>
+        </footer>
+    </section>
+</ng-template>

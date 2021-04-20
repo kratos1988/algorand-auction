@@ -5,3 +5,12 @@
 .spacer {
     flex: 1 1 auto;
 }
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 2;
+    margin: 0 64px;
+}
