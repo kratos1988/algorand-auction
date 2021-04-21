@@ -58,6 +58,39 @@ class AuctionsControllerTest {
                 .andExpect(content().json(readJson("json/get_all_auctions_response.json")));
     }
 
+    @Test
+    void getAnAuction() throws Exception {
+        Bid aBid =
+                aBid()
+                        .withAmount(new BigDecimal("11.99"))
+                        .withAuctionId(1)
+                        .withStatus("INSERTED")
+                        .withUserId("AN_USER_ID")
+                        .build();
+
+        Bid anotherBid =
+                aBid()
+                        .withAmount(new BigDecimal("13.99"))
+                        .withAuctionId(1)
+                        .withStatus("INSERTED")
+                        .withUserId("ANOTHER_USER_ID")
+                        .build();
+
+        Auction auction =
+                anAuction()
+                        .withId(1)
+                        .withItemName("AN_ITEM_NAME")
+                        .withItemDescription("AN_ITEM_DESCRIPTION")
+                        .withBids(aBid, anotherBid)
+                        .build();
+
+        when(useCase.retrieveBy(1)).thenReturn(auction);
+
+        mockMvc.perform(get("/auctions/1").contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(readJson("json/get_auction_response.json")));
+    }
+
     private String readJson(String fileName) throws IOException {
         return new String(getClass().getClassLoader().getResourceAsStream(fileName).readAllBytes());
     }

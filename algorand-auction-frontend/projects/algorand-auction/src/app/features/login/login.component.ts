@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {LoginService} from '../../services/login.service';
-import {takeUntil, delay} from 'rxjs/operators';
+import {delay, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'algo-auction-login',

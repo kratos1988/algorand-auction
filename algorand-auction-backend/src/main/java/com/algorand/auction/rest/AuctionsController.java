@@ -5,6 +5,7 @@ import com.algorand.auction.usecase.RetrieveAuctionsUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,6 +27,12 @@ public class AuctionsController {
     @GetMapping("/auctions/all")
     public ResponseEntity<List<Auction>> getAllAuctions() {
         return ok(useCase.retrieveAll());
+    }
 
+    @GetMapping("/auctions/{id}")
+    public ResponseEntity<Auction> getAuction(
+            @PathVariable Integer id
+    ) {
+        return ok(useCase.retrieveBy(id));
     }
 }
