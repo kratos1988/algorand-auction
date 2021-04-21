@@ -17,13 +17,16 @@ public class JdbcAuctionRepository implements AuctionRepository {
         return jdbcTemplate.query(
                 "SELECT * " +
                         "FROM AUCTIONS",
-                (rs, rowNum) ->
-                        new AuctionDto(
-                                rs.getInt("ID"),
-                                rs.getString("ITEM_NAME"),
-                                rs.getString("ITEM_DESCRIPTION"),
-                                rs.getBigDecimal("INITIAL_VALUE")
-                        )
+                new AuctionRowMapper()
+        );
+    }
+
+    @Override
+    public AuctionDto retrieveBy(Integer id) {
+        return jdbcTemplate.queryForObject(
+                "SELECT * " +
+                        "FROM AUCTIONS WHERE ID = " + id,
+                new AuctionRowMapper()
         );
     }
 }

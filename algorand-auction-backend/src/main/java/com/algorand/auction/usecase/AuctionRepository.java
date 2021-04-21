@@ -7,4 +7,6 @@ import java.util.List;
 public interface AuctionRepository {
 
     List<AuctionDto> retrieveAll();
+
+    AuctionDto retrieveBy(Integer id);
 }

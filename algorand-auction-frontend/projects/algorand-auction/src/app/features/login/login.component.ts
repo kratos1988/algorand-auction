@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { LoginService } from '../../services/login.service';
-import { takeUntil, delay } from 'rxjs/operators';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {BehaviorSubject, Subject} from 'rxjs';
+import {LoginService} from '../../services/login.service';
+import {delay, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'algo-auction-login',
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.loading$.next(false)
+      this.loading$.next(false);
     }, 2000);
   }
 
