@@ -1,13 +1,13 @@
-import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
 
 @Injectable()
 export class LoginService {
-    constructor() {}
+  constructor() {}
 
-    login() {
-        return of({
-            status: 200
-        })
-    }
+  login(): Observable<any> {
+    return of({
+      status: 200,
+    });
+  }
 }

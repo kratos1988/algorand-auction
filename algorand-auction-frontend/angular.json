@@ -99,15 +99,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/algorand-auction/tsconfig.app.json",
-              "projects/algorand-auction/tsconfig.spec.json",
-              "projects/algorand-auction/e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/algorand-auction/**/*.ts",
+              "projects/algorand-auction/**/*.html"
             ]
           }
         },

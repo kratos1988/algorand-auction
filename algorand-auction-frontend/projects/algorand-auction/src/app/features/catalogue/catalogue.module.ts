@@ -1,17 +1,17 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { CatalogueRoutingModule } from './catalogue-routing.module';
-import { CatalogueComponent } from './catalogue.component';
+import {CatalogueRoutingModule} from './catalogue-routing.module';
+import {CatalogueComponent} from './catalogue.component';
 
 
 @NgModule({
   declarations: [
-    CatalogueComponent
+    CatalogueComponent,
   ],
   imports: [
     CommonModule,
-    CatalogueRoutingModule
-  ]
+    CatalogueRoutingModule,
+  ],
 })
 export class CatalogueModule { }

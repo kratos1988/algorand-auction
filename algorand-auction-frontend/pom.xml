@@ -51,13 +51,13 @@
 
                     <!-- code validation -->
                     <execution>
-                        <id>npm run lint</id>
+                        <id>eslint</id>
                         <goals>
-                            <goal>npm</goal>
+                            <goal>npx</goal>
                         </goals>
                         <phase>test</phase>
                         <configuration>
-                            <arguments>run lint</arguments>
+                            <arguments>npx eslint ./**/*.ts</arguments>
                         </configuration>
                     </execution>
                 </executions>
