@@ -41,7 +41,8 @@ class JdbcAuctionRepositoryTest {
         assertThat(auction.id, equalTo(1));
         assertThat(auction.initialValue, equalTo(new BigDecimal("10.99")));
         assertThat(auction.itemName, equalTo("AN_ITEM_NAME"));
-        assertThat(auction.itemDescription, equalTo("AN_ITEM_DESCRIPTION"));
+        assertThat(auction.description, equalTo("AN_ITEM_DESCRIPTION"));
+        assertThat(auction.title, equalTo("A_TITLE"));
 
     }
 }

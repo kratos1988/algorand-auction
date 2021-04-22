@@ -7,6 +7,7 @@ public class AuctionBuilder {
     private int id;
     private String itemName;
     private String itemDescription;
+    private String title;
     private List<Bid> bids = new LinkedList<>();
 
     public static AuctionBuilder anAuction() {
@@ -17,12 +18,17 @@ public class AuctionBuilder {
         this.id = auctionId;
         return this;
     }
+    public AuctionBuilder withTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
     public AuctionBuilder withItemName(String name) {
         this.itemName = name;
         return this;
     }
 
-    public AuctionBuilder withItemDescription(String itemDescription) {
+    public AuctionBuilder withDescription(String itemDescription) {
         this.itemDescription = itemDescription;
         return this;
     }
@@ -37,7 +43,8 @@ public class AuctionBuilder {
     public Auction build() {
         Auction auction = new Auction();
         auction.setId(id);
-        auction.setItemDescription(itemDescription);
+        auction.setTitle(title);
+        auction.setDescription(itemDescription);
         auction.setItemName(itemName);
         auction.setBids(bids);
         return auction;

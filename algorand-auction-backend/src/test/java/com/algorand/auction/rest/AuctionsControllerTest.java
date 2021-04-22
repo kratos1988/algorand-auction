@@ -46,8 +46,9 @@ class AuctionsControllerTest {
         Auction auction =
                 anAuction()
                         .withId(1)
+                        .withTitle("A_TITLE")
                         .withItemName("AN_ITEM_NAME")
-                        .withItemDescription("AN_ITEM_DESCRIPTION")
+                        .withDescription("A_DESCRIPTION")
                         .withBids(bid)
                         .build();
 
@@ -80,7 +81,8 @@ class AuctionsControllerTest {
                 anAuction()
                         .withId(1)
                         .withItemName("AN_ITEM_NAME")
-                        .withItemDescription("AN_ITEM_DESCRIPTION")
+                        .withTitle("A_TITLE")
+                        .withDescription("A_DESCRIPTION")
                         .withBids(aBid, anotherBid)
                         .build();
 

@@ -38,6 +38,7 @@ class RetrieveAuctionsUseCaseTest {
                 .withInitialValue(new BigDecimal("20.99"))
                 .withItemName("AN_ITEM_NAME")
                 .withItemDescription("AN_ITEM_DESCRIPTION")
+                .withTitle("A_TITLE")
                 .build();
 
         when(auctionRepository.retrieveAll()).thenReturn(singletonList(anAuction));
@@ -50,7 +51,8 @@ class RetrieveAuctionsUseCaseTest {
         assertThat(auction.getId(), equalTo(1));
         assertThat(auction.getInitialValue(), equalTo(new BigDecimal("20.99")));
         assertThat(auction.getItemName(), equalTo("AN_ITEM_NAME"));
-        assertThat(auction.getItemDescription(), equalTo("AN_ITEM_DESCRIPTION"));
+        assertThat(auction.getDescription(), equalTo("AN_ITEM_DESCRIPTION"));
+        assertThat(auction.getTitle(), equalTo("A_TITLE"));
         assertThat(auction.getHighestBid(), equalTo(new BigDecimal("22.89")));
     }
 
@@ -62,10 +64,11 @@ class RetrieveAuctionsUseCaseTest {
                 .withInitialValue(new BigDecimal("20.99"))
                 .withItemName("AN_ITEM_NAME")
                 .withItemDescription("AN_ITEM_DESCRIPTION")
+                .withTitle("A_TITLE")
                 .build();
 
 
-        when(auctionRepository.retrieveAll()).thenReturn(singletonList(anAuction));
+        when(auctionRepository.retrieveBy(1)).thenReturn(anAuction);
         when(bidRepository.getHighestBidFor(1)).thenReturn(new BigDecimal("22.89"));
         when(bidRepository.getAllBidsFor(1)).thenReturn(emptyList());
 
@@ -74,7 +77,8 @@ class RetrieveAuctionsUseCaseTest {
         assertThat(retrievedAuction.getId(), equalTo(1));
         assertThat(retrievedAuction.getInitialValue(), equalTo(new BigDecimal("20.99")));
         assertThat(retrievedAuction.getItemName(), equalTo("AN_ITEM_NAME"));
-        assertThat(retrievedAuction.getItemDescription(), equalTo("AN_ITEM_DESCRIPTION"));
+        assertThat(retrievedAuction.getDescription(), equalTo("AN_ITEM_DESCRIPTION"));
+        assertThat(retrievedAuction.getTitle(), equalTo("A_TITLE"));
         assertThat(retrievedAuction.getHighestBid(), equalTo(new BigDecimal("22.89")));
     }
 }

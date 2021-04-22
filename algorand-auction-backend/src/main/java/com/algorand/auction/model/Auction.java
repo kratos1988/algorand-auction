@@ -6,10 +6,11 @@ import java.util.List;
 public class Auction {
     private int id;
     private String itemName;
-    private String itemDescription;
+    private String description;
     private List<Bid> bids;
     private BigDecimal initialValue;
     private BigDecimal highestBid;
+    private String title;
 
     public int getId() {
         return id;
@@ -27,12 +28,12 @@ public class Auction {
         return itemName;
     }
 
-    public String getItemDescription() {
-        return itemDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setItemDescription(String itemDescription) {
-        this.itemDescription = itemDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<Bid> getBids() {
@@ -57,5 +58,13 @@ public class Auction {
 
     public BigDecimal getHighestBid() {
         return highestBid;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }

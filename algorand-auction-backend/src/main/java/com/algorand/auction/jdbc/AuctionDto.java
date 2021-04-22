@@ -4,19 +4,22 @@ import java.math.BigDecimal;
 
 public class AuctionDto {
     public final String itemName;
-    public final String itemDescription;
+    public final String description;
+    public final String title;
     public final BigDecimal initialValue;
     public final int id;
 
     public AuctionDto(
             int id,
             String itemName,
-            String itemDescription,
+            String description,
+            String title,
             BigDecimal initialValue
     ) {
         this.id = id;
         this.itemName = itemName;
-        this.itemDescription = itemDescription;
+        this.description = description;
+        this.title = title;
         this.initialValue = initialValue;
     }
 }

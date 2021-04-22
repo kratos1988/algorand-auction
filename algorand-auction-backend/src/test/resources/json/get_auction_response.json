@@ -1,7 +1,8 @@
 {
   "id": 1,
+  "title": "A_TITLE",
   "itemName": "AN_ITEM_NAME",
-  "itemDescription": "AN_ITEM_DESCRIPTION",
+  "description": "A_DESCRIPTION",
   "bids": [
     {
       "auctionId": 1,

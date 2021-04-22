@@ -7,6 +7,7 @@ public class AuctionDtoBuilder {
     private String itemName;
     private String itemDescription;
     private BigDecimal initialValue;
+    private String title;
 
     public static AuctionDtoBuilder anAuctionDto() {
         return new AuctionDtoBuilder();
@@ -32,7 +33,12 @@ public class AuctionDtoBuilder {
         return this;
     }
 
+    public AuctionDtoBuilder withTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
     public AuctionDto build() {
-        return new AuctionDto(id, itemName, itemDescription, initialValue);
+        return new AuctionDto(id, itemName, itemDescription, title, initialValue);
     }
 }

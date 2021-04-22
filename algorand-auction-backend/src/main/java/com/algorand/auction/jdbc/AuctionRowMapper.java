@@ -11,7 +11,8 @@ public class AuctionRowMapper implements RowMapper<AuctionDto> {
         return new AuctionDto(
                 resultSet.getInt("ID"),
                 resultSet.getString("ITEM_NAME"),
-                resultSet.getString("ITEM_DESCRIPTION"),
+                resultSet.getString("DESCRIPTION"),
+                resultSet.getString("TITLE"),
                 resultSet.getBigDecimal("INITIAL_VALUE")
         );
     }
