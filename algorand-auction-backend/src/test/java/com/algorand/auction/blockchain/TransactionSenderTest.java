@@ -17,13 +17,14 @@ class TransactionSenderTest {
         Account senderAccount = new Account();
         Account receiverAccount = new Account();
 
-        when(transactionSender.send(senderAccount, receiverAccount)).thenReturn("A_TX_ID");
+        String notes = "Some notes";
+        when(transactionSender.send(senderAccount.getAddress(), receiverAccount.getAddress(), notes)).thenReturn("A_TX_ID");
 
         TransactionSender underTest = new TransactionSender(transactionSender, confirmationChecker);
 
-        underTest.send(senderAccount, receiverAccount);
+        underTest.send(senderAccount.getAddress(), receiverAccount.getAddress(), notes);
 
-        verify(transactionSender).send(senderAccount, receiverAccount);
+        verify(transactionSender).send(senderAccount.getAddress(), receiverAccount.getAddress(), notes);
         verify(confirmationChecker).waitForConfirmation("A_TX_ID", 5);
     }
 }

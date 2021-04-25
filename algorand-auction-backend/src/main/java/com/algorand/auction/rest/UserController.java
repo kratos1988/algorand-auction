@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-@RestController
+@RestController("user")
 public class UserController {
 
     @GetMapping("/users/")

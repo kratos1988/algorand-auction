@@ -12,13 +12,13 @@ import java.util.List;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-@RestController
-public class AuctionsController {
+@RestController("auction")
+public class AuctionController {
 
     private RetrieveAuctionsUseCase useCase;
 
     @Autowired
-    public AuctionsController(
+    public AuctionController(
             RetrieveAuctionsUseCase useCase
     ) {
         this.useCase = useCase;

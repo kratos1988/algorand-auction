@@ -1,6 +1,6 @@
 package com.algorand.auction.blockchain.wrapper;
 
-import com.algorand.algosdk.account.Account;
+import com.algorand.algosdk.crypto.Address;
 import com.algorand.algosdk.transaction.Transaction;
 import com.algorand.algosdk.v2.client.common.AlgodClient;
 import com.algorand.algosdk.v2.client.model.TransactionParametersResponse;
@@ -27,19 +27,19 @@ public class AlgorandTransactionSender {
         this.algodClient = algodClient;
     }
 
-    public String send(Account senderAccount, Account receiverAccount) throws Exception {
+    public String send(Address senderPublicKey, Address receiverPublicKey, String notes) throws Exception {
         try {
             TransactionParametersResponse params = algodClient.TransactionParams().execute(txHeaders, txValues).body();
             Transaction txn = Transaction.PaymentTransactionBuilder()
-                    .sender(senderAccount.getAddress())
-                    .note("do li sordi per un oggetto".getBytes())
+                    .sender(senderPublicKey)
+                    .note(notes.getBytes())
                     .amount(100000)
-                    .receiver(receiverAccount.getAddress())
+                    .receiver(receiverPublicKey)
                     .suggestedParams(params)
                     .build();
             return txn.txID();
         } catch (Exception e) {
-            logger.error("Error when sending transaction from " + senderAccount.getAddress() + " to " + receiverAccount.getAddress(), e);
+            logger.error("Error when sending transaction from " + senderPublicKey + " to " + receiverPublicKey, e);
             throw e;
         }
     }

@@ -1,10 +1,11 @@
 package com.algorand.auction.blockchain;
 
-import com.algorand.algosdk.account.Account;
+import com.algorand.algosdk.crypto.Address;
+import com.algorand.auction.usecase.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BlockchainTransactionRepository {
+public class BlockchainTransactionRepository implements TransactionRepository {
 
     private final Logger logger = LoggerFactory.getLogger(BlockchainTransactionRepository.class);
 
@@ -19,15 +20,15 @@ public class BlockchainTransactionRepository {
         this.transactionSender = transactionSender;
     }
 
-    public void saveTransaction(Account senderAccount, Account receiverAccount) throws Exception {
+    public void saveTransaction(String senderPublicKey, String receiverPublicKey, String notes) throws Exception {
 
-        if (balanceChecker.checkBalance(senderAccount.getAddress()) == 0)
+        Address senderAddress = new Address(senderPublicKey);
+        Address receiverAddress = new Address(receiverPublicKey);
+
+        if (balanceChecker.checkBalance(senderAddress) == 0)
             return;
 
-        transactionSender.send(senderAccount, receiverAccount);
-
-        balanceChecker.checkBalance(senderAccount.getAddress());
-        balanceChecker.checkBalance(receiverAccount.getAddress());
+        transactionSender.send(senderAddress, receiverAddress, notes);
 
     }
 
