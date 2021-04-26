@@ -8,6 +8,8 @@ CREATE TABLE AUCTIONS
     TITLE varchar(255) NOT NULL,
     DESCRIPTION varchar(255) NOT NULL,
     INITIAL_VALUE numeric(10,2) NOT NULL,
+    EXPIRATION_DATE timestamp NOT NULL,
+    IMAGE_URL varchar(255),
     STATUS varchar(45) NOT NULL
 );
 

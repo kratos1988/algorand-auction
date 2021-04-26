@@ -1,9 +1,11 @@
 package com.algorand.auction.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Auction {
+
     private int id;
     private String itemName;
     private String description;
@@ -11,6 +13,9 @@ public class Auction {
     private BigDecimal initialValue;
     private BigDecimal highestBid;
     private String title;
+    private LocalDateTime expirationDate;
+    private String imageUrl;
+
 
     public int getId() {
         return id;
@@ -66,5 +71,21 @@ public class Auction {
 
     public String getTitle() {
         return title;
+    }
+
+    public LocalDateTime getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(LocalDateTime expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -1,6 +1,7 @@
 package com.algorand.auction.jdbc;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class AuctionDtoBuilder {
     private int id;
@@ -8,6 +9,8 @@ public class AuctionDtoBuilder {
     private String itemDescription;
     private BigDecimal initialValue;
     private String title;
+    private LocalDateTime expirationDate;
+    private String imageUrl;
 
     public static AuctionDtoBuilder anAuctionDto() {
         return new AuctionDtoBuilder();
@@ -38,7 +41,17 @@ public class AuctionDtoBuilder {
         return this;
     }
 
+    public AuctionDtoBuilder withExpirationDate(LocalDateTime expirationDate) {
+        this.expirationDate = expirationDate;
+        return this;
+    }
+
+    public AuctionDtoBuilder withImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+        return this;
+    }
+
     public AuctionDto build() {
-        return new AuctionDto(id, itemName, itemDescription, title, initialValue);
+        return new AuctionDto(id, itemName, itemDescription, title, initialValue, expirationDate, imageUrl);
     }
 }

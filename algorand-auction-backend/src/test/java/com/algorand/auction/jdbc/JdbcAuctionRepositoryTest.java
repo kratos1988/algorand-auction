@@ -7,6 +7,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,6 +32,7 @@ class JdbcAuctionRepositoryTest {
     @Test
     void retrieveAll() {
 
+        LocalDateTime expirationDate = LocalDateTime.of(2021, 4, 12, 7, 20);
         JdbcAuctionRepository underTest = new JdbcAuctionRepository(jdbcTemplate);
 
         List<AuctionDto> retrievedAuctions = underTest.retrieveAll();
@@ -43,6 +45,8 @@ class JdbcAuctionRepositoryTest {
         assertThat(auction.itemName, equalTo("AN_ITEM_NAME"));
         assertThat(auction.description, equalTo("AN_ITEM_DESCRIPTION"));
         assertThat(auction.title, equalTo("A_TITLE"));
+        assertThat(auction.expirationDate, is(equalTo(expirationDate)));
+        assertThat(auction.imageUrl, equalTo("AN_IMAGE_URL"));
 
     }
 }

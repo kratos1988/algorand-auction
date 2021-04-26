@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.algorand.auction.jdbc.AuctionDtoBuilder.anAuctionDto;
@@ -32,13 +33,15 @@ class RetrieveAuctionsUseCaseTest {
 
     @Test
     void retrieveAllAuctions() {
-
+        LocalDateTime now = LocalDateTime.now();
         AuctionDto anAuction = anAuctionDto()
                 .withId(1)
                 .withInitialValue(new BigDecimal("20.99"))
                 .withItemName("AN_ITEM_NAME")
                 .withItemDescription("AN_ITEM_DESCRIPTION")
                 .withTitle("A_TITLE")
+                .withExpirationDate(now)
+                .withImageUrl("AN_IMAGE_URL")
                 .build();
 
         when(auctionRepository.retrieveAll()).thenReturn(singletonList(anAuction));
@@ -53,18 +56,23 @@ class RetrieveAuctionsUseCaseTest {
         assertThat(auction.getItemName(), equalTo("AN_ITEM_NAME"));
         assertThat(auction.getDescription(), equalTo("AN_ITEM_DESCRIPTION"));
         assertThat(auction.getTitle(), equalTo("A_TITLE"));
+        assertThat(auction.getExpirationDate(), equalTo(now));
+        assertThat(auction.getImageUrl(), equalTo("AN_IMAGE_URL"));
         assertThat(auction.getHighestBid(), equalTo(new BigDecimal("22.89")));
     }
 
     @Test
     void retrieveAuction() {
 
+        LocalDateTime now = LocalDateTime.now();
         AuctionDto anAuction = anAuctionDto()
                 .withId(1)
                 .withInitialValue(new BigDecimal("20.99"))
                 .withItemName("AN_ITEM_NAME")
                 .withItemDescription("AN_ITEM_DESCRIPTION")
                 .withTitle("A_TITLE")
+                .withExpirationDate(now)
+                .withImageUrl("AN_IMAGE_URL")
                 .build();
 
 
@@ -79,6 +87,8 @@ class RetrieveAuctionsUseCaseTest {
         assertThat(retrievedAuction.getItemName(), equalTo("AN_ITEM_NAME"));
         assertThat(retrievedAuction.getDescription(), equalTo("AN_ITEM_DESCRIPTION"));
         assertThat(retrievedAuction.getTitle(), equalTo("A_TITLE"));
+        assertThat(retrievedAuction.getExpirationDate(), equalTo(now));
+        assertThat(retrievedAuction.getImageUrl(), equalTo("AN_IMAGE_URL"));
         assertThat(retrievedAuction.getHighestBid(), equalTo(new BigDecimal("22.89")));
     }
 }

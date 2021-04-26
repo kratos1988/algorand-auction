@@ -14,6 +14,8 @@ public class AuctionDtoToDomainConverter {
         auction.setItemName(auctionDto.itemName);
         auction.setDescription(auctionDto.description);
         auction.setTitle(auctionDto.title);
+        auction.setExpirationDate(auctionDto.expirationDate);
+        auction.setImageUrl(auctionDto.imageUrl);
         auction.setInitialValue(auctionDto.initialValue);
         auction.setHighestBid(highestBid);
         auction.setBids(bids);

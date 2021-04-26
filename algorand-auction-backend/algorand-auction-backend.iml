@@ -123,5 +123,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:5.3.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.xmlunit:xmlunit-core:2.7.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-all:1.10.19" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.exparity:hamcrest-date:2.0.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:2.2" level="project" />
   </component>
 </module>
