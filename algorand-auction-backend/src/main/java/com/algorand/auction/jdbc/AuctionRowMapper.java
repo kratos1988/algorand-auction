@@ -13,7 +13,9 @@ public class AuctionRowMapper implements RowMapper<AuctionDto> {
                 resultSet.getString("ITEM_NAME"),
                 resultSet.getString("DESCRIPTION"),
                 resultSet.getString("TITLE"),
-                resultSet.getBigDecimal("INITIAL_VALUE")
+                resultSet.getBigDecimal("INITIAL_VALUE"),
+                resultSet.getTimestamp("EXPIRATION_DATE").toLocalDateTime(),
+                resultSet.getString("IMAGE_URL")
         );
     }
 }

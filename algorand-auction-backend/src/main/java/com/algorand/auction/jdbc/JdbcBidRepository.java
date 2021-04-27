@@ -25,7 +25,7 @@ public class JdbcBidRepository implements BidRepository {
                 .addValue("userId", saveBidRequest.userId)
                 .addValue("auctionId", saveBidRequest.auctionId);
         namedParameterJdbcTemplate.update(
-                "INSERT INTO BID (AUCTION_ID, AMOUNT, USER_ID) VALUES (:auctionId, :amount, :userId)",
+                "INSERT INTO BIDS (AUCTION_ID, AMOUNT, USER_ID) VALUES (:auctionId, :amount, :userId)",
                 sqlParams);
     }
 
@@ -34,7 +34,7 @@ public class JdbcBidRepository implements BidRepository {
         MapSqlParameterSource sqlParams = new MapSqlParameterSource()
                 .addValue("auctionId", auctionId);
         return namedParameterJdbcTemplate.queryForObject(
-                "SELECT MAX(AMOUNT) FROM BID WHERE AUCTION_ID = :auctionId",
+                "SELECT MAX(AMOUNT) FROM BIDS WHERE AUCTION_ID = :auctionId",
                 sqlParams,
                 BigDecimal.class
         );
@@ -43,7 +43,7 @@ public class JdbcBidRepository implements BidRepository {
     @Override
     public List<Bid> getAllBidsFor(int auctionId) {
         return namedParameterJdbcTemplate.query(
-                "SELECT * FROM BID WHERE AUCTION_ID = " + auctionId,
+                "SELECT * FROM BIDS WHERE AUCTION_ID = " + auctionId,
                 new BidRowMapper()
         );
     }

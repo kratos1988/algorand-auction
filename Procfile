@@ -1,0 +1,1 @@
+web: java $JAVA_OPTS -jar -Dserver.port=$PORT algorand-auction-backend/target/algorand-auction-backend-1.0-SNAPSHOT.jar
