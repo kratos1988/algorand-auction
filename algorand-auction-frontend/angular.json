@@ -29,6 +29,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "./node_modules/flexboxgrid/css/flexboxgrid.css",
               "projects/algorand-auction/src/styles.scss"
             ],
             "scripts": []
@@ -70,7 +71,8 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "algorand-auction:build:production"
+              "browserTarget": "algorand-auction:build:production",
+              "proxyConfig": "projects/algorand-auction/src/proxy.config.json"
             }
           }
         },
@@ -93,6 +95,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "./node_modules/flexboxgrid/css/flexboxgrid.css",
               "projects/algorand-auction/src/styles.scss"
             ],
             "scripts": []

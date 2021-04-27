@@ -1,1 +1,15 @@
-<p>catalogue works!</p>
+<section>
+    <form [formGroup]="searchForm" class="row center-xs">
+        <mat-form-field class="" appearance="outline" class="col-xs-8">
+            <input matInput type="text" formControlName="search">
+            <button mat-button matSuffix mat-icon-button>
+                <mat-icon>search</mat-icon>
+            </button>
+        </mat-form-field>
+    </form>
+    <section class="row around-xs">
+        <ng-container *ngFor="let auction of (auctions | async)">
+            <algo-auction-card class="col-xs-3" [detail]="auction"></algo-auction-card>
+        </ng-container>
+    </section>
+</section>

@@ -1,0 +1,21 @@
+.auction-card {
+    background-color: #FFF;
+    border-radius: 5px;
+    padding: 5px;;
+}
+
+.auction-img {
+    background-image: url("../../../assets/img-test.jpg");
+    background-color: #cccccc;
+    height: 200px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.categories {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 5px;
+}

@@ -13,10 +13,11 @@ import {delay, takeUntil} from 'rxjs/operators';
 export class LoginComponent implements OnInit, OnDestroy {
   readonly loginForm: FormGroup = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', Validators.required),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
   readonly loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  hide: boolean = true;
 
   constructor(
     private loginService: LoginService,

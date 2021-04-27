@@ -8,8 +8,11 @@ body {
     background-color: #F3F3F3;
 }
 
-algo-auction-root {
+.layout {
     display: flex;
     flex-direction: column;
-    height: 100%;
+}
+
+.full-width {
+    width: 100%;
 }

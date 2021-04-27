@@ -1,0 +1,43 @@
+import {Auction} from '../../models/auction.interface';
+
+export const catalogue: Auction[] = [{
+  description: 'A description',
+  expirationDate: '2021-04-27T19:19:11.047Z',
+  highestBid: 10,
+  id: 1,
+  imageUrl: '',
+  initialValue: 0,
+  itemName: 'an item name',
+  title: 'A title',
+  bids: [],
+}, {
+  description: 'A description',
+  expirationDate: '2021-04-27T19:19:11.047Z',
+  highestBid: 10,
+  id: 1,
+  imageUrl: '',
+  initialValue: 0,
+  itemName: 'an item name',
+  title: 'A title',
+  bids: [],
+}, {
+  description: 'A description',
+  expirationDate: '2021-04-27T19:19:11.047Z',
+  highestBid: 10,
+  id: 1,
+  imageUrl: '',
+  initialValue: 0,
+  itemName: 'an item name',
+  title: 'A title',
+  bids: [],
+}, {
+  description: 'A description',
+  expirationDate: '2021-04-27T19:19:11.047Z',
+  highestBid: 10,
+  id: 1,
+  imageUrl: '',
+  initialValue: 0,
+  itemName: 'an item name',
+  title: 'A title',
+  bids: [],
+}];

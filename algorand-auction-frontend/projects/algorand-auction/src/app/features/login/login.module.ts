@@ -7,6 +7,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatIconModule} from '@angular/material/icon';
 
 import {ReactiveFormsModule} from '@angular/forms';
 import {LoginService} from '../../services/login.service';
@@ -25,6 +26,7 @@ import {LoginService} from '../../services/login.service';
     MatCardModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
   ],

@@ -1,0 +1,15 @@
+<article class="auction-card mat-elevation-z3">
+    <header>
+        <span class="mat-title">{{detail.title}}</span>
+    </header>
+    <div class="row-xs-12 auction-img categories">
+        <mat-chip-list>
+            <mat-chip color="primary" selected>{{detail.itemName}}</mat-chip>
+        </mat-chip-list>
+    </div>
+    <footer class="row">
+        <span class="col-xs-12 mat-caption">{{detail.description}}</span>
+        <span class="col-xs-12">Expiry date: </span>
+        <span class="col-xs-12">Highest bid: </span>
+    </footer>
+</article>

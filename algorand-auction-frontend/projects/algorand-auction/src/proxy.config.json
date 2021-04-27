@@ -1,0 +1,7 @@
+{
+    "/": {
+      "target": "https://algorand-auction.herokuapp.com/",
+      "secure": false,
+      "changeOrigin": true
+    }
+  }
