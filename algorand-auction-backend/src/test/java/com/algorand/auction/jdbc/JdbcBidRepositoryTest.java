@@ -42,7 +42,7 @@ class JdbcBidRepositoryTest {
     void saveBid() {
         underTest.saveBid(new SaveBidRequest(2, TEN, "ANOTHER_USER_ID"));
         Bid savedBid = jdbcTemplate.queryForObject(
-                "SELECT * FROM BID WHERE USER_ID = 'ANOTHER_USER_ID'",
+                "SELECT * FROM BIDS WHERE USER_ID = 'ANOTHER_USER_ID'",
                 emptyMap(),
                 new BidRowMapper());
         assertThat(savedBid, is(notNullValue()));
