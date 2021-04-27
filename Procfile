@@ -1,0 +1,1 @@
+web: java -jar algorand-auction-backend/target/algorand-auction-backend-1.0-SNAPSHOT.jar
