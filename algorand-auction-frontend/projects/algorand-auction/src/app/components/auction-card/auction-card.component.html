@@ -8,8 +8,11 @@
         </mat-chip-list>
     </div>
     <footer class="row">
-        <span class="col-xs-12 mat-caption">{{detail.description}}</span>
-        <span class="col-xs-12">Expiry date: </span>
-        <span class="col-xs-12">Highest bid: </span>
+        <p class="col-xs-12 mat-caption">{{detail.description}}</p>
+        <p class="col-xs-12" *ngIf="expirationDate; else expired">{{expirationDate}}</p>
+        <ng-template #expired>
+            <p class="col-xs-12 auction-expired mat-body-strong">Expired</p>
+        </ng-template>
+        <p class="col-xs-12">Highest bid: {{detail.highestBid | currency:'EUR':'code'}}</p>
     </footer>
 </article>

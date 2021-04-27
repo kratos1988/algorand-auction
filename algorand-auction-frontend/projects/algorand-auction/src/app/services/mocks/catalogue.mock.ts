@@ -2,7 +2,7 @@ import {Auction} from '../../models/auction.interface';
 
 export const catalogue: Auction[] = [{
   description: 'A description',
-  expirationDate: '2021-04-27T19:19:11.047Z',
+  expirationDate: '2021-04-30T19:19:11.047Z',
   highestBid: 10,
   id: 1,
   imageUrl: '',
@@ -12,7 +12,7 @@ export const catalogue: Auction[] = [{
   bids: [],
 }, {
   description: 'A description',
-  expirationDate: '2021-04-27T19:19:11.047Z',
+  expirationDate: '2021-04-28T19:19:11.047Z',
   highestBid: 10,
   id: 1,
   imageUrl: '',

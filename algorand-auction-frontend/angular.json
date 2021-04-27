@@ -72,7 +72,6 @@
           "configurations": {
             "production": {
               "browserTarget": "algorand-auction:build:production",
-              "proxyConfig": "projects/algorand-auction/src/proxy.config.json"
             }
           }
         },

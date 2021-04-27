@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 
 import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
@@ -35,6 +35,7 @@ import {MatChipsModule} from '@angular/material/chips';
   ],
   providers: [
     CatalogueService,
+    DatePipe,
   ],
 })
 export class CatalogueModule { }
