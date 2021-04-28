@@ -5,6 +5,7 @@ spring:
     username: sa
     password: password
     schema: classpath:sql/schema.sql
+    data: classpath:sql/test-data.sql
 
   h2:
     console:
