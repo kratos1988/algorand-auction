@@ -1,8 +1,7 @@
 package com.algorand.auction.usecase;
 
-import com.algorand.auction.jdbc.AuctionDto;
-import com.algorand.auction.jdbc.AuctionDtoToDomainConverter;
 import com.algorand.auction.model.Auction;
+import com.algorand.auction.model.Bid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,12 +9,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.algorand.auction.jdbc.AuctionDtoBuilder.anAuctionDto;
-import static java.util.Collections.emptyList;
+import static com.algorand.auction.model.AuctionBuilder.anAuction;
+import static com.algorand.auction.model.BidBuilder.aBid;
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -28,27 +27,26 @@ class RetrieveAuctionsUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new RetrieveAuctionsUseCase(auctionRepository, bidRepository, new AuctionDtoToDomainConverter());
+        underTest = new RetrieveAuctionsUseCase(auctionRepository, bidRepository);
     }
 
     @Test
     void retrieveAllAuctions() {
         LocalDateTime now = LocalDateTime.now();
-        AuctionDto anAuction = anAuctionDto()
+        Auction anAuction = anAuction()
                 .withId(1)
                 .withInitialValue(new BigDecimal("20.99"))
                 .withItemName("AN_ITEM_NAME")
-                .withItemDescription("AN_ITEM_DESCRIPTION")
+                .withDescription("AN_ITEM_DESCRIPTION")
                 .withTitle("A_TITLE")
                 .withExpirationDate(now)
                 .withImageUrl("AN_IMAGE_URL")
+                .withHighestBid(new BigDecimal("22.89"))
                 .build();
 
         when(auctionRepository.retrieveAll()).thenReturn(singletonList(anAuction));
-        when(bidRepository.getHighestBidFor(1)).thenReturn(new BigDecimal("22.89"));
 
         List<Auction> retrievedAuctions = underTest.retrieveAll();
-
         assertThat(retrievedAuctions, hasSize(1));
         Auction auction = retrievedAuctions.get(0);
         assertThat(auction.getId(), equalTo(1));
@@ -65,20 +63,22 @@ class RetrieveAuctionsUseCaseTest {
     void retrieveAuction() {
 
         LocalDateTime now = LocalDateTime.now();
-        AuctionDto anAuction = anAuctionDto()
+        Auction anAuction = anAuction()
                 .withId(1)
                 .withInitialValue(new BigDecimal("20.99"))
                 .withItemName("AN_ITEM_NAME")
-                .withItemDescription("AN_ITEM_DESCRIPTION")
+                .withDescription("AN_ITEM_DESCRIPTION")
                 .withTitle("A_TITLE")
                 .withExpirationDate(now)
                 .withImageUrl("AN_IMAGE_URL")
+                .withHighestBid(new BigDecimal("22.89"))
                 .build();
+        Bid aBid = aBid().build();
+        Bid anotherBid = aBid().build();
 
 
         when(auctionRepository.retrieveBy(1)).thenReturn(anAuction);
-        when(bidRepository.getHighestBidFor(1)).thenReturn(new BigDecimal("22.89"));
-        when(bidRepository.getAllBidsFor(1)).thenReturn(emptyList());
+        when(bidRepository.getAllBidsFor(1)).thenReturn(asList(aBid, anotherBid));
 
         Auction retrievedAuction = underTest.retrieveBy(1);
 
@@ -90,5 +90,6 @@ class RetrieveAuctionsUseCaseTest {
         assertThat(retrievedAuction.getExpirationDate(), equalTo(now));
         assertThat(retrievedAuction.getImageUrl(), equalTo("AN_IMAGE_URL"));
         assertThat(retrievedAuction.getHighestBid(), equalTo(new BigDecimal("22.89")));
+        assertThat(retrievedAuction.getBids(), containsInAnyOrder(aBid, anotherBid));
     }
 }

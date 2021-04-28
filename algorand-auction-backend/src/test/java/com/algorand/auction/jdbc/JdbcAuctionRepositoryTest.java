@@ -1,8 +1,9 @@
 package com.algorand.auction.jdbc;
 
+import com.algorand.auction.model.Auction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import javax.sql.DataSource;
@@ -16,7 +17,10 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.
 
 class JdbcAuctionRepositoryTest {
 
-    private JdbcTemplate jdbcTemplate;
+    public static final LocalDateTime EXPIRATION_DATE = LocalDateTime.of(2021, 4, 12, 7, 20);
+
+    private NamedParameterJdbcTemplate jdbcTemplate;
+    private JdbcAuctionRepository underTest;
 
     @BeforeEach
     void setUp() {
@@ -26,27 +30,42 @@ class JdbcAuctionRepositoryTest {
                 .addScript("jdbc/test-data.sql")
                 .build();
 
-        jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        underTest = new JdbcAuctionRepository(jdbcTemplate, new JdbcBidRepository(jdbcTemplate));
     }
 
     @Test
     void retrieveAll() {
 
-        LocalDateTime expirationDate = LocalDateTime.of(2021, 4, 12, 7, 20);
-        JdbcAuctionRepository underTest = new JdbcAuctionRepository(jdbcTemplate);
-
-        List<AuctionDto> retrievedAuctions = underTest.retrieveAll();
-        assertThat(retrievedAuctions, is(notNullValue()));
+        List<Auction> retrievedAuctions = underTest.retrieveAll();
 
         assertThat(retrievedAuctions, hasSize(1));
-        AuctionDto auction = retrievedAuctions.get(0);
-        assertThat(auction.id, equalTo(1));
-        assertThat(auction.initialValue, equalTo(new BigDecimal("10.99")));
-        assertThat(auction.itemName, equalTo("AN_ITEM_NAME"));
-        assertThat(auction.description, equalTo("AN_ITEM_DESCRIPTION"));
-        assertThat(auction.title, equalTo("A_TITLE"));
-        assertThat(auction.expirationDate, is(equalTo(expirationDate)));
-        assertThat(auction.imageUrl, equalTo("AN_IMAGE_URL"));
+        Auction auction = retrievedAuctions.get(0);
+        assertThat(auction.getId(), equalTo(1));
+        assertThat(auction.getInitialValue(), equalTo(new BigDecimal("10.99")));
+        assertThat(auction.getItemName(), equalTo("AN_ITEM_NAME"));
+        assertThat(auction.getDescription(), equalTo("AN_ITEM_DESCRIPTION"));
+        assertThat(auction.getTitle(), equalTo("A_TITLE"));
+        assertThat(auction.getExpirationDate(), is(equalTo(EXPIRATION_DATE)));
+        assertThat(auction.getImageUrl(), equalTo("AN_IMAGE_URL"));
+        assertThat(auction.getHighestBid(), equalTo(new BigDecimal("20.99")));
+
+    }
+
+    @Test
+    void retrieveById() {
+
+        Auction auction = underTest.retrieveBy(1);
+
+        assertThat(auction.getId(), equalTo(1));
+        assertThat(auction.getInitialValue(), equalTo(new BigDecimal("10.99")));
+        assertThat(auction.getItemName(), equalTo("AN_ITEM_NAME"));
+        assertThat(auction.getDescription(), equalTo("AN_ITEM_DESCRIPTION"));
+        assertThat(auction.getTitle(), equalTo("A_TITLE"));
+        assertThat(auction.getExpirationDate(), is(equalTo(EXPIRATION_DATE)));
+        assertThat(auction.getImageUrl(), equalTo("AN_IMAGE_URL"));
+        assertThat(auction.getHighestBid(), equalTo(new BigDecimal("20.99")));
+        assertThat(auction.getBids(), is(not(empty())));
 
     }
 }

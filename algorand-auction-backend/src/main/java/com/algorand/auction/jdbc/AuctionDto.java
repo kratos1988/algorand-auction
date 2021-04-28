@@ -1,5 +1,7 @@
 package com.algorand.auction.jdbc;
 
+import com.algorand.auction.model.Auction;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -29,4 +31,17 @@ public class AuctionDto {
         this.expirationDate = expirationDate;
         this.imageUrl = imageUrl;
     }
+
+    public Auction toDomain() {
+        Auction auction = new Auction();
+        auction.setId(this.id);
+        auction.setItemName(this.itemName);
+        auction.setDescription(this.description);
+        auction.setTitle(this.title);
+        auction.setExpirationDate(this.expirationDate);
+        auction.setImageUrl(this.imageUrl);
+        auction.setInitialValue(this.initialValue);
+        return auction;
+    }
+
 }

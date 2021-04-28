@@ -1,5 +1,7 @@
 package com.algorand.auction.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +11,10 @@ public class AuctionBuilder {
     private String itemDescription;
     private String title;
     private List<Bid> bids = new LinkedList<>();
+    private BigDecimal initialValue;
+    private LocalDateTime expirationDate;
+    private String imageUrl;
+    private BigDecimal highestBid;
 
     public static AuctionBuilder anAuction() {
         return new AuctionBuilder();
@@ -40,6 +46,26 @@ public class AuctionBuilder {
         return this;
     }
 
+    public AuctionBuilder withInitialValue(BigDecimal initialValue) {
+        this.initialValue = initialValue;
+        return this;
+    }
+
+    public AuctionBuilder withExpirationDate(LocalDateTime expirationDate) {
+        this.expirationDate = expirationDate;
+        return this;
+    }
+
+    public AuctionBuilder withImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+        return this;
+    }
+
+    public AuctionBuilder withHighestBid(BigDecimal highestBid) {
+        this.highestBid = highestBid;
+        return this;
+    }
+
     public Auction build() {
         Auction auction = new Auction();
         auction.setId(id);
@@ -47,6 +73,10 @@ public class AuctionBuilder {
         auction.setDescription(itemDescription);
         auction.setItemName(itemName);
         auction.setBids(bids);
+        auction.setInitialValue(initialValue);
+        auction.setExpirationDate(expirationDate);
+        auction.setImageUrl(imageUrl);
+        auction.setHighestBid(highestBid);
         return auction;
     }
 }

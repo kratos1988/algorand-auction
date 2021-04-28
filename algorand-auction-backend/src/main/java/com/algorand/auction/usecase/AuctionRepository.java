@@ -1,12 +1,15 @@
 package com.algorand.auction.usecase;
 
-import com.algorand.auction.jdbc.AuctionDto;
+import com.algorand.auction.model.Auction;
+import com.algorand.auction.model.ExpiredAuction;
 
 import java.util.List;
 
 public interface AuctionRepository {
 
-    List<AuctionDto> retrieveAll();
+    List<Auction> retrieveAll();
 
-    AuctionDto retrieveBy(Integer id);
+    Auction retrieveBy(Integer id);
+
+    List<ExpiredAuction> retrieveExpired();
 }

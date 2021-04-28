@@ -1,6 +1,5 @@
 package com.algorand.auction.configuration;
 
-import com.algorand.auction.jdbc.AuctionDtoToDomainConverter;
 import com.algorand.auction.usecase.AuctionRepository;
 import com.algorand.auction.usecase.BidAmountForItemUseCase;
 import com.algorand.auction.usecase.BidRepository;
@@ -16,7 +15,7 @@ public class AppConfiguration {
             AuctionRepository auctionRepository,
             BidRepository bidRepository
     ) {
-        return new RetrieveAuctionsUseCase(auctionRepository, bidRepository, new AuctionDtoToDomainConverter());
+        return new RetrieveAuctionsUseCase(auctionRepository, bidRepository);
     }
 
     @Bean

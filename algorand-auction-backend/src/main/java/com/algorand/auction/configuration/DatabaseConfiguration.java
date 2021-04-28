@@ -6,7 +6,6 @@ import com.algorand.auction.usecase.AuctionRepository;
 import com.algorand.auction.usecase.BidRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @Configuration
@@ -14,9 +13,10 @@ public class DatabaseConfiguration {
 
     @Bean
     public AuctionRepository auctionRepository(
-            JdbcTemplate jdbcTemplate
+            NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+            BidRepository bidRepository
     ) {
-        return new JdbcAuctionRepository(jdbcTemplate);
+        return new JdbcAuctionRepository(namedParameterJdbcTemplate, bidRepository);
     }
 
     @Bean
