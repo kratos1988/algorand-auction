@@ -28,6 +28,10 @@ public class RetrieveAuctionsUseCase {
     public Auction retrieveBy(Integer auctionId) {
         Item item = auctionRepository.retrieveBy(auctionId);
         List<Bid> bids = bidRepository.getAllBidsFor(auctionId);
+        return createAuction(item, bids);
+    }
+
+    private Auction createAuction(Item item, List<Bid> bids) {
         Auction auction = new Auction();
         auction.setItem(item);
         auction.setBids(bids);

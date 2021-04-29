@@ -1,5 +1,6 @@
 package com.algorand.auction.usecase;
 
+import com.algorand.auction.model.Bid;
 import com.algorand.auction.usecase.repository.BidRepository;
 
 import java.math.BigDecimal;
@@ -14,8 +15,8 @@ public class BidAmountForItemUseCase {
     }
 
     public void bid(BigDecimal amount, int auctionId, String userId) {
-        BigDecimal highestBid = bidRepository.getHighestBidFor(auctionId);
-        if(highestBid.compareTo(amount) < 0) {
+        Bid highestBid = bidRepository.getHighestBidFor(auctionId);
+        if(highestBid.getAmount().compareTo(amount) < 0) {
             bidRepository.saveBid(new SaveBidRequest(auctionId, amount, userId));
         }
     }

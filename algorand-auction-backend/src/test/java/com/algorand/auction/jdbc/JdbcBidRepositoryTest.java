@@ -42,10 +42,9 @@ class JdbcBidRepositoryTest {
     void saveBid() {
         underTest.saveBid(new SaveBidRequest(2, TEN, "ANOTHER_USER_ID"));
         Bid savedBid = jdbcTemplate.queryForObject(
-                "SELECT * FROM BIDS WHERE USER_ID = 'ANOTHER_USER_ID'",
+                "SELECT * FROM BIDS WHERE AUCTION_ID = 2",
                 emptyMap(),
                 new BidRowMapper());
-        assertThat(savedBid, is(notNullValue()));
         assertThat(savedBid.getAmount(), comparesEqualTo(TEN));
         assertThat(savedBid.getStatus(), is("INSERTED"));
         assertThat(savedBid.getAuctionId(), is(2));
@@ -53,20 +52,28 @@ class JdbcBidRepositoryTest {
     }
 
     @Test
-    void getBid() {
+    void getBids() {
         List<Bid> bids = underTest.getAllBidsFor(1);
-        assertThat(bids.size(), is(1));
+        assertThat(bids.size(), is(2));
 
-        Bid retrievedBid = bids.get(0);
-        assertThat(retrievedBid.getAmount(), comparesEqualTo(new BigDecimal("20.99")));
-        assertThat(retrievedBid.getStatus(), is("ACCEPTED"));
-        assertThat(retrievedBid.getAuctionId(), is(1));
-        assertThat(retrievedBid.getUserId(), is("AN_USER_ID"));
+        Bid firstBid = bids.get(0);
+        assertThat(firstBid.getAmount(), comparesEqualTo(new BigDecimal("20.99")));
+        assertThat(firstBid.getStatus(), is("ACCEPTED"));
+        assertThat(firstBid.getAuctionId(), is(1));
+        assertThat(firstBid.getUserId(), is("AN_USER_ID"));
+
+        Bid secondBid = bids.get(1);
+        assertThat(secondBid.getAmount(), comparesEqualTo(new BigDecimal("25.99")));
+        assertThat(secondBid.getStatus(), is("ACCEPTED"));
+        assertThat(secondBid.getAuctionId(), is(1));
+        assertThat(secondBid.getUserId(), is("ANOTHER_USER_ID"));
     }
 
     @Test
     void getHighestBidFor() {
-        BigDecimal highestBid = underTest.getHighestBidFor(1);
-        assertThat(highestBid, comparesEqualTo(new BigDecimal("20.99")));
+        Bid highestBid = underTest.getHighestBidFor(1);
+        assertThat(highestBid.getAmount(), comparesEqualTo(new BigDecimal("25.99")));
+        assertThat(highestBid.getAuctionId(), equalTo(1));
+        assertThat(highestBid.getUserId(), equalTo("ANOTHER_USER_ID"));
     }
 }

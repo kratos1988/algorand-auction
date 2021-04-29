@@ -1,9 +1,12 @@
 package com.algorand.auction.job;
 
+import com.algorand.auction.model.Bid;
 import com.algorand.auction.model.Item;
+import com.algorand.auction.model.Transaction;
 import com.algorand.auction.model.User;
 import com.algorand.auction.usecase.ExecuteTransactionUseCase;
 import com.algorand.auction.usecase.repository.AuctionRepository;
+import com.algorand.auction.usecase.repository.BidRepository;
 import com.algorand.auction.usecase.repository.UserRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -15,24 +18,33 @@ public class FinalizeAuctionsJob {
 
     private final ExecuteTransactionUseCase useCase;
     private final AuctionRepository auctionRepository;
+    private final BidRepository bidRepository;
     private final UserRepository userRepository;
 
     public FinalizeAuctionsJob(
             ExecuteTransactionUseCase useCase,
             AuctionRepository auctionRepository,
-            UserRepository userRepository) {
+            BidRepository bidRepository, UserRepository userRepository) {
         this.useCase = useCase;
         this.auctionRepository = auctionRepository;
+        this.bidRepository = bidRepository;
         this.userRepository = userRepository;
     }
 
     @Scheduled(cron = "0 * * ? * * *")
     public void apply() {
-        List<Item> items = auctionRepository.retrieveExpired().stream().map(expiredAuctionDto -> {
-            Item expiredItem = new Item();
-            User user = userRepository.getUserBy(expiredAuctionDto.getUserId());
-            return expiredItem;
+        List<Transaction> transactions = auctionRepository.retrieveExpired().stream().map(expiredItem -> {
+            return createTransaction(expiredItem);
         }).collect(toList());
-        items.forEach(expiredAuction -> useCase.execute(null, null, ""));
+        transactions.forEach(expiredAuction -> useCase.execute(null, null, ""));
+    }
+
+    private Transaction createTransaction(Item expiredItem) {
+        Transaction transaction = new Transaction();
+        Bid bid = bidRepository.getHighestBidFor(expiredItem.getId());
+        User user = userRepository.getUserBy(expiredItem.getUserId());
+        transaction.setSeller(user);
+        transaction.setAmount(expiredItem.getHighestBid());
+        return transaction;
     }
 }
