@@ -36,7 +36,7 @@ class BidControllerTest {
                         .content(readJson("json/place_bid_request.json")))
                 .andExpect(status().isOk());
 
-        verify(useCase).bid(BigDecimal.TEN, 1, "AN_USER_ID");
+        verify(useCase).bid(BigDecimal.TEN, 1, "AN_USER_NAME");
     }
 
     private String readJson(String fileName) throws IOException {

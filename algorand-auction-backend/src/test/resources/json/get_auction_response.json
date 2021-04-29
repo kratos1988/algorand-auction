@@ -15,13 +15,13 @@
       "auctionId": 1,
       "amount": 11.99,
       "status": "INSERTED",
-      "userId": "manuel_m"
+      "userId": 1
     },
     {
       "auctionId": 1,
       "amount": 13.99,
       "status": "INSERTED",
-      "userId": "luigi_c"
+      "userId": 2
     }
   ]
 }

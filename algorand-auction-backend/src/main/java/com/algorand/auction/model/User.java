@@ -1,6 +1,7 @@
 package com.algorand.auction.model;
 
 public class User {
+
     private String userName;
     private String publicKey;
 

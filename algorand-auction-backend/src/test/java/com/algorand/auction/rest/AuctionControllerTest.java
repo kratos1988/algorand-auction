@@ -67,7 +67,7 @@ class AuctionControllerTest {
                         .withAmount(new BigDecimal("11.99"))
                         .withAuctionId(1)
                         .withStatus("INSERTED")
-                        .withUserId("manuel_m")
+                        .withUserId(1)
                         .build();
 
         Bid anotherBid =
@@ -75,7 +75,7 @@ class AuctionControllerTest {
                         .withAmount(new BigDecimal("13.99"))
                         .withAuctionId(1)
                         .withStatus("INSERTED")
-                        .withUserId("luigi_c")
+                        .withUserId(2)
                         .build();
 
         Item item =

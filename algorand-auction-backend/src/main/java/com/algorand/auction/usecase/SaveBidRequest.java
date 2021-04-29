@@ -6,9 +6,9 @@ import java.util.Objects;
 public class SaveBidRequest {
     public final int auctionId;
     public final BigDecimal amount;
-    public final String userId;
+    public final int userId;
 
-    public SaveBidRequest(int auctionId, BigDecimal amount, String userId) {
+    public SaveBidRequest(int auctionId, BigDecimal amount, int userId) {
         this.auctionId = auctionId;
         this.amount = amount;
         this.userId = userId;
@@ -19,7 +19,7 @@ public class SaveBidRequest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SaveBidRequest that = (SaveBidRequest) o;
-        return auctionId == that.auctionId && Objects.equals(amount, that.amount) && Objects.equals(userId, that.userId);
+        return auctionId == that.auctionId && userId == that.userId && Objects.equals(amount, that.amount);
     }
 
     @Override

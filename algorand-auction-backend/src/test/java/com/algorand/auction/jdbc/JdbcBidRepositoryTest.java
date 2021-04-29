@@ -40,7 +40,7 @@ class JdbcBidRepositoryTest {
 
     @Test
     void saveBid() {
-        underTest.saveBid(new SaveBidRequest(2, TEN, "ANOTHER_USER_ID"));
+        underTest.saveBid(new SaveBidRequest(2, TEN, 100));
         Bid savedBid = jdbcTemplate.queryForObject(
                 "SELECT * FROM BIDS WHERE AUCTION_ID = 2",
                 emptyMap(),
@@ -48,7 +48,7 @@ class JdbcBidRepositoryTest {
         assertThat(savedBid.getAmount(), comparesEqualTo(TEN));
         assertThat(savedBid.getStatus(), is("INSERTED"));
         assertThat(savedBid.getAuctionId(), is(2));
-        assertThat(savedBid.getUserId(), is("ANOTHER_USER_ID"));
+        assertThat(savedBid.getUserId(), is(100));
     }
 
     @Test
@@ -60,13 +60,13 @@ class JdbcBidRepositoryTest {
         assertThat(firstBid.getAmount(), comparesEqualTo(new BigDecimal("20.99")));
         assertThat(firstBid.getStatus(), is("ACCEPTED"));
         assertThat(firstBid.getAuctionId(), is(1));
-        assertThat(firstBid.getUserId(), is("AN_USER_ID"));
+        assertThat(firstBid.getUserId(), is(100));
 
         Bid secondBid = bids.get(1);
         assertThat(secondBid.getAmount(), comparesEqualTo(new BigDecimal("25.99")));
         assertThat(secondBid.getStatus(), is("ACCEPTED"));
         assertThat(secondBid.getAuctionId(), is(1));
-        assertThat(secondBid.getUserId(), is("ANOTHER_USER_ID"));
+        assertThat(secondBid.getUserId(), is(101));
     }
 
     @Test
@@ -74,6 +74,6 @@ class JdbcBidRepositoryTest {
         Bid highestBid = underTest.getHighestBidFor(1);
         assertThat(highestBid.getAmount(), comparesEqualTo(new BigDecimal("25.99")));
         assertThat(highestBid.getAuctionId(), equalTo(1));
-        assertThat(highestBid.getUserId(), equalTo("ANOTHER_USER_ID"));
+        assertThat(highestBid.getUserId(), equalTo(101));
     }
 }

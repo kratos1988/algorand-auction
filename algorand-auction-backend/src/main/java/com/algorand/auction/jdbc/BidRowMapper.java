@@ -13,7 +13,7 @@ public class BidRowMapper implements RowMapper<Bid> {
         bid.setAmount(resultSet.getBigDecimal("AMOUNT"));
         bid.setStatus(resultSet.getString("STATUS"));
         bid.setAuctionId(resultSet.getInt("AUCTION_ID"));
-        bid.setUserId(resultSet.getString("USER_ID"));
+        bid.setUserId(resultSet.getInt("USER_ID"));
         return bid;
     }
 }

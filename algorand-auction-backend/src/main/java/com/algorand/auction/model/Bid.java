@@ -6,7 +6,7 @@ public class Bid {
     private int auctionId;
     private BigDecimal amount;
     private String status;
-    private String userId;
+    private int userId;
 
     public int getAuctionId() {
         return auctionId;
@@ -32,11 +32,11 @@ public class Bid {
         this.status = status;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 }

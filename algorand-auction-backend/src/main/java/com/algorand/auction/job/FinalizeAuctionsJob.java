@@ -42,8 +42,9 @@ public class FinalizeAuctionsJob {
     private Transaction createTransaction(Item expiredItem) {
         Transaction transaction = new Transaction();
         Bid bid = bidRepository.getHighestBidFor(expiredItem.getId());
-        User user = userRepository.getUserBy(expiredItem.getUserId());
-        transaction.setSeller(user);
+        User seller = userRepository.getUserById(expiredItem.getUserId());
+        User buyer = userRepository.getUserById(bid.getUserId());
+        transaction.setSeller(buyer);
         transaction.setAmount(expiredItem.getHighestBid());
         return transaction;
     }

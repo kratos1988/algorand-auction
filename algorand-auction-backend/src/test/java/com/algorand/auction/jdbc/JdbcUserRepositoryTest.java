@@ -1,5 +1,6 @@
 package com.algorand.auction.jdbc;
 
+import com.algorand.auction.model.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -33,9 +34,23 @@ class JdbcUserRepositoryTest {
     }
 
     @Test
-    void getBid() {
-        String publicKey = underTest.getPublicKeyFor("AN_USER_ID");
+    void getPublicKey() {
+        String publicKey = underTest.getPublicKeyFor("AN_USER_NAME");
         assertThat(publicKey, is("A_PUBLIC_KEY"));
     }
+
+    @Test
+    void getUserIdByUserName() {
+        int publicKey = underTest.getIdByUsername("AN_USER_NAME");
+        assertThat(publicKey, is(100));
+    }
+
+    @Test
+    void getUserById() {
+        User user = underTest.getUserById(100);
+        assertThat(user.getPublicKey(), is("A_PUBLIC_KEY"));
+        assertThat(user.getUserName(), is("AN_USER_NAME"));
+    }
+
 
 }

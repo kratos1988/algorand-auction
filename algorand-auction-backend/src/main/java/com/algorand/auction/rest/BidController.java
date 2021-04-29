@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @RestController("bid")
 public class BidController {
 
-    private BidAmountForItemUseCase useCase;
+    private final BidAmountForItemUseCase useCase;
 
     @Autowired
     public BidController(BidAmountForItemUseCase useCase) {
@@ -23,27 +23,20 @@ public class BidController {
     public ResponseEntity placeBid(
             @RequestBody PlaceBidRequest request
     ) {
-        useCase.bid(request.getAmount(), request.getAuctionId(), request.getUserId());
+        useCase.bid(request.getAmount(), request.getAuctionId(), request.getUserName());
         return ResponseEntity.ok().build();
     }
 
 }
 
 class PlaceBidRequest {
-    private String userId;
+    private String userName;
     private BigDecimal amount;
     private int auctionId;
 
     public PlaceBidRequest() {
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public BigDecimal getAmount() {
         return amount;
@@ -59,5 +52,13 @@ class PlaceBidRequest {
 
     public void setAuctionId(int auctionId) {
         this.auctionId = auctionId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

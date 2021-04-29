@@ -4,6 +4,6 @@ import com.algorand.auction.model.User;
 
 public interface UserRepository {
     String getPublicKeyFor(String userId);
-
-    User getUserBy(int userId);
+    User getUserById(int userId);
+    int getIdByUsername(String userName);
 }

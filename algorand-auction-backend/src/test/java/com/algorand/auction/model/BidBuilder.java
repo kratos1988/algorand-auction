@@ -6,7 +6,7 @@ public class BidBuilder {
     private int auctionId;
     private BigDecimal amount;
     private String status;
-    private String userId;
+    private int userId;
 
     public static BidBuilder aBid() {
         return new BidBuilder();
@@ -27,7 +27,7 @@ public class BidBuilder {
         return this;
     }
 
-    public BidBuilder withUserId(String userId) {
+    public BidBuilder withUserId(int userId) {
         this.userId = userId;
         return this;
     }

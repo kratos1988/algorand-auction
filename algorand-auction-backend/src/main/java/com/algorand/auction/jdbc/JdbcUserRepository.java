@@ -25,11 +25,11 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public User getUserBy(int userId) {
+    public User getUserById(int userId) {
         MapSqlParameterSource sqlParams = new MapSqlParameterSource()
                 .addValue("userId", userId);
         return namedParameterJdbcTemplate.queryForObject(
-                "SELECT PUBLIC_KEY FROM USERS WHERE USER_ID=:userId",
+                "SELECT * FROM USERS WHERE ID=:userId",
                 sqlParams,
                 ((resultSet, i) -> {
                     User user = new User();
@@ -38,6 +38,16 @@ public class JdbcUserRepository implements UserRepository {
                     return user;
                 })
         );
+    }
+
+    @Override
+    public int getIdByUsername(String userName) {
+        MapSqlParameterSource sqlParams = new MapSqlParameterSource()
+                .addValue("userName", userName);
+        return namedParameterJdbcTemplate.queryForObject(
+                "SELECT ID FROM USERS WHERE USER_NAME=:userName",
+                sqlParams,
+                Integer.class);
     }
 
 }
