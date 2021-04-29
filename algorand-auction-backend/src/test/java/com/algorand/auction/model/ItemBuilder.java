@@ -12,6 +12,7 @@ public class ItemBuilder {
     private LocalDateTime expirationDate;
     private String imageUrl;
     private BigDecimal highestBid;
+    private int userId;
 
     public static ItemBuilder anItem() {
         return new ItemBuilder();
@@ -21,6 +22,12 @@ public class ItemBuilder {
         this.id = auctionId;
         return this;
     }
+
+    public ItemBuilder withUserId(int userId) {
+        this.userId = userId;
+        return this;
+    }
+
     public ItemBuilder withTitle(String title) {
         this.title = title;
         return this;
@@ -67,6 +74,7 @@ public class ItemBuilder {
         item.setExpirationDate(expirationDate);
         item.setImageUrl(imageUrl);
         item.setHighestBid(highestBid);
+        item.setUserId(userId);
         return item;
     }
 }

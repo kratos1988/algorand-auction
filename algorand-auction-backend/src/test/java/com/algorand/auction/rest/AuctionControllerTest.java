@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import static com.algorand.auction.model.AuctionBuilder.anAuction;
 import static com.algorand.auction.model.BidBuilder.aBid;
@@ -42,9 +43,14 @@ class AuctionControllerTest {
         Item item =
                 anItem()
                         .withId(1)
-                        .withTitle("A_TITLE")
-                        .withItemName("AN_ITEM_NAME")
-                        .withDescription("A_DESCRIPTION")
+                        .withTitle("Mona Lisa")
+                        .withItemName("Mona Lisa's Painting")
+                        .withDescription("One of Da Vinci's masterieces")
+                        .withInitialValue(new BigDecimal("10.99"))
+                        .withHighestBid(new BigDecimal("11"))
+                        .withExpirationDate(LocalDateTime.of(2021,4,12,7,20))
+                        .withImageUrl("https://www.everypainterpaintshimself.com/images/made/article_images_new/Mona_Lisa_Large_440_666.jpg")
+                        .withUserId(100)
                         .build();
 
         when(useCase.retrieveAll()).thenReturn(singletonList(item));
@@ -61,7 +67,7 @@ class AuctionControllerTest {
                         .withAmount(new BigDecimal("11.99"))
                         .withAuctionId(1)
                         .withStatus("INSERTED")
-                        .withUserId("AN_USER_ID")
+                        .withUserId("manuel_m")
                         .build();
 
         Bid anotherBid =
@@ -69,15 +75,20 @@ class AuctionControllerTest {
                         .withAmount(new BigDecimal("13.99"))
                         .withAuctionId(1)
                         .withStatus("INSERTED")
-                        .withUserId("ANOTHER_USER_ID")
+                        .withUserId("luigi_c")
                         .build();
 
         Item item =
                 anItem()
                         .withId(1)
-                        .withItemName("AN_ITEM_NAME")
-                        .withTitle("A_TITLE")
-                        .withDescription("A_DESCRIPTION")
+                        .withTitle("Mona Lisa")
+                        .withItemName("Mona Lisa's Painting")
+                        .withDescription("One of Da Vinci's masterieces")
+                        .withInitialValue(new BigDecimal("10.99"))
+                        .withHighestBid(new BigDecimal("11"))
+                        .withExpirationDate(LocalDateTime.of(2021,4,12,7,20))
+                        .withImageUrl("https://www.everypainterpaintshimself.com/images/made/article_images_new/Mona_Lisa_Large_440_666.jpg")
+                        .withUserId(100)
                         .build();
 
         Auction auction = anAuction().withBids(asList(aBid, anotherBid)).withItem(item).build();
