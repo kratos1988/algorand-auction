@@ -1,21 +1,24 @@
 package com.algorand.auction.jdbc;
 
+import com.algorand.auction.model.Item;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AuctionRowMapper implements RowMapper<AuctionDto> {
+public class AuctionRowMapper implements RowMapper<Item> {
     @Override
-    public AuctionDto mapRow(ResultSet resultSet, int i) throws SQLException {
-        return new AuctionDto(
-                resultSet.getInt("ID"),
-                resultSet.getString("ITEM_NAME"),
-                resultSet.getString("DESCRIPTION"),
-                resultSet.getString("TITLE"),
-                resultSet.getBigDecimal("INITIAL_VALUE"),
-                resultSet.getTimestamp("EXPIRATION_DATE").toLocalDateTime(),
-                resultSet.getString("IMAGE_URL")
-        );
+    public Item mapRow(ResultSet resultSet, int i) throws SQLException {
+        Item item = new Item();
+        item.setId(resultSet.getInt("ID"));
+        item.setItemName(resultSet.getString("ITEM_NAME"));
+        item.setDescription(resultSet.getString("DESCRIPTION"));
+        item.setTitle(resultSet.getString("TITLE"));
+        item.setInitialValue(resultSet.getBigDecimal("INITIAL_VALUE"));
+        item.setExpirationDate(resultSet.getTimestamp("EXPIRATION_DATE").toLocalDateTime());
+        item.setImageUrl(resultSet.getString("IMAGE_URL"));
+        item.setUserId(resultSet.getInt("USER_ID"));
+        return item;
+
     }
 }

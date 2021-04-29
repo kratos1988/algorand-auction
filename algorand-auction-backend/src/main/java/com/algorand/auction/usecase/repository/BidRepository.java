@@ -1,6 +1,7 @@
-package com.algorand.auction.usecase;
+package com.algorand.auction.usecase.repository;
 
 import com.algorand.auction.model.Bid;
+import com.algorand.auction.usecase.SaveBidRequest;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -1,9 +1,9 @@
 package com.algorand.auction.configuration;
 
-import com.algorand.auction.usecase.AuctionRepository;
 import com.algorand.auction.usecase.BidAmountForItemUseCase;
-import com.algorand.auction.usecase.BidRepository;
 import com.algorand.auction.usecase.RetrieveAuctionsUseCase;
+import com.algorand.auction.usecase.repository.AuctionRepository;
+import com.algorand.auction.usecase.repository.BidRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

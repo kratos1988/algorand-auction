@@ -1,7 +1,7 @@
 package com.algorand.auction.jdbc;
 
 import com.algorand.auction.model.User;
-import com.algorand.auction.usecase.UserRepository;
+import com.algorand.auction.usecase.repository.UserRepository;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -11,7 +11,6 @@ public class JdbcUserRepository implements UserRepository {
     public JdbcUserRepository(
             NamedParameterJdbcTemplate namedParameterJdbcTemplate
     ) {
-
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
@@ -25,20 +24,20 @@ public class JdbcUserRepository implements UserRepository {
                 String.class);
     }
 
-    class UserDto {
-        public final String userName;
-        public final String publicKey;
-
-        UserDto(String userName, String publicKey) {
-            this.userName = userName;
-            this.publicKey = publicKey;
-        }
-
-        public User toDomain() {
-            User user = new User();
-            user.setUserName(userName);
-            user.setPublicKey(publicKey);
-            return user;
-        }
+    @Override
+    public User getUserBy(int userId) {
+        MapSqlParameterSource sqlParams = new MapSqlParameterSource()
+                .addValue("userId", userId);
+        return namedParameterJdbcTemplate.queryForObject(
+                "SELECT PUBLIC_KEY FROM USERS WHERE USER_ID=:userId",
+                sqlParams,
+                ((resultSet, i) -> {
+                    User user = new User();
+                    user.setUserName(resultSet.getString("USER_NAME"));
+                    user.setPublicKey(resultSet.getString("PUBLIC_KEY"));
+                    return user;
+                })
+        );
     }
+
 }

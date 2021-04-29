@@ -1,5 +1,8 @@
 package com.algorand.auction.usecase;
 
+import com.algorand.auction.model.User;
+import com.algorand.auction.usecase.repository.TransactionRepository;
+import com.algorand.auction.usecase.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,12 +27,12 @@ class ExecuteTransactionUseCaseTest {
         String notes = "some notes";
 
         String senderUserId= "SENDER_USER_ID";
-        String receiverUserId= "RECEIVER_USER_ID";
+        User receiverUser = new User();
+        receiverUser.setPublicKey(RECEIVER_PUBLIC_KEY);
 
         when(userRepository.getPublicKeyFor(senderUserId)).thenReturn(SENDER_PUBLIC_KEY);
-        when(userRepository.getPublicKeyFor(receiverUserId)).thenReturn(RECEIVER_PUBLIC_KEY);
 
-        underTest.execute(senderUserId, receiverUserId, notes);
+        underTest.execute(senderUserId, receiverUser, notes);
 
         verify(transactionRepository).saveTransaction(SENDER_PUBLIC_KEY, RECEIVER_PUBLIC_KEY, notes);
     }

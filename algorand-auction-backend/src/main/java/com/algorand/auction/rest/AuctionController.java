@@ -1,6 +1,7 @@
 package com.algorand.auction.rest;
 
 import com.algorand.auction.model.Auction;
+import com.algorand.auction.model.Item;
 import com.algorand.auction.usecase.RetrieveAuctionsUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class AuctionController {
     }
 
     @GetMapping("/auctions/all")
-    public ResponseEntity<List<Auction>> getAllAuctions() {
+    public ResponseEntity<List<Item>> getAllAuctions() {
             return ok(useCase.retrieveAll());
     }
 

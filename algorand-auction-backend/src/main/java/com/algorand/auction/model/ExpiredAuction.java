@@ -1,7 +1,7 @@
 package com.algorand.auction.model;
 
 public class ExpiredAuction {
-    private String seller;
+    private User seller;
     private String buyer;
 
     public String getBuyer() {
@@ -12,11 +12,11 @@ public class ExpiredAuction {
         this.buyer = buyer;
     }
 
-    public String getSeller() {
+    public User getSeller() {
         return seller;
     }
 
-    public void setSeller(String seller) {
+    public void setSeller(User seller) {
         this.seller = seller;
     }
 }

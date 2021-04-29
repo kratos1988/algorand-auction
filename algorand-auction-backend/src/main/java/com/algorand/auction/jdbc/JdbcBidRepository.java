@@ -1,8 +1,8 @@
 package com.algorand.auction.jdbc;
 
 import com.algorand.auction.model.Bid;
-import com.algorand.auction.usecase.BidRepository;
 import com.algorand.auction.usecase.SaveBidRequest;
+import com.algorand.auction.usecase.repository.BidRepository;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 

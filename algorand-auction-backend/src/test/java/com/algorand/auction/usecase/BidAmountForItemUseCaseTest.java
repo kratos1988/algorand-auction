@@ -1,5 +1,7 @@
 package com.algorand.auction.usecase;
 
+import com.algorand.auction.usecase.repository.BidRepository;
+import com.algorand.auction.usecase.repository.TransactionRepository;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

@@ -1,6 +1,6 @@
-package com.algorand.auction.jdbc;
+package com.algorand.auction.jdbc.dto;
 
-import com.algorand.auction.model.Auction;
+import com.algorand.auction.model.Item;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,6 +13,7 @@ public class AuctionDto {
     public final BigDecimal initialValue;
     public final LocalDateTime expirationDate;
     public final String imageUrl;
+    public final int userId;
 
     public AuctionDto(
             int id,
@@ -21,8 +22,8 @@ public class AuctionDto {
             String title,
             BigDecimal initialValue,
             LocalDateTime expirationDate,
-            String imageUrl
-    ) {
+            String imageUrl,
+            int userId) {
         this.id = id;
         this.itemName = itemName;
         this.description = description;
@@ -30,18 +31,20 @@ public class AuctionDto {
         this.initialValue = initialValue;
         this.expirationDate = expirationDate;
         this.imageUrl = imageUrl;
+        this.userId = userId;
     }
 
-    public Auction toDomain() {
-        Auction auction = new Auction();
-        auction.setId(this.id);
-        auction.setItemName(this.itemName);
-        auction.setDescription(this.description);
-        auction.setTitle(this.title);
-        auction.setExpirationDate(this.expirationDate);
-        auction.setImageUrl(this.imageUrl);
-        auction.setInitialValue(this.initialValue);
-        return auction;
+    public Item toDomain() {
+        Item item = new Item();
+        item.setId(this.id);
+        item.setItemName(this.itemName);
+        item.setDescription(this.description);
+        item.setTitle(this.title);
+        item.setExpirationDate(this.expirationDate);
+        item.setImageUrl(this.imageUrl);
+        item.setInitialValue(this.initialValue);
+        item.setUserId(this.userId);
+        return item;
     }
 
 }

@@ -1,5 +1,7 @@
 package com.algorand.auction.usecase;
 
+import com.algorand.auction.usecase.repository.BidRepository;
+
 import java.math.BigDecimal;
 
 public class BidAmountForItemUseCase {

@@ -1,7 +1,7 @@
 package com.algorand.auction.blockchain;
 
 import com.algorand.algosdk.crypto.Address;
-import com.algorand.auction.usecase.TransactionRepository;
+import com.algorand.auction.usecase.repository.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
