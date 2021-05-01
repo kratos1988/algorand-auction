@@ -71,6 +71,20 @@ class RetrieveAuctionsUseCaseTest {
     }
 
     @Test
+    void whenErrorRetrievingAuctions() {
+
+
+        DatabaseError error = new DatabaseError(new RuntimeException("an Error"));
+        when(auctionRepository.retrieveAll()).thenReturn(left(error));
+
+        Either<FailureError, List<Item>> result = underTest.retrieveAll();
+        assertTrue(result.isLeft());
+
+
+        assertThat(result.getLeft(), equalTo(error));
+    }
+
+    @Test
     void retrieveAuction() {
 
         Item anItem = anItem()

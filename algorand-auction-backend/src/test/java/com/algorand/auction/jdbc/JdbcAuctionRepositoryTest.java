@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.H2;
 
-class JdbcItemRepositoryTest {
+class JdbcAuctionRepositoryTest {
 
     public static final LocalDateTime EXPIRATION_DATE = LocalDateTime.of(2021, 4, 12, 7, 20);
 
