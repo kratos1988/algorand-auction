@@ -50,4 +50,15 @@ public class JdbcUserRepository implements UserRepository {
                 Integer.class);
     }
 
+    @Override
+    public User authenticate(String username, String password) {
+        MapSqlParameterSource sqlParams = new MapSqlParameterSource()
+                .addValue("username", username)
+                .addValue("password", password);
+        return namedParameterJdbcTemplate.queryForObject(
+                "SELECT * FROM USERS WHERE USER_NAME=:username AND PASSWORD=:password",
+                sqlParams,
+                User.class);
+    }
+
 }

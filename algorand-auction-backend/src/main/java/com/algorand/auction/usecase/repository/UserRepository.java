@@ -6,4 +6,5 @@ public interface UserRepository {
     String getPublicKeyFor(String userId);
     User getUserById(int userId);
     int getIdByUsername(String userName);
+    User authenticate(String username, String password);
 }

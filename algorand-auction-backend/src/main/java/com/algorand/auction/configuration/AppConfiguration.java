@@ -1,5 +1,6 @@
 package com.algorand.auction.configuration;
 
+import com.algorand.auction.rest.UserAuthenticator;
 import com.algorand.auction.usecase.BidAmountForItemUseCase;
 import com.algorand.auction.usecase.RetrieveAuctionsUseCase;
 import com.algorand.auction.usecase.repository.AuctionRepository;
@@ -25,5 +26,12 @@ public class AppConfiguration {
             UserRepository userRepository
     ) {
         return new BidAmountForItemUseCase(bidRepository, userRepository);
+    }
+
+    @Bean
+    public UserAuthenticator userAuthenticator(
+            UserRepository userRepository
+    ) {
+        return new UserAuthenticator(userRepository);
     }
 }
