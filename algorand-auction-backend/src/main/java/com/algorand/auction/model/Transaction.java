@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class Transaction {
     private User seller;
     private BigDecimal amount;
+    private User buyer;
 
     public void setSeller(User seller) {
         this.seller = seller;
@@ -20,5 +21,13 @@ public class Transaction {
 
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    public void setBuyer(User buyer) {
+        this.buyer = buyer;
+    }
+
+    public User getBuyer() {
+        return buyer;
     }
 }

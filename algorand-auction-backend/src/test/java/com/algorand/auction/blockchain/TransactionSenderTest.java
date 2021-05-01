@@ -5,6 +5,9 @@ import com.algorand.auction.blockchain.wrapper.AlgorandConfirmationChecker;
 import com.algorand.auction.blockchain.wrapper.AlgorandTransactionSender;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
+import static java.math.BigDecimal.TEN;
 import static org.mockito.Mockito.*;
 
 class TransactionSenderTest {
@@ -16,15 +19,16 @@ class TransactionSenderTest {
     void send() throws Exception {
         Account senderAccount = new Account();
         Account receiverAccount = new Account();
+        BigDecimal amount = TEN;
 
         String notes = "Some notes";
-        when(transactionSender.send(senderAccount.getAddress(), receiverAccount.getAddress(), notes)).thenReturn("A_TX_ID");
+        when(transactionSender.send(senderAccount.getAddress(), receiverAccount.getAddress(), amount, notes)).thenReturn("A_TX_ID");
 
         TransactionSender underTest = new TransactionSender(transactionSender, confirmationChecker);
 
-        underTest.send(senderAccount.getAddress(), receiverAccount.getAddress(), notes);
+        underTest.send(senderAccount.getAddress(), receiverAccount.getAddress(), amount, notes);
 
-        verify(transactionSender).send(senderAccount.getAddress(), receiverAccount.getAddress(), notes);
+        verify(transactionSender).send(senderAccount.getAddress(), receiverAccount.getAddress(), amount, notes);
         verify(confirmationChecker).waitForConfirmation("A_TX_ID", 5);
     }
 }

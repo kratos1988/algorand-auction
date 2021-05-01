@@ -33,10 +33,8 @@ public class FinalizeAuctionsJob {
 
     @Scheduled(cron = "0 * * ? * * *")
     public void apply() {
-        List<Transaction> transactions = auctionRepository.retrieveExpired().stream().map(expiredItem -> {
-            return createTransaction(expiredItem);
-        }).collect(toList());
-        transactions.forEach(expiredAuction -> useCase.execute(null, null, ""));
+        List<Transaction> transactions = auctionRepository.retrieveExpired().stream().map(this::createTransaction).collect(toList());
+        transactions.forEach(transaction -> useCase.execute(transaction));
     }
 
     private Transaction createTransaction(Item expiredItem) {
@@ -44,7 +42,8 @@ public class FinalizeAuctionsJob {
         Bid bid = bidRepository.getHighestBidFor(expiredItem.getId());
         User seller = userRepository.getUserById(expiredItem.getUserId());
         User buyer = userRepository.getUserById(bid.getUserId());
-        transaction.setSeller(buyer);
+        transaction.setSeller(seller);
+        transaction.setBuyer(buyer);
         transaction.setAmount(expiredItem.getHighestBid());
         return transaction;
     }

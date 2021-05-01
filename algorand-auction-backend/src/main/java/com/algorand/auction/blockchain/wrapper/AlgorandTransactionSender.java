@@ -7,6 +7,8 @@ import com.algorand.algosdk.v2.client.model.TransactionParametersResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
+
 import static org.apache.commons.lang3.ArrayUtils.add;
 
 public class AlgorandTransactionSender {
@@ -27,13 +29,18 @@ public class AlgorandTransactionSender {
         this.algodClient = algodClient;
     }
 
-    public String send(Address senderPublicKey, Address receiverPublicKey, String notes) throws Exception {
+    public String send(
+            Address senderPublicKey,
+            Address receiverPublicKey,
+            BigDecimal amount,
+            String notes
+    ) throws Exception {
         try {
             TransactionParametersResponse params = algodClient.TransactionParams().execute(txHeaders, txValues).body();
             Transaction txn = Transaction.PaymentTransactionBuilder()
                     .sender(senderPublicKey)
                     .note(notes.getBytes())
-                    .amount(100000)
+                        .amount(amount.intValue())
                     .receiver(receiverPublicKey)
                     .suggestedParams(params)
                     .build();

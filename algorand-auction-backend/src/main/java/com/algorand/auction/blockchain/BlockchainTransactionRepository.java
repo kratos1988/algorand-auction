@@ -5,6 +5,8 @@ import com.algorand.auction.usecase.repository.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
+
 public class BlockchainTransactionRepository implements TransactionRepository {
 
     private final Logger logger = LoggerFactory.getLogger(BlockchainTransactionRepository.class);
@@ -20,7 +22,7 @@ public class BlockchainTransactionRepository implements TransactionRepository {
         this.transactionSender = transactionSender;
     }
 
-    public void saveTransaction(String senderPublicKey, String receiverPublicKey, String notes) throws Exception {
+    public void saveTransaction(String senderPublicKey, String receiverPublicKey, BigDecimal amount, String notes) throws Exception {
 
         Address senderAddress = new Address(senderPublicKey);
         Address receiverAddress = new Address(receiverPublicKey);
@@ -28,7 +30,7 @@ public class BlockchainTransactionRepository implements TransactionRepository {
         if (balanceChecker.checkBalance(senderAddress) == 0)
             return;
 
-        transactionSender.send(senderAddress, receiverAddress, notes);
+        transactionSender.send(senderAddress, receiverAddress, amount, notes);
 
     }
 

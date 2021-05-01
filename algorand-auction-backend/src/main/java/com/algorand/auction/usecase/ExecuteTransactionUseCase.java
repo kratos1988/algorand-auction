@@ -1,6 +1,6 @@
 package com.algorand.auction.usecase;
 
-import com.algorand.auction.model.User;
+import com.algorand.auction.model.Transaction;
 import com.algorand.auction.usecase.repository.TransactionRepository;
 import com.algorand.auction.usecase.repository.UserRepository;
 import org.slf4j.Logger;
@@ -17,12 +17,17 @@ public class ExecuteTransactionUseCase {
         this.userRepository = userRepository;
     }
 
-    public void execute(String senderUserId, User receiverUserId, String notes) {
-        String senderPublicKey = userRepository.getPublicKeyFor(senderUserId);
+    public void execute(Transaction transaction) {
         try {
-            transactionRepository.saveTransaction(senderPublicKey, receiverUserId.getPublicKey(), notes);
+            transactionRepository.saveTransaction(
+                    transaction.getBuyer().getPublicKey(),
+                    transaction.getSeller().getPublicKey(),
+                    transaction.getAmount(),
+                    ""
+            );
         } catch (Exception e) {
             logger.error("Cannot execute transaction", e);
         }
     }
+
 }

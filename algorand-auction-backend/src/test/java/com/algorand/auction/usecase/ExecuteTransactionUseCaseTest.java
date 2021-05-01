@@ -1,12 +1,18 @@
 package com.algorand.auction.usecase;
 
+import com.algorand.auction.model.Transaction;
 import com.algorand.auction.model.User;
 import com.algorand.auction.usecase.repository.TransactionRepository;
 import com.algorand.auction.usecase.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.mockito.Mockito.*;
+import java.math.BigDecimal;
+
+import static com.algorand.auction.model.TransactionBuilder.aTransaction;
+import static java.math.BigDecimal.TEN;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class ExecuteTransactionUseCaseTest {
 
@@ -24,16 +30,21 @@ class ExecuteTransactionUseCaseTest {
 
     @Test
     void executeTransaction() throws Exception {
-        String notes = "some notes";
+        BigDecimal amount = TEN;
+        User buyer = new User();
+        buyer.setPublicKey(SENDER_PUBLIC_KEY);
+        User seller = new User();
+        seller.setPublicKey(RECEIVER_PUBLIC_KEY);
 
-        String senderUserId= "SENDER_USER_ID";
-        User receiverUser = new User();
-        receiverUser.setPublicKey(RECEIVER_PUBLIC_KEY);
+        Transaction aTransaction =
+                aTransaction()
+                        .withAmount(amount)
+                        .withSeller(seller)
+                        .withBuyer(buyer)
+                        .build();
 
-        when(userRepository.getPublicKeyFor(senderUserId)).thenReturn(SENDER_PUBLIC_KEY);
+        underTest.execute(aTransaction);
 
-        underTest.execute(senderUserId, receiverUser, notes);
-
-        verify(transactionRepository).saveTransaction(SENDER_PUBLIC_KEY, RECEIVER_PUBLIC_KEY, notes);
+        verify(transactionRepository).saveTransaction(SENDER_PUBLIC_KEY, RECEIVER_PUBLIC_KEY, amount, "");
     }
 }
