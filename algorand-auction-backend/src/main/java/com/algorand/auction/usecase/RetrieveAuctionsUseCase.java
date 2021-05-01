@@ -2,11 +2,15 @@ package com.algorand.auction.usecase;
 
 import com.algorand.auction.model.Auction;
 import com.algorand.auction.model.Bid;
+import com.algorand.auction.model.FailureError;
 import com.algorand.auction.model.Item;
 import com.algorand.auction.usecase.repository.AuctionRepository;
 import com.algorand.auction.usecase.repository.BidRepository;
+import io.vavr.control.Either;
 
 import java.util.List;
+
+import static io.vavr.control.Either.right;
 
 public class RetrieveAuctionsUseCase {
 
@@ -21,14 +25,16 @@ public class RetrieveAuctionsUseCase {
         this.bidRepository = bidRepository;
     }
 
-    public List<Item> retrieveAll() {
+    public Either<FailureError, List<Item>> retrieveAll() {
         return auctionRepository.retrieveAll();
     }
 
-    public Auction retrieveBy(Integer auctionId) {
-        Item item = auctionRepository.retrieveBy(auctionId);
-        List<Bid> bids = bidRepository.getAllBidsFor(auctionId);
-        return createAuction(item, bids);
+    public Either<FailureError, Auction> retrieveById(Integer auctionId) {
+        return auctionRepository.retrieveBy(auctionId)
+                .flatMap(auction ->
+                        bidRepository.getAllBidsFor(auctionId)
+                                .flatMap(bids -> right(createAuction(auction, bids)))
+                );
     }
 
     private Auction createAuction(Item item, List<Bid> bids) {

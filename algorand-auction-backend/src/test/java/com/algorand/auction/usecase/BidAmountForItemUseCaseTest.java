@@ -31,14 +31,13 @@ class BidAmountForItemUseCaseTest {
         BigDecimal amount = new BigDecimal("11");
         Bid bid = aBid().withAmount(TEN).build();
 
-        SaveBidRequest expectedRequest = new SaveBidRequest(auctionId, amount, userId);
 
         when(bidRepository.getHighestBidFor(auctionId)).thenReturn(bid);
         when(userRepository.getIdByUsername(userName)).thenReturn(userId);
 
         underTest.bid(amount, auctionId, userName);
 
-        verify(bidRepository, times(1)).saveBid(expectedRequest);
+        verify(bidRepository, times(1)).saveBid(amount, userId, auctionId);
     }
 
     @Test
@@ -48,7 +47,6 @@ class BidAmountForItemUseCaseTest {
         String userName = "AN_USER_NAME";
         BigDecimal amount = new BigDecimal("9");
         Bid bid = aBid().withAmount(amount).build();
-        SaveBidRequest expectedRequest = new SaveBidRequest(auctionId, amount, userId);
 
 
         when(bidRepository.getHighestBidFor(auctionId)).thenReturn(bid);
@@ -56,7 +54,7 @@ class BidAmountForItemUseCaseTest {
 
         underTest.bid(amount, auctionId, userName);
 
-        verify(bidRepository, never()).saveBid(expectedRequest);
+        verify(bidRepository, never()).saveBid(amount, userId, auctionId);
     }
 
 }

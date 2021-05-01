@@ -1,6 +1,8 @@
 package com.algorand.auction.jdbc;
 
+import com.algorand.auction.model.FailureError;
 import com.algorand.auction.model.Item;
+import io.vavr.control.Either;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -13,6 +15,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.H2;
 
 class JdbcItemRepositoryTest {
@@ -37,7 +40,10 @@ class JdbcItemRepositoryTest {
     @Test
     void retrieveAll() {
 
-        List<Item> retrievedItems = underTest.retrieveAll();
+        Either<FailureError, List<Item>> result = underTest.retrieveAll();
+
+        assertTrue(result.isRight());
+        List<Item> retrievedItems = result.get();
 
         assertThat(retrievedItems, hasSize(1));
 
@@ -56,7 +62,10 @@ class JdbcItemRepositoryTest {
     @Test
     void retrieveById() {
 
-        Item item = underTest.retrieveBy(1);
+        Either<FailureError, Item> result = underTest.retrieveBy(1);
+
+        assertTrue(result.isRight());
+        Item item = result.get();
 
         assertThat(item.getId(), equalTo(1));
         assertThat(item.getInitialValue(), equalTo(new BigDecimal("10.99")));

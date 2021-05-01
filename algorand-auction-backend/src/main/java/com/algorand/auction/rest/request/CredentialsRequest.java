@@ -1,8 +1,8 @@
-package com.algorand.auction.rest;
+package com.algorand.auction.rest.request;
 
 import java.util.Objects;
 
-class CredentialsRequest {
+public class CredentialsRequest {
     public final String username;
     public final String password;
 

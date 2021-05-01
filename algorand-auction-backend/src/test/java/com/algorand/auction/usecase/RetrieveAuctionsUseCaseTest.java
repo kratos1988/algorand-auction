@@ -1,10 +1,13 @@
 package com.algorand.auction.usecase;
 
+import com.algorand.auction.jdbc.DatabaseError;
 import com.algorand.auction.model.Auction;
 import com.algorand.auction.model.Bid;
+import com.algorand.auction.model.FailureError;
 import com.algorand.auction.model.Item;
 import com.algorand.auction.usecase.repository.AuctionRepository;
 import com.algorand.auction.usecase.repository.BidRepository;
+import io.vavr.control.Either;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,10 +17,13 @@ import java.util.List;
 
 import static com.algorand.auction.model.BidBuilder.aBid;
 import static com.algorand.auction.model.ItemBuilder.anItem;
+import static io.vavr.control.Either.left;
+import static io.vavr.control.Either.right;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -47,9 +53,11 @@ class RetrieveAuctionsUseCaseTest {
                 .withHighestBid(new BigDecimal("22.89"))
                 .build();
 
-        when(auctionRepository.retrieveAll()).thenReturn(singletonList(anItem));
+        when(auctionRepository.retrieveAll()).thenReturn(right(singletonList(anItem)));
+        Either<FailureError, List<Item>> result = underTest.retrieveAll();
+        assertTrue(result.isRight());
+        List<Item> retrievedItems = result.get();
 
-        List<Item> retrievedItems = underTest.retrieveAll();
         assertThat(retrievedItems, hasSize(1));
         Item item = retrievedItems.get(0);
         assertThat(item.getId(), equalTo(1));
@@ -65,7 +73,6 @@ class RetrieveAuctionsUseCaseTest {
     @Test
     void retrieveAuction() {
 
-        LocalDateTime now = LocalDateTime.now();
         Item anItem = anItem()
                 .withId(1)
                 .build();
@@ -73,12 +80,28 @@ class RetrieveAuctionsUseCaseTest {
         Bid anotherBid = aBid().build();
 
 
-        when(auctionRepository.retrieveBy(1)).thenReturn(anItem);
-        when(bidRepository.getAllBidsFor(1)).thenReturn(asList(aBid, anotherBid));
+        when(auctionRepository.retrieveBy(1)).thenReturn(right(anItem));
+        when(bidRepository.getAllBidsFor(1)).thenReturn(right(asList(aBid, anotherBid)));
 
-        Auction auction = underTest.retrieveBy(1);
+        Either<FailureError, Auction> result = underTest.retrieveById(1);
+        assertTrue(result.isRight());
+        Auction auction = result.get();
 
         assertThat(auction.getItem(), equalTo(anItem));
         assertThat(auction.getBids(), containsInAnyOrder(aBid, anotherBid));
+    }
+
+    @Test
+    void whenErrorRetrievingAuction() {
+
+
+        DatabaseError error = new DatabaseError(new RuntimeException("an Error"));
+        when(auctionRepository.retrieveBy(1)).thenReturn(left(error));
+
+        Either<FailureError, Auction> result = underTest.retrieveById(1);
+        assertTrue(result.isLeft());
+
+
+        assertThat(result.getLeft(), equalTo(error));
     }
 }

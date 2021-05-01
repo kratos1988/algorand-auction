@@ -1,11 +1,16 @@
 package com.algorand.auction.jdbc;
 
+import com.algorand.auction.model.FailureError;
 import com.algorand.auction.model.Item;
 import com.algorand.auction.usecase.repository.AuctionRepository;
+import io.vavr.control.Either;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
+
+import static io.vavr.control.Either.left;
+import static io.vavr.control.Either.right;
 
 public class JdbcAuctionRepository implements AuctionRepository {
     public static final String SELECT_ALL_AUCTIONS = "SELECT * FROM AUCTIONS";
@@ -21,19 +26,19 @@ public class JdbcAuctionRepository implements AuctionRepository {
     }
 
     @Override
-    public List<Item> retrieveAll() {
+    public Either<FailureError, List<Item>> retrieveAll() {
         try {
-            return jdbcTemplate.query(
+            return right(jdbcTemplate.query(
                     SELECT_ALL_AUCTIONS,
                     new AuctionRowMapper()
-            );
+            ));
         } catch (Exception e) {
-            return null;
+            return left(new DatabaseError(e));
         }
     }
 
     @Override
-    public Item retrieveBy(Integer id) {
+    public Either<FailureError,Item> retrieveBy(Integer id) {
         try {
             MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
             sqlParameterSource.addValue("id", id);
@@ -44,11 +49,11 @@ public class JdbcAuctionRepository implements AuctionRepository {
             );
 
             if (item == null) {
-                return null;
+                return left(new NoRecordError(id));
             }
-            return item;
+            return right(item);
         } catch (Exception e) {
-            return null;
+            return left(new DatabaseError(e));
         }
     }
 

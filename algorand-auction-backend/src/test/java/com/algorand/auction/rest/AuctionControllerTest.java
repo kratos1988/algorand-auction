@@ -1,5 +1,6 @@
 package com.algorand.auction.rest;
 
+import com.algorand.auction.jdbc.DatabaseError;
 import com.algorand.auction.model.Auction;
 import com.algorand.auction.model.Bid;
 import com.algorand.auction.model.Item;
@@ -19,6 +20,8 @@ import java.time.LocalDateTime;
 import static com.algorand.auction.model.AuctionBuilder.anAuction;
 import static com.algorand.auction.model.BidBuilder.aBid;
 import static com.algorand.auction.model.ItemBuilder.anItem;
+import static io.vavr.control.Either.left;
+import static io.vavr.control.Either.right;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.when;
@@ -53,11 +56,20 @@ class AuctionControllerTest {
                         .withUserId(100)
                         .build();
 
-        when(useCase.retrieveAll()).thenReturn(singletonList(item));
+        when(useCase.retrieveAll()).thenReturn(right(singletonList(item)));
 
         mockMvc.perform(get("/auctions/all").contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(readJson("json/get_all_auctions_response.json")));
+    }
+
+    @Test
+    void whenNoAuctions() throws Exception {
+
+        when(useCase.retrieveAll()).thenReturn(left(new DatabaseError(new RuntimeException("an error"))));
+
+        mockMvc.perform(get("/auctions/all").contentType(APPLICATION_JSON))
+                .andExpect(status().is(404));
     }
 
     @Test
@@ -93,11 +105,20 @@ class AuctionControllerTest {
 
         Auction auction = anAuction().withBids(asList(aBid, anotherBid)).withItem(item).build();
 
-        when(useCase.retrieveBy(1)).thenReturn(auction);
+        when(useCase.retrieveById(1)).thenReturn(right(auction));
 
         mockMvc.perform(get("/auctions/1").contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(readJson("json/get_auction_response.json")));
+    }
+
+    @Test
+    void whenNoAuction() throws Exception {
+
+        when(useCase.retrieveById(1)).thenReturn(left(new DatabaseError(new RuntimeException("an error"))));
+
+        mockMvc.perform(get("/auctions/1").contentType(APPLICATION_JSON))
+                .andExpect(status().is(404));
     }
 
     private String readJson(String fileName) throws IOException {

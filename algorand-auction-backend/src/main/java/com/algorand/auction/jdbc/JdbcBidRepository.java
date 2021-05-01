@@ -1,12 +1,17 @@
 package com.algorand.auction.jdbc;
 
 import com.algorand.auction.model.Bid;
-import com.algorand.auction.usecase.SaveBidRequest;
+import com.algorand.auction.model.FailureError;
 import com.algorand.auction.usecase.repository.BidRepository;
+import io.vavr.control.Either;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.math.BigDecimal;
 import java.util.List;
+
+import static io.vavr.control.Either.left;
+import static io.vavr.control.Either.right;
 
 public class JdbcBidRepository implements BidRepository {
 
@@ -18,11 +23,11 @@ public class JdbcBidRepository implements BidRepository {
     }
 
     @Override
-    public void saveBid(SaveBidRequest saveBidRequest) {
+    public void saveBid(BigDecimal amount, int userId, int auctionId) {
         MapSqlParameterSource sqlParams = new MapSqlParameterSource()
-                .addValue("amount", saveBidRequest.amount)
-                .addValue("userId", saveBidRequest.userId)
-                .addValue("auctionId", saveBidRequest.auctionId);
+                .addValue("amount", amount)
+                .addValue("userId", userId)
+                .addValue("auctionId", auctionId);
         namedParameterJdbcTemplate.update(
                 "INSERT INTO BIDS (AUCTION_ID, AMOUNT, USER_ID) VALUES (:auctionId, :amount, :userId)",
                 sqlParams);
@@ -42,10 +47,14 @@ public class JdbcBidRepository implements BidRepository {
     }
 
     @Override
-    public List<Bid> getAllBidsFor(int auctionId) {
-        return namedParameterJdbcTemplate.query(
-                "SELECT * FROM BIDS WHERE AUCTION_ID = " + auctionId,
-                new BidRowMapper()
-        );
+    public Either<FailureError,List<Bid>> getAllBidsFor(int auctionId) {
+        try {
+            return right(namedParameterJdbcTemplate.query(
+                    "SELECT * FROM BIDS WHERE AUCTION_ID = " + auctionId,
+                    new BidRowMapper()
+            ));
+        } catch (Exception e) {
+            return left(new DatabaseError(e));
+        }
     }
 }

@@ -21,7 +21,7 @@ public class BidAmountForItemUseCase {
         Bid highestBid = bidRepository.getHighestBidFor(auctionId);
         if(highestBid.getAmount().compareTo(amount) < 0) {
             int userId = userRepository.getIdByUsername(userName);
-            bidRepository.saveBid(new SaveBidRequest(auctionId, amount, userId));
+            bidRepository.saveBid(amount, userId, auctionId);
         }
     }
 }

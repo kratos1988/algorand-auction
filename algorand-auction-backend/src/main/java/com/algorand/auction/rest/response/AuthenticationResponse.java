@@ -1,4 +1,4 @@
-package com.algorand.auction.rest;
+package com.algorand.auction.rest.response;
 
 public class AuthenticationResponse {
     public final String username;

@@ -1,7 +1,8 @@
 package com.algorand.auction.jdbc;
 
 import com.algorand.auction.model.Bid;
-import com.algorand.auction.usecase.SaveBidRequest;
+import com.algorand.auction.model.FailureError;
+import io.vavr.control.Either;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -16,6 +17,7 @@ import static java.math.BigDecimal.TEN;
 import static java.util.Collections.emptyMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.H2;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -40,20 +42,29 @@ class JdbcBidRepositoryTest {
 
     @Test
     void saveBid() {
-        underTest.saveBid(new SaveBidRequest(2, TEN, 100));
+        BigDecimal amount = TEN;
+        int userId = 100;
+        int auctionId = 2;
+
+        underTest.saveBid(amount, userId, auctionId);
         Bid savedBid = jdbcTemplate.queryForObject(
                 "SELECT * FROM BIDS WHERE AUCTION_ID = 2",
                 emptyMap(),
                 new BidRowMapper());
-        assertThat(savedBid.getAmount(), comparesEqualTo(TEN));
+        assertThat(savedBid.getAmount(), comparesEqualTo(amount));
         assertThat(savedBid.getStatus(), is("INSERTED"));
-        assertThat(savedBid.getAuctionId(), is(2));
-        assertThat(savedBid.getUserId(), is(100));
+        assertThat(savedBid.getAuctionId(), is(auctionId));
+        assertThat(savedBid.getUserId(), is(userId));
     }
 
     @Test
     void getBids() {
-        List<Bid> bids = underTest.getAllBidsFor(1);
+        Either<FailureError,List<Bid>> result = underTest.getAllBidsFor(1);
+
+        assertTrue(result.isRight());
+
+        List<Bid> bids = result.get();
+
         assertThat(bids.size(), is(2));
 
         Bid firstBid = bids.get(0);

@@ -1,6 +1,8 @@
 package com.algorand.auction.rest;
 
 import com.algorand.auction.model.User;
+import com.algorand.auction.rest.request.CredentialsRequest;
+import com.algorand.auction.rest.response.AuthenticationResponse;
 import com.algorand.auction.usecase.repository.UserRepository;
 
 import java.util.HashMap;

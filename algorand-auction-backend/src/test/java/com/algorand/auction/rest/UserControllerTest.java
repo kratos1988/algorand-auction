@@ -1,5 +1,7 @@
 package com.algorand.auction.rest;
 
+import com.algorand.auction.rest.request.CredentialsRequest;
+import com.algorand.auction.rest.response.AuthenticationResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
