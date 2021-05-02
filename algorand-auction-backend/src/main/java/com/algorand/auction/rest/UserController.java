@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public ResponseEntity<String> login(
+    public ResponseEntity<AuthenticationResponse> login(
             @PathParam("username") String username,
             @PathParam("password") String password
     ) {
@@ -31,7 +31,7 @@ public class UserController {
         if (authenticationResponse == null) {
             return status(401).build();
         }
-        return ok(authenticationResponse.token);
+        return ok(authenticationResponse);
     }
 
 }

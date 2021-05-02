@@ -10,6 +10,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -34,7 +36,7 @@ class UserControllerTest {
 
         mockMvc.perform(get("/login?username=username&password=password"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(token));
+                .andExpect(content().json(readJson("json/authentication_response.json")));
     }
 
     @Test
@@ -44,5 +46,9 @@ class UserControllerTest {
 
         mockMvc.perform(get("/login?username=username&password=password"))
                 .andExpect(status().is(401));
+    }
+
+    private String readJson(String fileName) throws IOException {
+        return new String(getClass().getClassLoader().getResourceAsStream(fileName).readAllBytes());
     }
 }
