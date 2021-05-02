@@ -1,5 +1,7 @@
 package com.algorand.auction.model;
 
+import java.util.Objects;
+
 public class User {
 
     private String userName;
@@ -19,5 +21,18 @@ public class User {
 
     public String getPublicKey() {
         return publicKey;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(userName, user.userName) && Objects.equals(publicKey, user.publicKey);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userName, publicKey);
     }
 }
