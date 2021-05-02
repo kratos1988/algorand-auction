@@ -6,6 +6,8 @@ import com.algorand.auction.model.FailureError;
 import com.algorand.auction.model.Item;
 import com.algorand.auction.usecase.repository.AuctionRepository;
 import com.algorand.auction.usecase.repository.BidRepository;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
 import io.vavr.control.Either;
 
 import java.util.List;
@@ -31,10 +33,12 @@ public class RetrieveAuctionsUseCase {
 
     public Either<FailureError, Auction> retrieveById(Integer auctionId) {
         return auctionRepository.retrieveBy(auctionId)
-                .flatMap(auction ->
-                        bidRepository.getAllBidsFor(auctionId)
-                                .flatMap(bids -> right(createAuction(auction, bids)))
-                );
+                .flatMap(auction -> getAllBids(auctionId, auction))
+                .flatMap(input -> right(createAuction(input._1, input._2)));
+    }
+
+    private Either<FailureError, Tuple2<Item, List<Bid>>> getAllBids(Integer auctionId, Item auction) {
+        return bidRepository.getAllBidsFor(auctionId).map(bids -> Tuple.of(auction, bids));
     }
 
     private Auction createAuction(Item item, List<Bid> bids) {
