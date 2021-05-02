@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BidRepository {
 
-    void saveBid(BigDecimal amount, int userId, int auctionId);
-    Bid getHighestBidFor(int anAuctionId);
+    Either<FailureError, Void> saveBid(BigDecimal amount, int userId, int auctionId);
+    Either<FailureError,Bid> getHighestBidFor(int anAuctionId);
     Either<FailureError,List<Bid>> getAllBidsFor(int auctionId);
 }

@@ -81,7 +81,10 @@ class JdbcAuctionRepositoryTest {
     @Test
     void retrieveExpired() {
 
-        List<Item> expiredItems = underTest.retrieveExpired();
+
+        Either<FailureError, List<Item>> result = underTest.retrieveExpired();
+        assertTrue(result.isRight());
+        List<Item> expiredItems = result.get();
 
         assertThat(expiredItems, hasSize(1));
 

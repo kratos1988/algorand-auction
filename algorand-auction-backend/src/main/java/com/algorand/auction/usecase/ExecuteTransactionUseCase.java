@@ -1,10 +1,16 @@
 package com.algorand.auction.usecase;
 
+import com.algorand.auction.jdbc.DatabaseError;
+import com.algorand.auction.model.FailureError;
 import com.algorand.auction.model.Transaction;
 import com.algorand.auction.usecase.repository.TransactionRepository;
 import com.algorand.auction.usecase.repository.UserRepository;
+import io.vavr.control.Either;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static io.vavr.control.Either.left;
+import static io.vavr.control.Either.right;
 
 public class ExecuteTransactionUseCase {
     private final Logger logger = LoggerFactory.getLogger(ExecuteTransactionUseCase.class);
@@ -17,7 +23,7 @@ public class ExecuteTransactionUseCase {
         this.userRepository = userRepository;
     }
 
-    public void execute(Transaction transaction) {
+    public Either<FailureError, String> execute(Transaction transaction) {
         try {
             transactionRepository.saveTransaction(
                     transaction.getBuyer().getPublicKey(),
@@ -25,8 +31,10 @@ public class ExecuteTransactionUseCase {
                     transaction.getAmount(),
                     ""
             );
+            return right("");
         } catch (Exception e) {
             logger.error("Cannot execute transaction", e);
+            return left(new DatabaseError(e));
         }
     }
 

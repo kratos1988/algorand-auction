@@ -12,5 +12,5 @@ public interface AuctionRepository {
 
     Either<FailureError, Item> retrieveBy(Integer id);
 
-    List<Item> retrieveExpired();
+    Either<FailureError,List<Item>> retrieveExpired();
 }

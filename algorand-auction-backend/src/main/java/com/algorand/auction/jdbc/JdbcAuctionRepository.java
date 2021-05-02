@@ -1,5 +1,6 @@
 package com.algorand.auction.jdbc;
 
+import com.algorand.auction.jdbc.mapper.AuctionRowMapper;
 import com.algorand.auction.model.FailureError;
 import com.algorand.auction.model.Item;
 import com.algorand.auction.usecase.repository.AuctionRepository;
@@ -58,11 +59,15 @@ public class JdbcAuctionRepository implements AuctionRepository {
     }
 
     @Override
-    public List<Item> retrieveExpired() {
-        return jdbcTemplate.query(
-                SELECT_EXPIRED_AUCTIONS,
-                new AuctionRowMapper()
-        );
+    public Either<FailureError, List<Item>> retrieveExpired() {
+        try {
+            return right(jdbcTemplate.query(
+                    SELECT_EXPIRED_AUCTIONS,
+                    new AuctionRowMapper()
+            ));
+        } catch (Exception e) {
+            return left(new DatabaseError(e));
+        }
     }
 
 }

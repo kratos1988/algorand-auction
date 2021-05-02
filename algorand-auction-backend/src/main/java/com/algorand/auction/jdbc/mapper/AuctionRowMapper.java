@@ -1,4 +1,4 @@
-package com.algorand.auction.jdbc;
+package com.algorand.auction.jdbc.mapper;
 
 import com.algorand.auction.model.Item;
 import org.springframework.jdbc.core.RowMapper;

@@ -1,5 +1,6 @@
 package com.algorand.auction.jdbc;
 
+import com.algorand.auction.jdbc.mapper.BidRowMapper;
 import com.algorand.auction.model.Bid;
 import com.algorand.auction.model.FailureError;
 import io.vavr.control.Either;
@@ -82,7 +83,9 @@ class JdbcBidRepositoryTest {
 
     @Test
     void getHighestBidFor() {
-        Bid highestBid = underTest.getHighestBidFor(1);
+        Either<FailureError, Bid> result = underTest.getHighestBidFor(1);
+        assertTrue(result.isRight());
+        Bid highestBid = result.get();
         assertThat(highestBid.getAmount(), comparesEqualTo(new BigDecimal("25.99")));
         assertThat(highestBid.getAuctionId(), equalTo(1));
         assertThat(highestBid.getUserId(), equalTo(101));

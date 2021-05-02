@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 
 import static com.algorand.auction.model.BidBuilder.aBid;
+import static io.vavr.control.Either.right;
 import static java.math.BigDecimal.TEN;
 import static org.mockito.Mockito.*;
 
@@ -32,8 +33,8 @@ class BidAmountForItemUseCaseTest {
         Bid bid = aBid().withAmount(TEN).build();
 
 
-        when(bidRepository.getHighestBidFor(auctionId)).thenReturn(bid);
-        when(userRepository.getIdByUsername(userName)).thenReturn(userId);
+        when(bidRepository.getHighestBidFor(auctionId)).thenReturn(right(bid));
+        when(userRepository.getIdByUsername(userName)).thenReturn(right(userId));
 
         underTest.bid(amount, auctionId, userName);
 
@@ -45,16 +46,16 @@ class BidAmountForItemUseCaseTest {
         int auctionId = 1;
         int userId = 100;
         String userName = "AN_USER_NAME";
-        BigDecimal amount = new BigDecimal("9");
+        BigDecimal amount = new BigDecimal("11");
         Bid bid = aBid().withAmount(amount).build();
 
 
-        when(bidRepository.getHighestBidFor(auctionId)).thenReturn(bid);
-        when(userRepository.getIdByUsername(userName)).thenReturn(userId);
+        when(bidRepository.getHighestBidFor(auctionId)).thenReturn(right(bid));
 
         underTest.bid(amount, auctionId, userName);
 
-        verify(bidRepository, never()).saveBid(amount, userId, auctionId);
+        verify(bidRepository, never()).saveBid(TEN, userId, auctionId);
+        verifyNoInteractions(userRepository);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.algorand.auction.jdbc;
 
+import com.algorand.auction.jdbc.mapper.BidRowMapper;
 import com.algorand.auction.model.Bid;
 import com.algorand.auction.model.FailureError;
 import com.algorand.auction.usecase.repository.BidRepository;
@@ -23,27 +24,40 @@ public class JdbcBidRepository implements BidRepository {
     }
 
     @Override
-    public void saveBid(BigDecimal amount, int userId, int auctionId) {
-        MapSqlParameterSource sqlParams = new MapSqlParameterSource()
-                .addValue("amount", amount)
-                .addValue("userId", userId)
-                .addValue("auctionId", auctionId);
-        namedParameterJdbcTemplate.update(
-                "INSERT INTO BIDS (AUCTION_ID, AMOUNT, USER_ID) VALUES (:auctionId, :amount, :userId)",
-                sqlParams);
+    public Either<FailureError, Void> saveBid(BigDecimal amount, int userId, int auctionId) {
+        try {
+            MapSqlParameterSource sqlParams = new MapSqlParameterSource()
+                    .addValue("amount", amount)
+                    .addValue("userId", userId)
+                    .addValue("auctionId", auctionId);
+            namedParameterJdbcTemplate.update(
+                    "INSERT INTO BIDS (AUCTION_ID, AMOUNT, USER_ID) VALUES (:auctionId, :amount, :userId)",
+                    sqlParams);
+            return right(null);
+        } catch (Exception e) {
+            return left(new DatabaseError(e));
+        }
     }
 
     @Override
-    public Bid getHighestBidFor(int auctionId) {
-        MapSqlParameterSource sqlParams = new MapSqlParameterSource()
-                .addValue("auctionId", auctionId);
-        return namedParameterJdbcTemplate.queryForObject(
+    public Either<FailureError, Bid> getHighestBidFor(int auctionId) {
+        try {
+            MapSqlParameterSource sqlParams = new MapSqlParameterSource()
+                    .addValue("auctionId", auctionId);
+            Bid bid = namedParameterJdbcTemplate.queryForObject(
                     "SELECT b1.* FROM BIDS b1 " +
                             "LEFT OUTER JOIN BIDS b2 ON (b1.auction_id = b2.auction_id and b1.amount < b2.amount) " +
                             "where b2.id is null and b1.auction_id = :auctionId",
-                sqlParams,
-                new BidRowMapper()
-        );
+                    sqlParams,
+                    new BidRowMapper()
+            );
+            if (bid == null) {
+                return left(new NoRecordError(auctionId));
+            }
+            return right(bid);
+        } catch (Exception e) {
+            return left(new DatabaseError(e));
+        }
     }
 
     @Override
