@@ -38,13 +38,13 @@ class JdbcUserRepositoryTest {
 
     @Test
     void getPublicKey() {
-        String publicKey = underTest.getPublicKeyFor("AN_USER_NAME");
+        String publicKey = underTest.getPublicKeyFor("AN_USERNAME");
         assertThat(publicKey, is("A_PUBLIC_KEY"));
     }
 
     @Test
     void getUserIdByUserName() {
-        Either<FailureError, Integer> result = underTest.getIdByUsername("AN_USER_NAME");
+        Either<FailureError, Integer> result = underTest.getIdByUsername("AN_USERNAME");
         assertTrue(result.isRight());
         int publicKey = result.get();
         assertThat(publicKey, is(100));
@@ -56,7 +56,7 @@ class JdbcUserRepositoryTest {
         assertTrue(result.isRight());
         User user = result.get();
         assertThat(user.getPublicKey(), is("A_PUBLIC_KEY"));
-        assertThat(user.getUserName(), is("AN_USER_NAME"));
+        assertThat(user.getUserName(), is("AN_USERNAME"));
     }
 
 
