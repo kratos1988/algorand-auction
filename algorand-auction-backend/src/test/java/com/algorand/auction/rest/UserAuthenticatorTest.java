@@ -30,7 +30,8 @@ class UserAuthenticatorTest {
         user.setUserName(username);
 
         when(userRepository.authenticate(username, password)).thenReturn(user);
-        AuthenticationResponse response = underTest.authenticate(new CredentialsRequest(username, password));
+        final CredentialsRequest credentials = new CredentialsRequest(username, password);
+        AuthenticationResponse response = underTest.authenticate(credentials.username, credentials.password);
         assertThat(response.username, equalTo(user.getUserName()));
         assertThat(response.token, equalTo(underTest.getTokenForUser(username)));
     }
@@ -38,7 +39,8 @@ class UserAuthenticatorTest {
     @Test
     void whenRepositoryDoesNotRecognizeUserThenNoToken() {
         when(userRepository.authenticate("AN_USERNAME", "A_PASSWORD")).thenReturn(null);
-        AuthenticationResponse response =  underTest.authenticate(new CredentialsRequest("AN_USERNAME", "A_PASSWORD"));
+        final CredentialsRequest credentials = new CredentialsRequest("AN_USERNAME", "A_PASSWORD");
+        AuthenticationResponse response =  underTest.authenticate(credentials.username, credentials.password);
         assertThat(response, is(nullValue()));
     }
 }
