@@ -1,7 +1,6 @@
 package com.algorand.auction.rest;
 
 import com.algorand.auction.model.User;
-import com.algorand.auction.rest.request.CredentialsRequest;
 import com.algorand.auction.rest.response.AuthenticationResponse;
 import com.algorand.auction.usecase.repository.UserRepository;
 
@@ -25,9 +24,9 @@ public class UserAuthenticator {
     }
 
     public AuthenticationResponse authenticate(
-            CredentialsRequest credentials
+            String username, String password
     ) {
-        User user = userRepository.authenticate(credentials.username, credentials.password);
+        User user = userRepository.authenticate(username, password);
         if (user == null)
             return null;
         String token = randomUUID().toString();

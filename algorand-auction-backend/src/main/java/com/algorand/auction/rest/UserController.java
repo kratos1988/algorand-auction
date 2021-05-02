@@ -1,12 +1,10 @@
 package com.algorand.auction.rest;
 
-import com.algorand.auction.rest.request.CredentialsRequest;
 import com.algorand.auction.rest.response.AuthenticationResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.websocket.server.PathParam;
 
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
@@ -22,12 +20,11 @@ public class UserController {
         this.userAuthenticator = userAuthenticator;
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
-            @PathParam("username") String username,
-            @PathParam("password") String password
+            @RequestBody AuthenticationRequest request
     ) {
-        AuthenticationResponse authenticationResponse = userAuthenticator.authenticate(new CredentialsRequest(username, password));
+        AuthenticationResponse authenticationResponse = userAuthenticator.authenticate(request.getUsername(), request.getPassword());
         if (authenticationResponse == null) {
             return status(401).build();
         }
