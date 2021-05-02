@@ -32,7 +32,7 @@ export class AuctionCardComponent implements OnInit, OnDestroy {
               this.expirationDate = this.datePipe.transform(this.detail.expirationDate, 'medium');
             } else {
               const ded = new Date(detailExpiryDate);
-              this.expirationDate = `${ded.getHours()}:${ded.getMinutes()}:${ded.getSeconds()}`;
+              this.expirationDate = this.datePipe.transform(ded, 'hh:mm:ss');
             }
           }),
       ).subscribe();

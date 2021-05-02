@@ -2,7 +2,7 @@
     <header>
         <span class="mat-title">{{detail.title}}</span>
     </header>
-    <div class="row-xs-12 auction-img categories">
+    <div class="row-xs-12 auction-img categories" [ngStyle]="{'background-image': 'url(' + detail.imageUrl + ')'}">
         <mat-chip-list>
             <mat-chip color="primary" selected>{{detail.itemName}}</mat-chip>
         </mat-chip-list>

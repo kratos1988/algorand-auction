@@ -16,6 +16,9 @@ const routes: Routes = [
     loadChildren: () => import('./features/catalogue/catalogue.module').then((m) => m.CatalogueModule),
   },
   {
+    path: 'auction',
+    loadChildren: () => import('./features/auction/auction.module').then((m) => m.AuctionModule)},
+  {
     path: '**',
     redirectTo: 'login',
   },

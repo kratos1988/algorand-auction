@@ -8,7 +8,7 @@
         </mat-form-field>
     </form>
     <section class="row around-xs">
-        <ng-container *ngFor="let auction of (auctions | async)">
+        <ng-container *ngFor="let auction of (auctions$ | async)">
             <algo-auction-card class="col-xs-3" [detail]="auction"></algo-auction-card>
         </ng-container>
     </section>
