@@ -5,11 +5,6 @@ public class User {
     private String userName;
     private String publicKey;
 
-    public User(String userName, String publicKey) {
-        this.userName = userName;
-        this.publicKey = publicKey;
-    }
-
     public void setUserName(String userName) {
         this.userName = userName;
     }

@@ -60,4 +60,11 @@ class JdbcUserRepositoryTest {
     }
 
 
+    @Test
+    void authenticateUser() {
+        User user = underTest.authenticate("AN_USERNAME", "A_PASSWORD");
+        assertThat(user.getPublicKey(), is("A_PUBLIC_KEY"));
+        assertThat(user.getUserName(), is("AN_USERNAME"));
+    }
+
 }
