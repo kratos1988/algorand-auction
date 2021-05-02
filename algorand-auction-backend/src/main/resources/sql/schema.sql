@@ -28,6 +28,7 @@ CREATE TABLE USERS
 (
     ID SERIAL PRIMARY KEY,
     USER_NAME varchar(45) NOT NULL,
-    PUBLIC_KEY varchar(58) NOT NULL
+    PUBLIC_KEY varchar(58) NOT NULL,
+    PASSWORD varchar(58) NOT NULL
 );
 

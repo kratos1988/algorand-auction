@@ -51,7 +51,7 @@ class AuctionControllerTest {
                         .withDescription("One of Da Vinci's masterieces")
                         .withInitialValue(new BigDecimal("10.99"))
                         .withHighestBid(new BigDecimal("11"))
-                        .withExpirationDate(LocalDateTime.of(2021,4,12,7,20))
+                        .withExpirationDate(LocalDateTime.of(2021, 4, 12, 7, 20))
                         .withImageUrl("https://www.everypainterpaintshimself.com/images/made/article_images_new/Mona_Lisa_Large_440_666.jpg")
                         .withUserId(100)
                         .build();
@@ -98,7 +98,7 @@ class AuctionControllerTest {
                         .withDescription("One of Da Vinci's masterieces")
                         .withInitialValue(new BigDecimal("10.99"))
                         .withHighestBid(new BigDecimal("11"))
-                        .withExpirationDate(LocalDateTime.of(2021,4,12,7,20))
+                        .withExpirationDate(LocalDateTime.of(2021, 4, 12, 7, 20))
                         .withImageUrl("https://www.everypainterpaintshimself.com/images/made/article_images_new/Mona_Lisa_Large_440_666.jpg")
                         .withUserId(100)
                         .build();

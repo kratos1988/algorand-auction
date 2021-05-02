@@ -73,7 +73,7 @@ public class JdbcUserRepository implements UserRepository {
         return namedParameterJdbcTemplate.queryForObject(
                 "SELECT * FROM USERS WHERE USER_NAME=:username AND PASSWORD=:password",
                 sqlParams,
-                User.class);
+                new UserRowMapper());
     }
 
 }
