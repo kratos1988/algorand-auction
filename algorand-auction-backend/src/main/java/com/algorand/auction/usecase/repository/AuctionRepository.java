@@ -9,8 +9,6 @@ import java.util.List;
 public interface AuctionRepository {
 
     Either<FailureError, List<Item>> retrieveAll();
-
     Either<FailureError, Item> retrieveBy(Integer id);
-
     Either<FailureError,List<Item>> retrieveExpired();
 }
