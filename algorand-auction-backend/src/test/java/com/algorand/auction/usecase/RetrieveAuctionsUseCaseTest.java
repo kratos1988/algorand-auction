@@ -71,17 +71,18 @@ class RetrieveAuctionsUseCaseTest {
     }
 
     @Test
-    void whenErrorRetrievingAuctions() {
+    void retrieveLastBids() {
+        Bid aBid = aBid().build();
+        Bid anotherBid = aBid().build();
 
+        when(bidRepository.getLastBidsFor(1)).thenReturn(right(asList(aBid, anotherBid)));
+        Either<FailureError, List<Bid>> result = underTest.retrieveLastBidsFor(1);
+        assertTrue(result.isRight());
+        List<Bid> retrievedBids = result.get();
 
-        DatabaseError error = new DatabaseError(new RuntimeException("an Error"));
-        when(auctionRepository.retrieveAll()).thenReturn(left(error));
+        assertThat(retrievedBids, hasSize(2));
+        assertThat(retrievedBids, containsInAnyOrder(aBid, anotherBid));
 
-        Either<FailureError, List<Item>> result = underTest.retrieveAll();
-        assertTrue(result.isLeft());
-
-
-        assertThat(result.getLeft(), equalTo(error));
     }
 
     @Test
@@ -103,6 +104,20 @@ class RetrieveAuctionsUseCaseTest {
 
         assertThat(auction.getItem(), equalTo(anItem));
         assertThat(auction.getBids(), containsInAnyOrder(aBid, anotherBid));
+    }
+
+    @Test
+    void whenErrorRetrievingAuctions() {
+
+
+        DatabaseError error = new DatabaseError(new RuntimeException("an Error"));
+        when(auctionRepository.retrieveAll()).thenReturn(left(error));
+
+        Either<FailureError, List<Item>> result = underTest.retrieveAll();
+        assertTrue(result.isLeft());
+
+
+        assertThat(result.getLeft(), equalTo(error));
     }
 
     @Test

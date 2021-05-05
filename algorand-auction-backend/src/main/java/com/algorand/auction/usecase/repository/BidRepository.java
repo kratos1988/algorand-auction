@@ -12,4 +12,5 @@ public interface BidRepository {
     Either<FailureError, Void> saveBid(BigDecimal amount, int userId, int auctionId);
     Either<FailureError,Bid> getHighestBidFor(int anAuctionId);
     Either<FailureError,List<Bid>> getAllBidsFor(int auctionId);
+    Either<FailureError, List<Bid>> getLastBidsFor(int auctionId);
 }

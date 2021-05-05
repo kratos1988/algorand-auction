@@ -12,8 +12,10 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.algorand.auction.model.BidBuilder.aBid;
 import static java.math.BigDecimal.TEN;
 import static java.util.Collections.emptyMap;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -79,6 +81,31 @@ class JdbcBidRepositoryTest {
         assertThat(secondBid.getStatus(), is("ACCEPTED"));
         assertThat(secondBid.getAuctionId(), is(1));
         assertThat(secondBid.getUserId(), is(101));
+    }
+
+    @Test
+    void getLastBids() {
+        Either<FailureError,List<Bid>> result = underTest.getLastBidsFor(3);
+
+        BigDecimal startingAmount = new BigDecimal("23.99");
+        List<Bid> expctedList = new ArrayList<Bid>();
+        for (int i = 0; i < 5; i++) {
+            expctedList.add(
+                    aBid()
+                            .withAuctionId(3)
+                            .withAmount(startingAmount.add(new BigDecimal(i)))
+                            .withUserId(101)
+                            .withStatus("ACCEPTED")
+                            .build());
+        }
+
+        assertTrue(result.isRight());
+
+        List<Bid> bids = result.get();
+
+        assertThat(bids.size(), is(5));
+
+        assertThat(bids, containsInAnyOrder(expctedList.toArray()));
     }
 
     @Test
