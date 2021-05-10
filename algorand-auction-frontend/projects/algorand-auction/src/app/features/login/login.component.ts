@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {LoginService} from '../../services/login.service';
-import {delay, takeUntil} from 'rxjs/operators';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'algo-auction-login',
@@ -15,24 +15,20 @@ export class LoginComponent implements OnInit, OnDestroy {
     username: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
-  private readonly unsubscribe$: Subject<void> = new Subject<void>();
   readonly loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   hide: boolean = true;
 
   constructor(
     private loginService: LoginService,
     private router: Router,
+    private _snackBar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.loading$.next(false);
-    }, 2000);
+    this.loading$.next(false);
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
   disableLoginBtn(): boolean {
@@ -41,16 +37,18 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   login(): void {
     this.loading$.next(true);
-    this.loginService.login()
-        .pipe(
-            takeUntil(this.unsubscribe$),
-            delay(2000),
-        )
+    this.loginService.login({
+      username: this.loginForm.get('username')?.value,
+      password: this.loginForm.get('password')?.value,
+    })
         .subscribe({
           next: (v) => {
+            this.loading$.next(false);
             this.router.navigate(['/catalogue']);
           },
-          error: (err) => {
+          error: (error) => {
+            this.loginForm.get('password')?.reset();
+            this._snackBar.open('Incorrect username or password', 'close');
             this.loading$.next(false);
           },
           complete: () => {},

@@ -1,13 +1,17 @@
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
+import {Credentials} from '../models/credentials.interface';
 
 @Injectable()
 export class LoginService {
-  constructor() {}
+  constructor(
+    private http: HttpClient,
+  ) {}
 
-  login(): Observable<any> {
-    return of({
-      status: 200,
-    });
+  login(credentials: Credentials): Observable<any> {
+    const headers = {'Content-Type': 'application/json'};
+
+    return this.http.post<any>('/login', {...credentials}, {headers});
   }
 }

@@ -1,17 +1,18 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { AuctionRoutingModule } from './auction-routing.module';
-import { AuctionComponent } from './auction.component';
+import {AuctionRoutingModule} from './auction-routing.module';
+import {AuctionComponent} from './auction.component';
 
 
 @NgModule({
   declarations: [
-    AuctionComponent
+    AuctionComponent,
   ],
   imports: [
     CommonModule,
-    AuctionRoutingModule
-  ]
+    AuctionRoutingModule,
+  ],
 })
 export class AuctionModule { }
+

@@ -11,7 +11,17 @@ import {MatIconModule} from '@angular/material/icon';
 
 import {ReactiveFormsModule} from '@angular/forms';
 import {LoginService} from '../../services/login.service';
+import {HttpClientModule} from '@angular/common/http';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
+const ANGULAR_MATERIAL_MODULES = [
+  MatCardModule,
+  MatInputModule,
+  MatButtonModule,
+  MatIconModule,
+  MatProgressSpinnerModule,
+  MatSnackBarModule,
+];
 
 @NgModule({
   declarations: [
@@ -22,13 +32,10 @@ import {LoginService} from '../../services/login.service';
   ],
   imports: [
     CommonModule,
+    HttpClientModule,
     LoginRoutingModule,
-    MatCardModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
     ReactiveFormsModule,
-    MatProgressSpinnerModule,
+    ...ANGULAR_MATERIAL_MODULES,
   ],
 })
 export class LoginModule { }
