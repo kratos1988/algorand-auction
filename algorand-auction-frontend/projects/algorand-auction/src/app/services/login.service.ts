@@ -12,6 +12,6 @@ export class LoginService {
   login(credentials: Credentials): Observable<any> {
     const headers = {'Content-Type': 'application/json'};
 
-    return this.http.post<any>('/authenticate', {...credentials}, {headers});
+    return this.http.post<any>('/api/authenticate', {...credentials}, {headers});
   }
 }

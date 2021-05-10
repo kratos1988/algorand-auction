@@ -13,7 +13,7 @@ export class CatalogueService {
   ) { }
 
   fetch(): Observable<Auction[]> {
-    return this.http.get<Auction[]>('/auctions/all').pipe(
+    return this.http.get<Auction[]>('/api/auctions/all').pipe(
         catchError((err) => {
           return of(catalogue);
         }),
