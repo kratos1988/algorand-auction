@@ -20,7 +20,7 @@ public class UserController {
         this.userAuthenticator = userAuthenticator;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody AuthenticationRequest request
     ) {
