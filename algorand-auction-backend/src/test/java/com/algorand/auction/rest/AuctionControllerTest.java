@@ -64,6 +64,31 @@ class AuctionControllerTest {
     }
 
     @Test
+    void getLastBids() throws Exception {
+
+        Bid aBid =
+                aBid()
+                        .withAmount(new BigDecimal("11.99"))
+                        .withAuctionId(1)
+                        .withStatus("INSERTED")
+                        .withUserId(1)
+                        .build();
+
+        Bid anotherBid =
+                aBid()
+                        .withAmount(new BigDecimal("13.99"))
+                        .withAuctionId(1)
+                        .withStatus("INSERTED")
+                        .withUserId(2)
+                        .build();
+        when(useCase.retrieveLastBidsFor(1)).thenReturn(right(asList(aBid, anotherBid)));
+
+        mockMvc.perform(get("/auctions/1/bids").contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(readJson("json/get_last_bids_response.json")));
+    }
+
+    @Test
     void whenNoAuctions() throws Exception {
 
         when(useCase.retrieveAll()).thenReturn(left(new DatabaseError(new RuntimeException("an error"))));

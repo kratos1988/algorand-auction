@@ -41,11 +41,14 @@ public class RetrieveAuctionsUseCase {
         return bidRepository.getAllBidsFor(auctionId).map(bids -> Tuple.of(auction, bids));
     }
 
+    public Either<FailureError, List<Bid>> retrieveLastBidsFor(Integer auctionId) {
+        return bidRepository.getLastBidsFor(auctionId);
+    }
+
     private Auction createAuction(Item item, List<Bid> bids) {
         Auction auction = new Auction();
         auction.setItem(item);
         auction.setBids(bids);
         return auction;
     }
-
 }

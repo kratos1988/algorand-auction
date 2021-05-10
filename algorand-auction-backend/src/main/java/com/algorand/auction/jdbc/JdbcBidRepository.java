@@ -71,4 +71,16 @@ public class JdbcBidRepository implements BidRepository {
             return left(new DatabaseError(e));
         }
     }
+
+    @Override
+    public Either<FailureError, List<Bid>> getLastBidsFor(int auctionId) {
+        try {
+            return right(namedParameterJdbcTemplate.query(
+                    "SELECT * FROM BIDS WHERE AUCTION_ID = " + auctionId + " LIMIT 5",
+                    new BidRowMapper()
+            ));
+        } catch (Exception e) {
+            return left(new DatabaseError(e));
+        }
+    }
 }

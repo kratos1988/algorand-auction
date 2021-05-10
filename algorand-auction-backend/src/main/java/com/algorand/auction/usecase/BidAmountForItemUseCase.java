@@ -2,6 +2,7 @@ package com.algorand.auction.usecase;
 
 import com.algorand.auction.model.Bid;
 import com.algorand.auction.model.FailureError;
+import com.algorand.auction.usecase.error.BidAmountLessThanHighestError;
 import com.algorand.auction.usecase.repository.BidRepository;
 import com.algorand.auction.usecase.repository.UserRepository;
 import io.vavr.control.Either;
@@ -31,7 +32,7 @@ public class BidAmountForItemUseCase {
 
     private Either<FailureError, Void> checkBidIsValid(BigDecimal amount, int auctionId, String userName, Bid highestBid) {
         if(highestBid.getAmount().compareTo(amount) >= 0) {
-            return left(new BidAmountLessThanHighest(userName, auctionId, amount));
+            return left(new BidAmountLessThanHighestError(userName, auctionId, amount));
         }
         return right(null);
     }

@@ -1,6 +1,7 @@
 package com.algorand.auction.rest;
 
 import com.algorand.auction.model.Auction;
+import com.algorand.auction.model.Bid;
 import com.algorand.auction.model.FailureError;
 import com.algorand.auction.model.Item;
 import com.algorand.auction.usecase.RetrieveAuctionsUseCase;
@@ -39,11 +40,24 @@ public class AuctionController {
         }
     }
 
-    @GetMapping("/auctions/{id}")
+    @GetMapping("/auctions/{auctionId}")
     public ResponseEntity<Auction> getAuction(
-            @PathVariable Integer id
+            @PathVariable Integer auctionId
     ) {
-        Either<FailureError, Auction> result = useCase.retrieveById(id);
+        Either<FailureError, Auction> result = useCase.retrieveById(auctionId);
+        if (result.isRight())
+            return ok(result.get());
+        else {
+            return status(404).build();
+        }
+    }
+
+
+    @GetMapping("/auctions/{auctionId}/bids")
+    public ResponseEntity<List<Bid>> getLastBidsFor(
+            @PathVariable Integer auctionId
+    ) {
+        Either<FailureError, List<Bid>> result = useCase.retrieveLastBidsFor(auctionId);
         if (result.isRight())
             return ok(result.get());
         else {
