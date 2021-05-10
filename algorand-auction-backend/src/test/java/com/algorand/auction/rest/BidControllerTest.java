@@ -31,7 +31,7 @@ class BidControllerTest {
     void placeBid() throws Exception {
 
         mockMvc.perform(
-                    post("/bid/place")
+                    post("/api/bid/place")
                         .contentType(APPLICATION_JSON)
                         .content(readJson("json/place_bid_request.json")))
                 .andExpect(status().isOk());

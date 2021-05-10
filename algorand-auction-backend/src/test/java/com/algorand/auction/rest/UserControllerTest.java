@@ -34,7 +34,7 @@ class UserControllerTest {
         when(useCase.authenticate("username", "password")).thenReturn(new AuthenticationResponse("username", token));
 
         mockMvc.perform(
-                post("/authenticate")
+                post("/api/authenticate")
                         .content(readJson("json/authentication_request.json"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -47,7 +47,7 @@ class UserControllerTest {
         when(useCase.authenticate("username", "password")).thenReturn(null);
 
         mockMvc.perform(
-                post("/authenticate")
+                post("/api/authenticate")
                         .content(readJson("json/authentication_request.json"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(401));

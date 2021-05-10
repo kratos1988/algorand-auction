@@ -58,7 +58,7 @@ class AuctionControllerTest {
 
         when(useCase.retrieveAll()).thenReturn(right(singletonList(item)));
 
-        mockMvc.perform(get("/auctions/all").contentType(APPLICATION_JSON))
+        mockMvc.perform(get("/api/auctions/all").contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(readJson("json/get_all_auctions_response.json")));
     }
@@ -83,7 +83,7 @@ class AuctionControllerTest {
                         .build();
         when(useCase.retrieveLastBidsFor(1)).thenReturn(right(asList(aBid, anotherBid)));
 
-        mockMvc.perform(get("/auctions/1/bids").contentType(APPLICATION_JSON))
+        mockMvc.perform(get("/api/auctions/1/bids").contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(readJson("json/get_last_bids_response.json")));
     }
@@ -132,7 +132,7 @@ class AuctionControllerTest {
 
         when(useCase.retrieveById(1)).thenReturn(right(auction));
 
-        mockMvc.perform(get("/auctions/1").contentType(APPLICATION_JSON))
+        mockMvc.perform(get("/api/auctions/1").contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(readJson("json/get_auction_response.json")));
     }
