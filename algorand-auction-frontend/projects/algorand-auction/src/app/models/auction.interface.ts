@@ -10,4 +10,10 @@ export interface Auction {
     itemName: string;
     title: string;
     bids: AuctionBid[];
+    userId: number;
+}
+
+export interface AuctionDetails {
+    item: Auction;
+    bids: AuctionBid[];
 }

@@ -3,6 +3,8 @@ import {CommonModule} from '@angular/common';
 
 import {AuctionRoutingModule} from './auction-routing.module';
 import {AuctionComponent} from './auction.component';
+import {AuctionDetailsService} from '../../services/auction-detail.service';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -12,7 +14,9 @@ import {AuctionComponent} from './auction.component';
   imports: [
     CommonModule,
     AuctionRoutingModule,
+    HttpClientModule,
   ],
+  providers: [AuctionDetailsService],
 })
 export class AuctionModule { }
 

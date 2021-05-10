@@ -10,6 +10,7 @@ export const catalogue: Auction[] = [{
   itemName: 'an item name',
   title: 'A statue',
   bids: [],
+  userId: 4,
 }, {
   description: 'A rogue',
   expirationDate: '2021-04-28T19:19:11.047Z',
@@ -20,6 +21,7 @@ export const catalogue: Auction[] = [{
   itemName: 'an item name',
   title: 'A rogue',
   bids: [],
+  userId: 3,
 }, {
   description: 'A description',
   expirationDate: '2021-04-27T19:19:11.047Z',
@@ -30,6 +32,7 @@ export const catalogue: Auction[] = [{
   itemName: 'an item name',
   title: 'A description',
   bids: [],
+  userId: 2,
 }, {
   description: 'A bot',
   expirationDate: '2021-04-27T19:19:11.047Z',
@@ -40,4 +43,5 @@ export const catalogue: Auction[] = [{
   itemName: 'an item name',
   title: 'A bot',
   bids: [],
+  userId: 1,
 }];

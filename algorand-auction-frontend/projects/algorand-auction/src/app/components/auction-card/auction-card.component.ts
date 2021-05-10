@@ -42,4 +42,8 @@ export class AuctionCardComponent implements OnInit, OnDestroy {
       this.unsubscribe$.next();
       this.unsubscribe$.complete();
     }
+
+    goToAuction(event: MouseEvent) {
+      console.log(event);
+    }
 }

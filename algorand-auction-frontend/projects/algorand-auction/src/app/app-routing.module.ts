@@ -13,12 +13,12 @@ const routes: Routes = [
     loadChildren: () => import('./features/login/login.module').then((m) => m.LoginModule),
   },
   {
-    path: 'catalogue',
+    path: 'auctions',
     loadChildren: () => import('./features/catalogue/catalogue.module').then((m) => m.CatalogueModule),
     canActivate: [AuthGuardService],
   },
   {
-    path: 'auction',
+    path: 'auctions/:auctionId',
     loadChildren: () => import('./features/auction/auction.module').then((m) => m.AuctionModule),
     canActivate: [AuthGuardService],
   },
@@ -31,5 +31,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [AuthGuardService],
 })
 export class AppRoutingModule { }

@@ -12,7 +12,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   readonly loginForm: FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.email]),
+    username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
   readonly loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
@@ -44,7 +44,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (v) => {
             this.loading$.next(false);
-            this.router.navigate(['/catalogue']);
+            localStorage.setItem('token', v.token);
+            this.router.navigate(['/auctions']);
           },
           error: (error) => {
             this.loginForm.get('password')?.reset();
