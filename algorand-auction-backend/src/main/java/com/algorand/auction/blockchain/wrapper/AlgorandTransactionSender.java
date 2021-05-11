@@ -9,23 +9,19 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 
-import static org.apache.commons.lang3.ArrayUtils.add;
-
 public class AlgorandTransactionSender {
 
+    private final AlgodClientHeaders algodClientHeaders;
     private Logger logger = LoggerFactory.getLogger(AlgorandTransactionSender.class);
 
     private final AlgodClient algodClient;
-    private final String[] txHeaders;
-    private final String[] txValues;
 
     public AlgorandTransactionSender(
             AlgodClient algodClient,
             AlgodClientHeaders algodClientHeaders
     ) {
 
-        this.txHeaders = add(algodClientHeaders.headers, "Content-Type");
-        this.txValues = add(algodClientHeaders.values, "application/x-binary");
+        this.algodClientHeaders = algodClientHeaders;
         this.algodClient = algodClient;
     }
 
@@ -36,7 +32,7 @@ public class AlgorandTransactionSender {
             String notes
     ) throws Exception {
         try {
-            TransactionParametersResponse params = algodClient.TransactionParams().execute(txHeaders, txValues).body();
+            TransactionParametersResponse params = algodClient.TransactionParams().execute(algodClientHeaders.headers, algodClientHeaders.values).body();
             Transaction txn = Transaction.PaymentTransactionBuilder()
                     .sender(senderPublicKey)
                     .note(notes.getBytes())

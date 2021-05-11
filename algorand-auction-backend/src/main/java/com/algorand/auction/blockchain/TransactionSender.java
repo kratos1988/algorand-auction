@@ -36,7 +36,7 @@ public class TransactionSender {
     ) {
         try {
             String transactionId = transactionSender.send(senderAddress, receiverAddress, amount, notes);
-            confirmationChecker.waitForConfirmation(transactionId, 5);
+            confirmationChecker.waitForConfirmation(transactionId, 10);
             logger.info("Executed transaction for sender:{}, receiver:{}, amount:{}", senderAddress, receiverAddress, amount);
             return right(transactionId);
         } catch (Exception e) {
