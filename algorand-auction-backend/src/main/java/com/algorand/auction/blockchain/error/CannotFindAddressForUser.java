@@ -2,10 +2,15 @@ package com.algorand.auction.blockchain.error;
 
 import com.algorand.auction.model.FailureError;
 
-public class CannotFindAddressForUser extends FailureError {
-    private final Exception e;
+public class CannotFindAddressForUser implements FailureError {
+    private final String senderPublicKey;
 
-    public CannotFindAddressForUser(Exception e) {
-        this.e = e;
+    public CannotFindAddressForUser(String senderPublicKey) {
+        this.senderPublicKey = senderPublicKey;
+    }
+
+    @Override
+    public String getMessage() {
+        return "Cannot find address for " + senderPublicKey;
     }
 }

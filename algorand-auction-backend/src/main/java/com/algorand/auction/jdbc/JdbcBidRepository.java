@@ -39,6 +39,7 @@ public class JdbcBidRepository implements BidRepository {
                     sqlParams);
             return right(null);
         } catch (Exception e) {
+            logger.error("Error saving the bid", e);
             return left(new DatabaseError(e));
         }
     }

@@ -25,7 +25,7 @@ class ExecuteTransactionUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new ExecuteTransactionUseCase(transactionRepository, userRepository);
+        underTest = new ExecuteTransactionUseCase(transactionRepository);
     }
 
     @Test

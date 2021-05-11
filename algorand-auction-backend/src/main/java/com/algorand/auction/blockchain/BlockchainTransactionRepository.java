@@ -52,7 +52,7 @@ public class BlockchainTransactionRepository implements TransactionRepository {
             return right(address);
         } catch (Exception e) {
             logger.error("Error when finding address for: {}", senderPublicKey, e);
-            return left(new CannotFindAddressForUser(e));
+            return left(new CannotFindAddressForUser(senderPublicKey));
         }
     }
 

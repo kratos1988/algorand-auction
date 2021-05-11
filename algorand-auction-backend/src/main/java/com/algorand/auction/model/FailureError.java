@@ -1,4 +1,5 @@
 package com.algorand.auction.model;
 
-public class FailureError {
+public interface FailureError {
+    String getMessage();
 }

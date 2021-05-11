@@ -25,10 +25,9 @@ public class AppConfiguration {
 
     @Bean
     public ExecuteTransactionUseCase executeTransactionUseCase(
-            TransactionRepository transactionRepository,
-            UserRepository userRepository
+            TransactionRepository transactionRepository
     ) {
-        return new ExecuteTransactionUseCase(transactionRepository, userRepository);
+        return new ExecuteTransactionUseCase(transactionRepository);
     }
 
 
