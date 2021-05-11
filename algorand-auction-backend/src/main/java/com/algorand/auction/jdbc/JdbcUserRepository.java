@@ -5,6 +5,8 @@ import com.algorand.auction.model.FailureError;
 import com.algorand.auction.model.User;
 import com.algorand.auction.usecase.repository.UserRepository;
 import io.vavr.control.Either;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -12,6 +14,8 @@ import static io.vavr.control.Either.left;
 import static io.vavr.control.Either.right;
 
 public class JdbcUserRepository implements UserRepository {
+    private final Logger logger = LoggerFactory.getLogger(JdbcUserRepository.class);
+
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public JdbcUserRepository(
@@ -42,8 +46,10 @@ public class JdbcUserRepository implements UserRepository {
             );
             if (user == null)
                 return left(new NoRecordError(userId));
+            logger.info("Found user by id: {}", userId, user);
             return right(user);
         } catch (Exception e) {
+            logger.error("Error retrieving user by id: {}", userId, e);
             return left(new DatabaseError(e));
         }
     }

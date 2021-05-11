@@ -1,4 +1,6 @@
 spring:
+  main:
+    lazy-initialization: false
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver

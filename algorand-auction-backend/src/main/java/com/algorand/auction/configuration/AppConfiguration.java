@@ -2,9 +2,11 @@ package com.algorand.auction.configuration;
 
 import com.algorand.auction.rest.UserAuthenticator;
 import com.algorand.auction.usecase.BidAmountForItemUseCase;
+import com.algorand.auction.usecase.ExecuteTransactionUseCase;
 import com.algorand.auction.usecase.RetrieveAuctionsUseCase;
 import com.algorand.auction.usecase.repository.AuctionRepository;
 import com.algorand.auction.usecase.repository.BidRepository;
+import com.algorand.auction.usecase.repository.TransactionRepository;
 import com.algorand.auction.usecase.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,16 @@ public class AppConfiguration {
         return new RetrieveAuctionsUseCase(auctionRepository, bidRepository);
     }
 
+
+    @Bean
+    public ExecuteTransactionUseCase executeTransactionUseCase(
+            TransactionRepository transactionRepository,
+            UserRepository userRepository
+    ) {
+        return new ExecuteTransactionUseCase(transactionRepository, userRepository);
+    }
+
+
     @Bean
     public BidAmountForItemUseCase bidAmountForItemUseCase(
             BidRepository bidRepository,
@@ -34,4 +46,5 @@ public class AppConfiguration {
     ) {
         return new UserAuthenticator(userRepository);
     }
+
 }

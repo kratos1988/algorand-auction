@@ -47,8 +47,11 @@ public class BlockchainTransactionRepository implements TransactionRepository {
 
     private Either<FailureError,Address> searchAddressFor(String senderPublicKey) {
         try {
-            return right(new Address(senderPublicKey));
+            Address address = new Address(senderPublicKey);
+            logger.info("Found address {} for publicKey: {}", address, senderPublicKey);
+            return right(address);
         } catch (Exception e) {
+            logger.error("Error when finding address for: {}", senderPublicKey, e);
             return left(new CannotFindAddressForUser(e));
         }
     }
@@ -60,6 +63,7 @@ public class BlockchainTransactionRepository implements TransactionRepository {
             else
                 return right(null);
         } catch (Exception e) {
+            logger.error("Error when checking balance for: {}", senderAddress, e);
             return left(new RetrieveBalanceError(e));
         }
     }

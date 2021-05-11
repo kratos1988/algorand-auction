@@ -20,8 +20,8 @@ public class AlgorandConfirmationChecker {
             AlgodClientHeaders algodClientHeaders
     ) {
         this.algodClient = algodClient;
-        this.algodApiKeyHeaders = algodClientHeaders.txHeaders;
-        this.algodApiKeyValues = algodClientHeaders.txValues;
+        this.algodApiKeyHeaders = algodClientHeaders.headers;
+        this.algodApiKeyValues = algodClientHeaders.values;
     }
 
     public PendingTransactionResponse waitForConfirmation(String txID, Integer timeout)

@@ -10,14 +10,20 @@ import io.vavr.Tuple2;
 import io.vavr.Tuple3;
 import io.vavr.Tuple4;
 import io.vavr.control.Either;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.vavr.control.Either.right;
 
+@Component
 public class FinalizeAuctionsJob {
+
+    private final Logger logger = LoggerFactory.getLogger(FinalizeAuctionsJob.class);
 
     private final ExecuteTransactionUseCase useCase;
     private final AuctionRepository auctionRepository;
@@ -34,9 +40,11 @@ public class FinalizeAuctionsJob {
         this.userRepository = userRepository;
     }
 
-    @Scheduled(cron = "0 * * ? * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void apply() {
+        logger.info("Starting job: FinalizeAuctionsJob");
         Either<FailureError, Void> result = auctionRepository.retrieveExpired().flatMap(this::createTransaction);
+        logger.info("FInished job: FinalizeAuctionsJob with result: {}", result.get());
     }
 
     private Either<FailureError, Void> createTransaction(List<Item> items) {
@@ -61,6 +69,7 @@ public class FinalizeAuctionsJob {
         transaction.setAmount(bid.getAmount());
         transaction.setBuyer(buyer);
         transaction.setSeller(seller);
+        logger.info("Executing use case with parameters: {}", transaction);
         return useCase.execute(transaction);
     }
 

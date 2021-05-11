@@ -5,6 +5,8 @@ import com.algorand.auction.model.Bid;
 import com.algorand.auction.model.FailureError;
 import com.algorand.auction.usecase.repository.BidRepository;
 import io.vavr.control.Either;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -15,6 +17,8 @@ import static io.vavr.control.Either.left;
 import static io.vavr.control.Either.right;
 
 public class JdbcBidRepository implements BidRepository {
+
+    private final Logger logger = LoggerFactory.getLogger(JdbcBidRepository.class);
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -54,8 +58,10 @@ public class JdbcBidRepository implements BidRepository {
             if (bid == null) {
                 return left(new NoRecordError(auctionId));
             }
+            logger.info("Retrieved highest bid for {}: {}", auctionId, bid);
             return right(bid);
         } catch (Exception e) {
+            logger.error("Error retrieving highest bid for {}: {}", auctionId, e);
             return left(new DatabaseError(e));
         }
     }
@@ -68,6 +74,7 @@ public class JdbcBidRepository implements BidRepository {
                     new BidRowMapper()
             ));
         } catch (Exception e) {
+            logger.error("Error retrieving all bids for {}: {}", auctionId, e);
             return left(new DatabaseError(e));
         }
     }
@@ -80,6 +87,7 @@ public class JdbcBidRepository implements BidRepository {
                     new BidRowMapper()
             ));
         } catch (Exception e) {
+            logger.error("Error retrieving last bids for {}: {}", auctionId, e);
             return left(new DatabaseError(e));
         }
     }

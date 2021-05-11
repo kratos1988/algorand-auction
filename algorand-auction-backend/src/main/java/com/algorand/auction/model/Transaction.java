@@ -44,4 +44,13 @@ public class Transaction {
     public int hashCode() {
         return Objects.hash(seller, amount, buyer);
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "seller=" + seller +
+                ", amount=" + amount +
+                ", buyer=" + buyer +
+                '}';
+    }
 }

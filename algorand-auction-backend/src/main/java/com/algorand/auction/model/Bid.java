@@ -53,4 +53,14 @@ public class Bid {
     public int hashCode() {
         return Objects.hash(auctionId, amount, status, userId);
     }
+
+    @Override
+    public String toString() {
+        return "Bid{" +
+                "auctionId=" + auctionId +
+                ", amount=" + amount +
+                ", status='" + status + '\'' +
+                ", userId=" + userId +
+                '}';
+    }
 }

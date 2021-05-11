@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static io.vavr.control.Either.left;
-import static io.vavr.control.Either.right;
 
 public class ExecuteTransactionUseCase {
     private final Logger logger = LoggerFactory.getLogger(ExecuteTransactionUseCase.class);
@@ -25,13 +24,14 @@ public class ExecuteTransactionUseCase {
 
     public Either<FailureError, String> execute(Transaction transaction) {
         try {
-            transactionRepository.saveTransaction(
+            Either<FailureError, String> result = transactionRepository.saveTransaction(
                     transaction.getBuyer().getPublicKey(),
                     transaction.getSeller().getPublicKey(),
                     transaction.getAmount(),
                     ""
             );
-            return right("");
+            logger.info("The result of the transaction is: {}", result);
+            return result;
         } catch (Exception e) {
             logger.error("Cannot execute transaction", e);
             return left(new DatabaseError(e));

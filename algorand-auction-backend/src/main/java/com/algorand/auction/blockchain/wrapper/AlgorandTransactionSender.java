@@ -24,8 +24,8 @@ public class AlgorandTransactionSender {
             AlgodClientHeaders algodClientHeaders
     ) {
 
-        this.txHeaders = add(algodClientHeaders.txHeaders, "Content-Type");
-        this.txValues = add(algodClientHeaders.txValues, "application/x-binary");
+        this.txHeaders = add(algodClientHeaders.headers, "Content-Type");
+        this.txValues = add(algodClientHeaders.values, "application/x-binary");
         this.algodClient = algodClient;
     }
 
