@@ -9,7 +9,6 @@ export interface Auction {
     initialValue: number;
     itemName: string;
     title: string;
-    bids: AuctionBid[];
     userId: number;
 }
 

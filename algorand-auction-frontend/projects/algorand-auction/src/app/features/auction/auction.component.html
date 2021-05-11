@@ -1,1 +1,36 @@
-<p>auction works!</p>
+<article class="row" *ngIf="(details | async) as details">
+    <section class="col-xs-4">
+        <div class="row center-xs">
+            <div class="col-xs-10 item-img">
+                <img src="{{details?.imageUrl}}" />
+            </div>
+        </div>
+    </section>
+    <section class="col-xs-4 mat-elevation-z3 detail-card">
+        <header>
+            <span class="mat-title">{{details.title}}</span>
+            <p class="mat-subtitle">{{details.expirationDate | date:'medium'}}</p>
+        </header>
+        <mat-divider></mat-divider>
+        <div class="detail-card-body">
+            <p class="mat-body-1 detail-card-description">{{details.description}}</p>
+            <p class="row between-xs"> 
+                <span class="mat-subheading-1">Highest bid: </span>
+                <span class="mat-h1">{{details.highestBid}}</span>
+            </p>
+            <form [formGroup]="bidForm" class="row">
+                <mat-form-field appearance="outline" class="col-xs-12">
+                    <mat-label>Your next offer:</mat-label>
+                    <input matInput type="number" placeholder="" formControlName="bid">
+                    <mat-icon matSuffix>trending_up</mat-icon>
+                </mat-form-field>
+            </form>
+            <button 
+                    mat-flat-button 
+                    color="primary" class="full-width"
+                    [disabled]="!bidForm.value?.bid"
+                    (click)="bid()">Place</button>
+        </div>
+    </section>
+</article>
+

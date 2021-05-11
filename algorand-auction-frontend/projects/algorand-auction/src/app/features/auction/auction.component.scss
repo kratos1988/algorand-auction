@@ -1,0 +1,34 @@
+:host {
+    margin-top: 36px;
+}
+
+.item-img img {
+    width: 100%;
+}
+
+.detail-card {
+    padding: 25px;
+}
+
+.detail-card-body {
+    padding: 10px 0;
+}
+
+.detail-card-description {
+    max-height: 130px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow: hidden;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
