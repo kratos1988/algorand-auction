@@ -18,13 +18,13 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:algorand.properties")
 public class BlockChainConfiguration {
 
-    @Value("${purestake.url}")
+    @Value("${purestake.main.url}")
     private String host;
 
-    @Value("${purestake.port}")
+    @Value("${purestake.main.port}")
     private int port;
 
-    @Value("${purestake.api_key}")
+    @Value("${purestake.main.api_key}")
     private String apiKey;
 
     private String[] ALGOD_API_KEY_HEADERS = {"X-API-Key"};

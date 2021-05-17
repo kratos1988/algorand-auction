@@ -82,4 +82,21 @@ public class JdbcUserRepository implements UserRepository {
                 new UserRowMapper());
     }
 
+    @Override
+    public Either<FailureError, User> getUserByPublicKey(String publicKey) {
+        try {
+            MapSqlParameterSource sqlParams = new MapSqlParameterSource()
+                    .addValue("publicKey", publicKey);
+            User user = namedParameterJdbcTemplate.queryForObject(
+                    "SELECT * FROM USERS WHERE PUBLIC_KEY=:publicKey",
+                    sqlParams,
+                    new UserRowMapper());
+            if (user == null)
+                return left(new NoRecordError(0)); // TODO fix field
+            return right(user);
+        }catch (Exception e) {
+            return left(new DatabaseError(e));
+        }
+    }
+
 }

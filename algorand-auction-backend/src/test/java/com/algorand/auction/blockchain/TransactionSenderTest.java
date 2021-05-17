@@ -29,6 +29,6 @@ class TransactionSenderTest {
         underTest.send(senderAccount.getAddress(), receiverAccount.getAddress(), amount, notes);
 
         verify(transactionSender).send(senderAccount.getAddress(), receiverAccount.getAddress(), amount, notes);
-        verify(confirmationChecker).waitForConfirmation("A_TX_ID", 5);
+        verify(confirmationChecker).waitForConfirmation("A_TX_ID", 10);
     }
 }

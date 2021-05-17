@@ -1,9 +1,9 @@
 package com.algorand.auction.configuration;
 
-import com.algorand.auction.rest.UserAuthenticator;
 import com.algorand.auction.usecase.BidAmountForItemUseCase;
 import com.algorand.auction.usecase.ExecuteTransactionUseCase;
 import com.algorand.auction.usecase.RetrieveAuctionsUseCase;
+import com.algorand.auction.usecase.RetrieveUserDataUseCase;
 import com.algorand.auction.usecase.repository.AuctionRepository;
 import com.algorand.auction.usecase.repository.BidRepository;
 import com.algorand.auction.usecase.repository.TransactionRepository;
@@ -40,10 +40,10 @@ public class AppConfiguration {
     }
 
     @Bean
-    public UserAuthenticator userAuthenticator(
+    public RetrieveUserDataUseCase userAuthenticator(
             UserRepository userRepository
     ) {
-        return new UserAuthenticator(userRepository);
+        return new RetrieveUserDataUseCase(userRepository, null); // TODO fix config
     }
 
 }

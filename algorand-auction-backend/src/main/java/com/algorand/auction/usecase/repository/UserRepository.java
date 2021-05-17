@@ -9,4 +9,5 @@ public interface UserRepository {
     Either<FailureError,User> getUserById(int userId);
     Either<FailureError, Integer> getIdByUsername(String userName);
     User authenticate(String username, String password);
+    Either<FailureError, User> getUserByPublicKey(String publicKey);
 }

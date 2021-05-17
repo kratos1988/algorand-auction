@@ -1,4 +1,4 @@
-package com.algorand.auction.rest;
+package com.algorand.auction.usecase;
 
 import com.algorand.auction.model.User;
 import com.algorand.auction.rest.response.AuthenticationResponse;
@@ -9,13 +9,15 @@ import java.util.Map;
 
 import static java.util.UUID.randomUUID;
 
-public class UserAuthenticator {
+public class RetrieveUserDataUseCase {
     private Map<String, String> userTokenMap = new HashMap();
 
     private final UserRepository userRepository;
+    private final TransactionHistoryRepository transactionHistoryRepository;
 
-    public UserAuthenticator(UserRepository userRepository) {
+    public RetrieveUserDataUseCase(UserRepository userRepository, TransactionHistoryRepository transactionHistoryRepository) {
         this.userRepository = userRepository;
+        this.transactionHistoryRepository = transactionHistoryRepository;
     }
 
     public String getTokenForUser(String username) {

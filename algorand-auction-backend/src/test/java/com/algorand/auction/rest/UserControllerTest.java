@@ -1,6 +1,7 @@
 package com.algorand.auction.rest;
 
 import com.algorand.auction.rest.response.AuthenticationResponse;
+import com.algorand.auction.usecase.RetrieveUserDataUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ class UserControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private UserAuthenticator useCase;
+    private RetrieveUserDataUseCase useCase;
 
     @Test
     void retrieveTokenForValidUser() throws Exception {

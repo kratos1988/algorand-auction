@@ -3,6 +3,8 @@ package com.algorand.auction.rest;
 import com.algorand.auction.model.User;
 import com.algorand.auction.rest.request.CredentialsRequest;
 import com.algorand.auction.rest.response.AuthenticationResponse;
+import com.algorand.auction.usecase.RetrieveUserDataUseCase;
+import com.algorand.auction.usecase.TransactionHistoryRepository;
 import com.algorand.auction.usecase.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,14 +14,15 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class UserAuthenticatorTest {
+class RetrieveUserDataUseCaseTest {
 
-    private UserAuthenticator underTest;
+    private RetrieveUserDataUseCase underTest;
     private UserRepository userRepository = mock(UserRepository.class);
+    private TransactionHistoryRepository transactionHistoryRepository = mock(TransactionHistoryRepository.class);
 
     @BeforeEach
     void setUp() {
-        underTest = new UserAuthenticator(userRepository);
+        underTest = new RetrieveUserDataUseCase(userRepository, transactionHistoryRepository);
     }
 
     @Test
