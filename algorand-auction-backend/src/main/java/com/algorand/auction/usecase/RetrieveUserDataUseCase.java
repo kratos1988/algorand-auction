@@ -27,10 +27,6 @@ public class RetrieveUserDataUseCase {
         this.transactionHistoryRepository = transactionHistoryRepository;
     }
 
-    public String getTokenForUser(String username) {
-        return userTokenMap.get(username);
-    }
-
     public Either<FailureError,AuthenticationResponse> authenticate(
             String username, String password
     ) {
@@ -41,8 +37,11 @@ public class RetrieveUserDataUseCase {
     }
 
     private Either<FailureError, AuthenticationResponse> buildResponse(User user, List<Transaction> transactions) {
-        String token = randomUUID().toString();
-        userTokenMap.put(user.getUserName(), token);
+        String token = userTokenMap.get(user.getUserName());
+        if (token == null) {
+            token = randomUUID().toString();
+            userTokenMap.put(user.getUserName(), token);
+        }
         return right(new AuthenticationResponse(user.getUserName(), token, transactions));
     }
 }

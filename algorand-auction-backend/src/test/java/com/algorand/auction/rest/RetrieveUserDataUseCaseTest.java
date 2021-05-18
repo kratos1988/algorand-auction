@@ -17,9 +17,10 @@ import static com.algorand.auction.model.TransactionBuilder.aTransaction;
 import static io.vavr.control.Either.left;
 import static io.vavr.control.Either.right;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -50,8 +51,23 @@ class RetrieveUserDataUseCaseTest {
         assertTrue(result.isRight());
         AuthenticationResponse response = result.get();
         assertThat(response.username, equalTo(user.getUserName()));
-        assertThat(response.token, equalTo(underTest.getTokenForUser(username)));
+        assertThat(response.token, notNullValue());
         assertThat(response.transactions, contains(transaction));
+    }
+
+    @Test
+    void retrieveTokenIfAlreadyAuthenticated() {
+        String username = "AN_USERNAME";
+        String password = "A_PASSWORD";
+        User user = new User();
+
+        when(userRepository.authenticate(username, password)).thenReturn(right(user));
+        when(transactionHistoryRepository.retrieveTransactionListFor(user)).thenReturn(right(emptyList()));
+        final CredentialsRequest credentials = new CredentialsRequest(username, password);
+        Either<FailureError, AuthenticationResponse> firstAuth = underTest.authenticate(credentials.username, credentials.password);
+        Either<FailureError, AuthenticationResponse> secondAuth = underTest.authenticate(credentials.username, credentials.password);
+
+        assertEquals(firstAuth.get().token, secondAuth.get().token);
     }
 
     @Test
