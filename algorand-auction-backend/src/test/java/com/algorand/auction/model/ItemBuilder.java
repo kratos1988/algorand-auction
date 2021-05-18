@@ -11,6 +11,7 @@ public class ItemBuilder {
     private BigDecimal initialValue;
     private LocalDateTime expirationDate;
     private String imageUrl;
+    private String status;
     private BigDecimal highestBid;
     private int userId;
 
@@ -35,6 +36,11 @@ public class ItemBuilder {
 
     public ItemBuilder withItemName(String name) {
         this.itemName = name;
+        return this;
+    }
+
+    public ItemBuilder withStatus(String status) {
+        this.status = status;
         return this;
     }
 
@@ -75,6 +81,7 @@ public class ItemBuilder {
         item.setImageUrl(imageUrl);
         item.setHighestBid(highestBid);
         item.setUserId(userId);
+        item.setStatus(status);
         return item;
     }
 }

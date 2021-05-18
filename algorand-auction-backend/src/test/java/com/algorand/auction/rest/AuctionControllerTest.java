@@ -54,6 +54,7 @@ class AuctionControllerTest {
                         .withExpirationDate(LocalDateTime.of(2021, 4, 12, 7, 20))
                         .withImageUrl("https://www.everypainterpaintshimself.com/images/made/article_images_new/Mona_Lisa_Large_440_666.jpg")
                         .withUserId(100)
+                        .withStatus("OPEN")
                         .build();
 
         when(useCase.retrieveAll()).thenReturn(right(singletonList(item)));
@@ -126,6 +127,7 @@ class AuctionControllerTest {
                         .withExpirationDate(LocalDateTime.of(2021, 4, 12, 7, 20))
                         .withImageUrl("https://www.everypainterpaintshimself.com/images/made/article_images_new/Mona_Lisa_Large_440_666.jpg")
                         .withUserId(100)
+                        .withStatus("OPEN")
                         .build();
 
         Auction auction = anAuction().withBids(asList(aBid, anotherBid)).withItem(item).build();

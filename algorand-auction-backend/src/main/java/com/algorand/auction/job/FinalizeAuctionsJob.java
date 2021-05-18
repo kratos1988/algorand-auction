@@ -2,8 +2,8 @@ package com.algorand.auction.job;
 
 import com.algorand.auction.model.*;
 import com.algorand.auction.usecase.ExecuteTransactionUseCase;
-import com.algorand.auction.usecase.repository.AuctionRepository;
 import com.algorand.auction.usecase.repository.BidRepository;
+import com.algorand.auction.usecase.repository.ItemRepository;
 import com.algorand.auction.usecase.repository.UserRepository;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.vavr.control.Either.right;
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class FinalizeAuctionsJob {
@@ -26,16 +27,16 @@ public class FinalizeAuctionsJob {
     private final Logger logger = LoggerFactory.getLogger(FinalizeAuctionsJob.class);
 
     private final ExecuteTransactionUseCase useCase;
-    private final AuctionRepository auctionRepository;
+    private final ItemRepository itemRepository;
     private final BidRepository bidRepository;
     private final UserRepository userRepository;
 
     public FinalizeAuctionsJob(
             ExecuteTransactionUseCase useCase,
-            AuctionRepository auctionRepository,
+            ItemRepository itemRepository,
             BidRepository bidRepository, UserRepository userRepository) {
         this.useCase = useCase;
-        this.auctionRepository = auctionRepository;
+        this.itemRepository = itemRepository;
         this.bidRepository = bidRepository;
         this.userRepository = userRepository;
     }
@@ -43,18 +44,20 @@ public class FinalizeAuctionsJob {
     @Scheduled(cron = "0 * * * * *")
     public void apply() {
         logger.info("Starting job: FinalizeAuctionsJob");
-        Either<FailureError, Void> result = auctionRepository.retrieveExpired().flatMap(this::createTransaction);
+        Either<FailureError, Void> result = itemRepository.retrieveExpired()
+                .flatMap(this::createTransaction)
+                .flatMap(items -> itemRepository.setStatusFinished(items.stream().map(Item::getId).collect(toList())));
         logger.info("FInished job: FinalizeAuctionsJob with result: {}", result.get());
     }
 
-    private Either<FailureError, Void> createTransaction(List<Item> items) {
+    private Either<FailureError, List<Item>> createTransaction(List<Item> items) {
         AtomicInteger errors = new AtomicInteger();
         AtomicInteger successes = new AtomicInteger();;
         items.stream().map(expiredItem -> createTransactionEither(expiredItem)).forEach(result -> result.fold(
                 failureError -> errors.getAndIncrement(),
                 transaction -> successes.getAndIncrement()
         ));
-        return right(null);
+        return right(items);
     }
 
     private Either<FailureError, String> createTransactionEither(Item expiredItem) {

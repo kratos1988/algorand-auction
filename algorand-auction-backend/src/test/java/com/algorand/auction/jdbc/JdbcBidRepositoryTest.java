@@ -55,7 +55,7 @@ class JdbcBidRepositoryTest {
                 emptyMap(),
                 new BidRowMapper());
         assertThat(savedBid.getAmount(), comparesEqualTo(amount));
-        assertThat(savedBid.getStatus(), is("INSERTED"));
+        assertThat(savedBid.getStatus(), is("OPEN"));
         assertThat(savedBid.getAuctionId(), is(auctionId));
         assertThat(savedBid.getUserId(), is(userId));
     }

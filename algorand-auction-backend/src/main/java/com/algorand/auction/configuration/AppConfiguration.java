@@ -4,8 +4,8 @@ import com.algorand.auction.blockchain.BlockchainTransactionHistoryRepository;
 import com.algorand.auction.blockchain.CompositeTransactionHistoryRepository;
 import com.algorand.auction.blockchain.converter.TransactionResponseToDomainConverter;
 import com.algorand.auction.usecase.*;
-import com.algorand.auction.usecase.repository.AuctionRepository;
 import com.algorand.auction.usecase.repository.BidRepository;
+import com.algorand.auction.usecase.repository.ItemRepository;
 import com.algorand.auction.usecase.repository.TransactionRepository;
 import com.algorand.auction.usecase.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
@@ -16,10 +16,10 @@ public class AppConfiguration {
 
     @Bean
     public RetrieveAuctionsUseCase retrieveAuctionsUseCase(
-            AuctionRepository auctionRepository,
+            ItemRepository itemRepository,
             BidRepository bidRepository
     ) {
-        return new RetrieveAuctionsUseCase(auctionRepository, bidRepository);
+        return new RetrieveAuctionsUseCase(itemRepository, bidRepository);
     }
 
 

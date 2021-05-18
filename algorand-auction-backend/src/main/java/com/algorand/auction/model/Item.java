@@ -14,6 +14,7 @@ public class Item {
     private LocalDateTime expirationDate;
     private String imageUrl;
     private int userId;
+    private String status;
 
 
     public int getId() {
@@ -86,5 +87,13 @@ public class Item {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }

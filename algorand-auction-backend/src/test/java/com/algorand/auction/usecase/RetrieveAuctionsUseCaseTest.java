@@ -5,8 +5,8 @@ import com.algorand.auction.model.Auction;
 import com.algorand.auction.model.Bid;
 import com.algorand.auction.model.FailureError;
 import com.algorand.auction.model.Item;
-import com.algorand.auction.usecase.repository.AuctionRepository;
 import com.algorand.auction.usecase.repository.BidRepository;
+import com.algorand.auction.usecase.repository.ItemRepository;
 import io.vavr.control.Either;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,13 +30,13 @@ import static org.mockito.Mockito.when;
 
 class RetrieveAuctionsUseCaseTest {
 
-    AuctionRepository auctionRepository = mock(AuctionRepository.class);
+    ItemRepository itemRepository = mock(ItemRepository.class);
     BidRepository bidRepository = mock(BidRepository.class);
     private RetrieveAuctionsUseCase underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new RetrieveAuctionsUseCase(auctionRepository, bidRepository);
+        underTest = new RetrieveAuctionsUseCase(itemRepository, bidRepository);
     }
 
     @Test
@@ -53,7 +53,7 @@ class RetrieveAuctionsUseCaseTest {
                 .withHighestBid(new BigDecimal("22.89"))
                 .build();
 
-        when(auctionRepository.retrieveAll()).thenReturn(right(singletonList(anItem)));
+        when(itemRepository.retrieveAll()).thenReturn(right(singletonList(anItem)));
         Either<FailureError, List<Item>> result = underTest.retrieveAll();
         assertTrue(result.isRight());
         List<Item> retrievedItems = result.get();
@@ -95,7 +95,7 @@ class RetrieveAuctionsUseCaseTest {
         Bid anotherBid = aBid().build();
 
 
-        when(auctionRepository.retrieveBy(1)).thenReturn(right(anItem));
+        when(itemRepository.retrieveBy(1)).thenReturn(right(anItem));
         when(bidRepository.getAllBidsFor(1)).thenReturn(right(asList(aBid, anotherBid)));
 
         Either<FailureError, Auction> result = underTest.retrieveById(1);
@@ -111,7 +111,7 @@ class RetrieveAuctionsUseCaseTest {
 
 
         DatabaseError error = new DatabaseError(new RuntimeException("an Error"));
-        when(auctionRepository.retrieveAll()).thenReturn(left(error));
+        when(itemRepository.retrieveAll()).thenReturn(left(error));
 
         Either<FailureError, List<Item>> result = underTest.retrieveAll();
         assertTrue(result.isLeft());
@@ -125,7 +125,7 @@ class RetrieveAuctionsUseCaseTest {
 
 
         DatabaseError error = new DatabaseError(new RuntimeException("an Error"));
-        when(auctionRepository.retrieveBy(1)).thenReturn(left(error));
+        when(itemRepository.retrieveBy(1)).thenReturn(left(error));
 
         Either<FailureError, Auction> result = underTest.retrieveById(1);
         assertTrue(result.isLeft());

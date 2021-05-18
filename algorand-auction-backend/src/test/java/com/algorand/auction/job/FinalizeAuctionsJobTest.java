@@ -5,8 +5,8 @@ import com.algorand.auction.model.Item;
 import com.algorand.auction.model.Transaction;
 import com.algorand.auction.model.User;
 import com.algorand.auction.usecase.ExecuteTransactionUseCase;
-import com.algorand.auction.usecase.repository.AuctionRepository;
 import com.algorand.auction.usecase.repository.BidRepository;
+import com.algorand.auction.usecase.repository.ItemRepository;
 import com.algorand.auction.usecase.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,14 +24,14 @@ import static org.mockito.Mockito.*;
 class FinalizeAuctionsJobTest {
 
     private ExecuteTransactionUseCase useCase = mock(ExecuteTransactionUseCase.class);
-    private AuctionRepository auctionRepository = mock(AuctionRepository.class);
+    private ItemRepository itemRepository = mock(ItemRepository.class);
     private BidRepository bidRepository = mock(BidRepository.class);
     private UserRepository userRepository = mock(UserRepository.class);
     private FinalizeAuctionsJob underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new FinalizeAuctionsJob(useCase, auctionRepository, bidRepository, userRepository);
+        underTest = new FinalizeAuctionsJob(useCase, itemRepository, bidRepository, userRepository);
     }
 
     @Test
@@ -62,18 +62,19 @@ class FinalizeAuctionsJobTest {
                         .withAmount(secondAmount)
                         .build();
 
-        when(auctionRepository.retrieveExpired()).thenReturn(right(asList(firstExpired, secondExpired)));
+        when(itemRepository.retrieveExpired()).thenReturn(right(asList(firstExpired, secondExpired)));
         when(bidRepository.getHighestBidFor(1)).thenReturn(right(firstHighestBid));
         when(bidRepository.getHighestBidFor(2)).thenReturn(right(secondHighestBid));
         when(userRepository.getUserById(1)).thenReturn(right(firstBuyer));
         when(userRepository.getUserById(3)).thenReturn(right(firstSeller));
         when(userRepository.getUserById(2)).thenReturn(right(secondBuyer));
         when(userRepository.getUserById(4)).thenReturn(right(secondSeller));
+        when(itemRepository.setStatusFinished(asList(1, 2))).thenReturn(right(null));
         when(useCase.execute(any())).thenReturn(right(""));
 
         underTest.apply();
 
-        verify(auctionRepository).retrieveExpired();
+        verify(itemRepository).retrieveExpired();
         verify(bidRepository).getHighestBidFor(1);
         verify(bidRepository).getHighestBidFor(2);
         verify(userRepository).getUserById(1);
@@ -82,5 +83,7 @@ class FinalizeAuctionsJobTest {
         verify(userRepository).getUserById(4);
         verify(useCase, times(1)).execute(eq(expectedFirstTransaction));
         verify(useCase, times(1)).execute(eq(expectedSecondTransaction));
+        verify(itemRepository, times(1)).setStatusFinished(asList(1, 2));
+
     }
 }

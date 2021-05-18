@@ -18,6 +18,7 @@ public class AuctionRowMapper implements RowMapper<Item> {
         item.setExpirationDate(resultSet.getTimestamp("EXPIRATION_DATE").toLocalDateTime());
         item.setImageUrl(resultSet.getString("IMAGE_URL"));
         item.setUserId(resultSet.getInt("USER_ID"));
+        item.setStatus(resultSet.getString("STATUS"));
         return item;
 
     }

@@ -18,12 +18,12 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.H2;
 
-class JdbcAuctionRepositoryTest {
+class JdbcItemRepositoryTest {
 
     public static final LocalDateTime EXPIRATION_DATE = LocalDateTime.of(2021, 4, 12, 7, 20);
 
     private NamedParameterJdbcTemplate jdbcTemplate;
-    private JdbcAuctionRepository underTest;
+    private JdbcItemRepository underTest;
 
     @BeforeEach
     void setUp() {
@@ -34,7 +34,7 @@ class JdbcAuctionRepositoryTest {
                 .build();
 
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        underTest = new JdbcAuctionRepository(jdbcTemplate);
+        underTest = new JdbcItemRepository(jdbcTemplate);
     }
 
     @Test
@@ -45,17 +45,27 @@ class JdbcAuctionRepositoryTest {
         assertTrue(result.isRight());
         List<Item> retrievedItems = result.get();
 
-        assertThat(retrievedItems, hasSize(1));
+        assertThat(retrievedItems, hasSize(2));
 
-        Item item = retrievedItems.get(0);
+        Item firstItem = retrievedItems.get(0);
 
-        assertThat(item.getId(), equalTo(1));
-        assertThat(item.getInitialValue(), equalTo(new BigDecimal("10.99")));
-        assertThat(item.getItemName(), equalTo("AN_ITEM_NAME"));
-        assertThat(item.getDescription(), equalTo("AN_ITEM_DESCRIPTION"));
-        assertThat(item.getTitle(), equalTo("A_TITLE"));
-        assertThat(item.getExpirationDate(), is(equalTo(EXPIRATION_DATE)));
-        assertThat(item.getImageUrl(), equalTo("AN_IMAGE_URL"));
+        assertThat(firstItem.getId(), equalTo(1));
+        assertThat(firstItem.getInitialValue(), equalTo(new BigDecimal("10.99")));
+        assertThat(firstItem.getItemName(), equalTo("AN_ITEM_NAME"));
+        assertThat(firstItem.getDescription(), equalTo("AN_ITEM_DESCRIPTION"));
+        assertThat(firstItem.getTitle(), equalTo("A_TITLE"));
+        assertThat(firstItem.getExpirationDate(), is(equalTo(EXPIRATION_DATE)));
+        assertThat(firstItem.getImageUrl(), equalTo("AN_IMAGE_URL"));
+
+        Item secondItem = retrievedItems.get(1);
+
+        assertThat(secondItem.getId(), equalTo(2));
+        assertThat(secondItem.getInitialValue(), equalTo(new BigDecimal("11.99")));
+        assertThat(secondItem.getItemName(), equalTo("ANOTHER_ITEM_NAME"));
+        assertThat(secondItem.getDescription(), equalTo("ANOTHER_ITEM_DESCRIPTION"));
+        assertThat(secondItem.getTitle(), equalTo("ANOTHER_TITLE"));
+        assertThat(secondItem.getExpirationDate(), is(equalTo(EXPIRATION_DATE.plusMinutes(1))));
+        assertThat(secondItem.getImageUrl(), equalTo("ANOTHER_IMAGE_URL"));
 
     }
 
