@@ -17,7 +17,6 @@ import java.util.List;
 
 import static com.algorand.auction.model.BidBuilder.aBid;
 import static java.math.BigDecimal.TEN;
-import static java.util.Collections.emptyMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,11 +28,10 @@ class JdbcBidRepositoryTest {
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     private JdbcBidRepository underTest;
-    private static DataSource dataSource;
 
     @BeforeAll
     public void setup() {
-        dataSource = new EmbeddedDatabaseBuilder()
+        DataSource dataSource = new EmbeddedDatabaseBuilder()
                 .setType(H2)
                 .addScript("sql/schema.sql")
                 .addScript("jdbc/test-data.sql")
@@ -50,10 +48,11 @@ class JdbcBidRepositoryTest {
         int auctionId = 2;
 
         underTest.saveBid(amount, userId, auctionId);
-        Bid savedBid = jdbcTemplate.queryForObject(
+        List<Bid> savedBids = jdbcTemplate.query(
                 "SELECT * FROM BIDS WHERE AUCTION_ID = 2",
-                emptyMap(),
                 new BidRowMapper());
+        assertThat(savedBids, hasSize(1));
+        Bid savedBid = savedBids.get(0);
         assertThat(savedBid.getAmount(), comparesEqualTo(amount));
         assertThat(savedBid.getStatus(), is("OPEN"));
         assertThat(savedBid.getAuctionId(), is(auctionId));
@@ -88,9 +87,9 @@ class JdbcBidRepositoryTest {
         Either<FailureError,List<Bid>> result = underTest.getLastBidsFor(3);
 
         BigDecimal startingAmount = new BigDecimal("23.99");
-        List<Bid> expctedList = new ArrayList<Bid>();
+        List<Bid> expectedList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            expctedList.add(
+            expectedList.add(
                     aBid()
                             .withAuctionId(3)
                             .withAmount(startingAmount.add(new BigDecimal(i)))
@@ -105,7 +104,7 @@ class JdbcBidRepositoryTest {
 
         assertThat(bids.size(), is(5));
 
-        assertThat(bids, containsInAnyOrder(expctedList.toArray()));
+        assertThat(bids, containsInAnyOrder(expectedList.toArray()));
     }
 
     @Test
