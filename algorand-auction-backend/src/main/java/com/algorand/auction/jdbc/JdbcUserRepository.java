@@ -66,20 +66,27 @@ public class JdbcUserRepository implements UserRepository {
             if (userId == null)
                 return left(new NoRecordError(0)); // TODO fix field
             return right(userId);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return left(new DatabaseError(e));
         }
     }
 
     @Override
-    public User authenticate(String username, String password) {
-        MapSqlParameterSource sqlParams = new MapSqlParameterSource()
-                .addValue("username", username)
-                .addValue("password", password);
-        return namedParameterJdbcTemplate.queryForObject(
-                "SELECT * FROM USERS WHERE USER_NAME=:username AND PASSWORD=:password",
-                sqlParams,
-                new UserRowMapper());
+    public Either<FailureError, User> authenticate(String username, String password) {
+        try {
+            MapSqlParameterSource sqlParams = new MapSqlParameterSource()
+                    .addValue("username", username)
+                    .addValue("password", password);
+            User user = namedParameterJdbcTemplate.queryForObject(
+                    "SELECT * FROM USERS WHERE USER_NAME=:username AND PASSWORD=:password",
+                    sqlParams,
+                    new UserRowMapper());
+            if (user == null)
+                return left(new NoRecordError(0));
+            return right(user);
+        } catch (Exception e) {
+            return left(new DatabaseError(e));
+        }
     }
 
     @Override
@@ -94,7 +101,7 @@ public class JdbcUserRepository implements UserRepository {
             if (user == null)
                 return left(new NoRecordError(0)); // TODO fix field
             return right(user);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return left(new DatabaseError(e));
         }
     }

@@ -19,11 +19,9 @@ public class AlgorandBalanceChecker implements BalanceChecker {
 
     public AlgorandBalanceChecker(
             AlgodClient algodClient,
-            String[] algodApiKeyHeaders,
-            String[] algodApiKeyValues
-    ) {
-        this.algodApiKeyHeaders = algodApiKeyHeaders;
-        this.algodApiKeyValues = algodApiKeyValues;
+            AlgodClientHeaders algodClientHeaders) {
+        this.algodApiKeyHeaders = algodClientHeaders.headers;
+        this.algodApiKeyValues = algodClientHeaders.values;
         this.algodClient = algodClient;
     }
 

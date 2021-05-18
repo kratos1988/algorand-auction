@@ -1,7 +1,9 @@
 package com.algorand.auction.rest;
 
+import com.algorand.auction.model.FailureError;
 import com.algorand.auction.rest.response.AuthenticationResponse;
 import com.algorand.auction.usecase.RetrieveUserDataUseCase;
+import io.vavr.control.Either;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,11 +29,11 @@ public class UserController {
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody AuthenticationRequest request
     ) {
-        AuthenticationResponse authenticationResponse = retrieveUserDataUseCase.authenticate(request.getUsername(), request.getPassword());
-        if (authenticationResponse == null) {
+        Either<FailureError, AuthenticationResponse> authenticationResponse = retrieveUserDataUseCase.authenticate(request.getUsername(), request.getPassword());
+        if (authenticationResponse.isLeft()) {
             return status(401).build();
         }
-        return ok(authenticationResponse);
+        return ok(authenticationResponse.get());
     }
 
 }

@@ -1,5 +1,8 @@
 package com.algorand.auction.rest;
 
+import com.algorand.auction.jdbc.NoRecordError;
+import com.algorand.auction.model.Transaction;
+import com.algorand.auction.model.User;
 import com.algorand.auction.rest.response.AuthenticationResponse;
 import com.algorand.auction.usecase.RetrieveUserDataUseCase;
 import org.junit.jupiter.api.Test;
@@ -12,7 +15,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
+import static com.algorand.auction.model.TransactionBuilder.aTransaction;
+import static com.algorand.auction.model.UserBuilder.anUser;
+import static io.vavr.control.Either.left;
+import static io.vavr.control.Either.right;
+import static java.util.Arrays.asList;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -29,10 +38,18 @@ class UserControllerTest {
     private RetrieveUserDataUseCase useCase;
 
     @Test
-    void retrieveTokenForValidUser() throws Exception {
+    void authenticateUser() throws Exception {
 
+        User buyer = anUser().withPublicKey("A_PUBLIC_KEY").withUserName("AN_USERNAME").build();
+        User seller = anUser().withPublicKey("ANOTHER_PUBLIC_KEY").withUserName("ANOTHER_USERNAME").build();
+        Transaction transaction = aTransaction()
+                .withBuyer(buyer)
+                .withSeller(seller)
+                .withAmount(new BigDecimal("1936"))
+                .build();
         String token = "A_TOKEN";
-        when(useCase.authenticate("username", "password")).thenReturn(new AuthenticationResponse("username", token));
+        when(useCase.authenticate("username", "password"))
+                .thenReturn(right(new AuthenticationResponse("username", token, asList(transaction))));
 
         mockMvc.perform(
                 post("/api/authenticate")
@@ -45,7 +62,7 @@ class UserControllerTest {
     @Test
     void unauthorizeUser() throws Exception {
 
-        when(useCase.authenticate("username", "password")).thenReturn(null);
+        when(useCase.authenticate("username", "password")).thenReturn(left(new NoRecordError(0)));
 
         mockMvc.perform(
                 post("/api/authenticate")

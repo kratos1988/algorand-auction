@@ -1,9 +1,9 @@
 package com.algorand.auction.configuration;
 
-import com.algorand.auction.usecase.BidAmountForItemUseCase;
-import com.algorand.auction.usecase.ExecuteTransactionUseCase;
-import com.algorand.auction.usecase.RetrieveAuctionsUseCase;
-import com.algorand.auction.usecase.RetrieveUserDataUseCase;
+import com.algorand.auction.blockchain.BlockchainTransactionHistoryRepository;
+import com.algorand.auction.blockchain.CompositeTransactionHistoryRepository;
+import com.algorand.auction.blockchain.converter.TransactionResponseToDomainConverter;
+import com.algorand.auction.usecase.*;
 import com.algorand.auction.usecase.repository.AuctionRepository;
 import com.algorand.auction.usecase.repository.BidRepository;
 import com.algorand.auction.usecase.repository.TransactionRepository;
@@ -41,9 +41,21 @@ public class AppConfiguration {
 
     @Bean
     public RetrieveUserDataUseCase userAuthenticator(
+            UserRepository userRepository,
+            TransactionHistoryRepository transactionHistoryRepository
+    ) {
+        return new RetrieveUserDataUseCase(userRepository, transactionHistoryRepository);
+    }
+
+    @Bean
+    public TransactionHistoryRepository transactionHistoryRepository(
+            BlockchainTransactionHistoryRepository blockchainTransactionHistoryRepository,
             UserRepository userRepository
     ) {
-        return new RetrieveUserDataUseCase(userRepository, null); // TODO fix config
+        return new CompositeTransactionHistoryRepository(
+                blockchainTransactionHistoryRepository,
+                userRepository,
+                new TransactionResponseToDomainConverter());
     }
 
 }

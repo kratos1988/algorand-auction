@@ -1,4 +1,17 @@
 {
   "username": "username",
-  "token": "A_TOKEN"
+  "token": "A_TOKEN",
+  "transactions": [
+    {
+      "seller": {
+        "userName": "ANOTHER_USERNAME",
+        "publicKey": "ANOTHER_PUBLIC_KEY"
+      },
+      "buyer": {
+        "userName": "AN_USERNAME",
+        "publicKey": "A_PUBLIC_KEY"
+      },
+      "amount": 1936
+    }
+  ]
 }

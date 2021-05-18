@@ -8,6 +8,6 @@ public interface UserRepository {
     String getPublicKeyFor(String userId);
     Either<FailureError,User> getUserById(int userId);
     Either<FailureError, Integer> getIdByUsername(String userName);
-    User authenticate(String username, String password);
+    Either<FailureError,User> authenticate(String username, String password);
     Either<FailureError, User> getUserByPublicKey(String publicKey);
 }

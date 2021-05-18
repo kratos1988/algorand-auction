@@ -2,6 +2,7 @@ package com.algorand.auction.configuration;
 
 import com.algorand.algosdk.v2.client.common.AlgodClient;
 import com.algorand.auction.blockchain.BalanceChecker;
+import com.algorand.auction.blockchain.BlockchainTransactionHistoryRepository;
 import com.algorand.auction.blockchain.BlockchainTransactionRepository;
 import com.algorand.auction.blockchain.TransactionSender;
 import com.algorand.auction.blockchain.wrapper.AlgodClientHeaders;
@@ -19,10 +20,16 @@ import org.springframework.context.annotation.PropertySource;
 public class BlockChainConfiguration {
 
     @Value("${purestake.main.url}")
-    private String host;
+    private String netHost;
 
     @Value("${purestake.main.port}")
-    private int port;
+    private int netPort;
+
+    @Value("${purestake.indexer.url}")
+    private String indexerHost;
+
+    @Value("${purestake.indexer.port}")
+    private int indexerPort;
 
     @Value("${purestake.main.api_key}")
     private String apiKey;
@@ -41,13 +48,22 @@ public class BlockChainConfiguration {
     public BalanceChecker balanceChecker(
             AlgodClient algodClient
     ) {
-        return new AlgorandBalanceChecker(algodClient, ALGOD_API_KEY_HEADERS, new String[]{apiKey});
+        return new AlgorandBalanceChecker(algodClient, getAlgodClientHeaders());
     }
 
     @Bean
     public AlgodClient algodClient(
     ) {
-        return new AlgodClient(host, port, apiKey);
+        return new AlgodClient(netHost, netPort, apiKey);
+    }
+
+    @Bean
+    public BlockchainTransactionHistoryRepository blockchainTransactionHistoryRepository() {
+        return new BlockchainTransactionHistoryRepository(
+                indexerHost,
+                indexerPort,
+                getAlgodClientHeaders()
+        );
     }
 
 
@@ -55,10 +71,13 @@ public class BlockChainConfiguration {
     public TransactionSender transactionSender(
             AlgodClient algodClient
     ) {
-        AlgodClientHeaders algodClientHeaders = new AlgodClientHeaders(ALGOD_API_KEY_HEADERS, new String[]{apiKey});
-        AlgorandTransactionSender transactionSender = new AlgorandTransactionSender(algodClient, algodClientHeaders);
-        AlgorandConfirmationChecker confirmationChecker = new AlgorandConfirmationChecker(algodClient, algodClientHeaders);
+        AlgorandTransactionSender transactionSender = new AlgorandTransactionSender(algodClient, getAlgodClientHeaders());
+        AlgorandConfirmationChecker confirmationChecker = new AlgorandConfirmationChecker(algodClient, getAlgodClientHeaders());
         return new TransactionSender(transactionSender, confirmationChecker);
+    }
+
+    private AlgodClientHeaders getAlgodClientHeaders() {
+        return new AlgodClientHeaders(ALGOD_API_KEY_HEADERS, new String[]{apiKey});
     }
 
 

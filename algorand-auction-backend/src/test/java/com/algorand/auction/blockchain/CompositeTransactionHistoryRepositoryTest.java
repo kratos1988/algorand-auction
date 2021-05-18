@@ -109,7 +109,6 @@ class CompositeTransactionHistoryRepositoryTest {
         Either<FailureError, List<Transaction>> result = underTest.retrieveTransactionListFor(seller);
 
         assertTrue(result.isLeft());
-        ;
         assertThat(result.getLeft(), equalTo(expectedException));
     }
 }
