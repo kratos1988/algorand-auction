@@ -12,7 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import static org.mockito.Mockito.verify;
+import static io.vavr.control.Either.left;
+import static io.vavr.control.Either.right;
+import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,13 +32,26 @@ class BidControllerTest {
     @Test
     void placeBid() throws Exception {
 
+        when(useCase.bid(BigDecimal.TEN, 1, "AN_USER_NAME")).thenReturn(right(null));
         mockMvc.perform(
                     post("/api/bid/place")
                         .contentType(APPLICATION_JSON)
                         .content(readJson("json/place_bid_request.json")))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
-        verify(useCase).bid(BigDecimal.TEN, 1, "AN_USER_NAME");
+        verify(useCase, times(1)).bid(BigDecimal.TEN, 1, "AN_USER_NAME");
+    }
+
+    @Test
+    void noPlacingBid() throws Exception {
+
+        when(useCase.bid(BigDecimal.TEN, 1, "AN_USER_NAME")).thenReturn(left(null));
+        mockMvc.perform(
+                post("/api/bid/place")
+                        .contentType(APPLICATION_JSON)
+                        .content(readJson("json/place_bid_request.json")))
+                .andExpect(status().isNotFound());
+
     }
 
     private String readJson(String fileName) throws IOException {
