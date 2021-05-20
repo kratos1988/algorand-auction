@@ -14,8 +14,6 @@ export class PlaceBidService {
     const headers = {'Content-Type': 'application/json'};
 
     return this.http.post<any>(`/api/bid/place`, {...placeBid}, {headers})
-        .pipe(
-            catchError(() => of({status: 200})),
-        );
+        .pipe(catchError((error) => of({})));
   }
 }

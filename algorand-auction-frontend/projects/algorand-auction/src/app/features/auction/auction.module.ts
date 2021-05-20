@@ -13,6 +13,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {ReactiveFormsModule} from '@angular/forms';
 import {PlaceBidService} from '../../services/place-bid.service';
+import {MatTableModule} from '@angular/material/table';
+import {MatChipsModule} from '@angular/material/chips';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatDividerModule,
@@ -20,6 +22,8 @@ const ANGULAR_MATERIAL_MODULES = [
   MatInputModule,
   MatIconModule,
   MatButtonModule,
+  MatTableModule,
+  MatChipsModule,
 ];
 
 @NgModule({

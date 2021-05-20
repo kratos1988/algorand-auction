@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {Observable, Subject} from 'rxjs';
-import {map, switchMap, withLatestFrom} from 'rxjs/operators';
+import {map, startWith, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {Auction} from '../../models/auction.interface';
 import {AuctionBid} from '../../models/bid.interface';
 import {AuctionDetailsService} from '../../services/auction-detail.service';
@@ -15,27 +15,38 @@ import {PlaceBidService} from '../../services/place-bid.service';
   styleUrls: ['./auction.component.scss'],
 })
 export class AuctionComponent implements OnInit, OnDestroy {
-  details: Observable<Auction> = this.auctionDetailsService
+  readonly refreshBids: Subject<void> = new Subject();
+  readonly unsubscribe$: Subject<void> = new Subject();
+  readonly amount$: Subject<number> = new Subject();
+
+  readonly details$: Observable<Auction> = this.auctionDetailsService
       .fetch(Number(this.route.snapshot.paramMap.get('auctionId')))
       .pipe(
           map((details) => details.item),
       );
-  bids: Observable<AuctionBid[]> = this.bidsService.fetch(Number(this.route.snapshot.paramMap.get('auctionId')));
+  readonly bids$: Observable<AuctionBid[]> = this.refreshBids.pipe(
+      startWith({}),
+      switchMap(() => this.bidsService.fetch(Number(this.route.snapshot.paramMap.get('auctionId')))),
+      map((bids) => bids.reverse()),
+      tap((bids) => this.highestBid = bids[0]?.amount),
+  );
 
   readonly bidForm: FormGroup = new FormGroup({
     bid: new FormControl('', [Validators.required]),
   });
 
-  readonly unsubscribe$: Subject<void> = new Subject();
-  readonly amount$: Subject<number> = new Subject();
   readonly placeBid$: Observable<any> = this.amount$.pipe(
-      withLatestFrom(this.details),
+      withLatestFrom(this.details$),
       switchMap(([amount, details]) => this.placeBidService.place({
         amount,
         auctionId: details.id,
-        username: `${details.userId}`,
+        userName: `manuel_m`,
       })),
   );
+
+  readonly displayedColumns: string[] = ['user', 'amount'];
+  datasource: AuctionBid[] = [];
+  highestBid: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,7 +56,10 @@ export class AuctionComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.placeBid$.subscribe((v) => console.log(v));
+    this.placeBid$.subscribe((v) => this.refreshBids.next());
+    this.bids$.subscribe((bids) => {
+      this.datasource = bids;
+    });
   }
 
   ngOnDestroy() {

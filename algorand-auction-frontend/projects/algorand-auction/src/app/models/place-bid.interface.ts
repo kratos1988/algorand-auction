@@ -1,5 +1,5 @@
 export interface PlaceBidRequest {
-    username: string;
+    userName: string;
     amount: number;
     auctionId: number;
 }

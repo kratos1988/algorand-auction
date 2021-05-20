@@ -10,4 +10,5 @@ export const catalogue: Auction[] = [{
   'expirationDate': '2021-04-12T07:20:00',
   'imageUrl': 'https://www.everypainterpaintshimself.com/images/made/article_images_new/Mona_Lisa_Large_440_666.jpg',
   'userId': 100,
+  'status': 'SOLD',
 }];
