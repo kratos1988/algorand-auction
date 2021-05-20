@@ -64,10 +64,13 @@ public class JdbcItemRepository implements ItemRepository {
     @Override
     public Either<FailureError, List<Item>> retrieveExpired() {
         try {
-            return right(namedParameterJdbcTemplate.query(
+            List<Item> itemList = namedParameterJdbcTemplate.query(
                     SELECT_EXPIRED_AUCTIONS,
                     new AuctionRowMapper()
-            ));
+            );
+            if (itemList.isEmpty())
+                return left(new NoRecordError(0));
+            return right(itemList);
         } catch (Exception e) {
             return left(new DatabaseError(e));
         }

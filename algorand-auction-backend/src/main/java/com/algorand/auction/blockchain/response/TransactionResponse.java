@@ -8,12 +8,6 @@ public class TransactionResponse {
     @JsonProperty("payment-transaction")
     private PaymentTransactionResponse paymentTransaction;
 
-    public TransactionResponse(String note, String sender, PaymentTransactionResponse paymentTransaction) {
-        this.note = note;
-        this.sender = sender;
-        this.paymentTransaction = paymentTransaction;
-    }
-
     public String getNote() {
         return note;
     }

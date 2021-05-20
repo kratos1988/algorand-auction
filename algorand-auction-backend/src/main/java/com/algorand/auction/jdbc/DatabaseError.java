@@ -11,6 +11,6 @@ public class DatabaseError implements FailureError {
 
     @Override
     public String getMessage() {
-        return "Error accessing the database";
+        return "Error accessing the database: " + e.getMessage();
     }
 }

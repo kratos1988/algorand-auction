@@ -28,6 +28,10 @@ public class TransactionResponseBuilder {
     }
 
     public TransactionResponse build() {
-        return new TransactionResponse(note, sender, paymentTransaction);
+        TransactionResponse response = new TransactionResponse();
+        response.setNote(note);
+        response.setSender(sender);
+        response.setPaymentTransaction(paymentTransaction);
+        return response;
     }
 }

@@ -47,7 +47,10 @@ public class FinalizeAuctionsJob {
         Either<FailureError, Void> result = itemRepository.retrieveExpired()
                 .flatMap(this::createTransaction)
                 .flatMap(items -> itemRepository.setStatusFinished(items.stream().map(Item::getId).collect(toList())));
-        logger.info("FInished job: FinalizeAuctionsJob with result: {}", result.get());
+        if(result.isLeft())
+            logger.warn("FInished job: FinalizeAuctionsJob with result false");
+        else
+            logger.info("FInished job: FinalizeAuctionsJob with result: {}", result.get());
     }
 
     private Either<FailureError, List<Item>> createTransaction(List<Item> items) {
@@ -57,6 +60,8 @@ public class FinalizeAuctionsJob {
                 failureError -> errors.getAndIncrement(),
                 transaction -> successes.getAndIncrement()
         ));
+        logger.info("Number of successful transactions: " + successes.get());
+        logger.info("Number of failing transactions: " + errors.get());
         return right(items);
     }
 

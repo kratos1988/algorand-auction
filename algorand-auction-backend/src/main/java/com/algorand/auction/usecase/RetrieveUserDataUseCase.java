@@ -28,7 +28,8 @@ public class RetrieveUserDataUseCase {
     }
 
     public Either<FailureError,AuthenticationResponse> authenticate(
-            String username, String password
+            String username,
+            String password
     ) {
         return userRepository.authenticate(username, password)
                 .flatMap(user -> transactionHistoryRepository.retrieveTransactionListFor(user).map(transactions -> Tuple.of(user,transactions)))

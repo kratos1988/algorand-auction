@@ -4,6 +4,8 @@ import com.algorand.auction.model.FailureError;
 import com.algorand.auction.rest.response.AuthenticationResponse;
 import com.algorand.auction.usecase.RetrieveUserDataUseCase;
 import io.vavr.control.Either;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +19,8 @@ import static org.springframework.http.ResponseEntity.status;
 @RequestMapping(value = "/api")
 public class UserController {
 
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     private final RetrieveUserDataUseCase retrieveUserDataUseCase;
 
     public UserController(
@@ -29,11 +33,12 @@ public class UserController {
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody AuthenticationRequest request
     ) {
-        Either<FailureError, AuthenticationResponse> authenticationResponse = retrieveUserDataUseCase.authenticate(request.getUsername(), request.getPassword());
-        if (authenticationResponse.isLeft()) {
+        Either<FailureError, AuthenticationResponse> response = retrieveUserDataUseCase.authenticate(request.getUsername(), request.getPassword());
+        if (response.isLeft()) {
+            logger.error("Cannot authenticate user " + request.getUsername() + " for cause: " + response.getLeft().getMessage());
             return status(401).build();
         }
-        return ok(authenticationResponse.get());
+        return ok(response.get());
     }
 
 }
