@@ -40,7 +40,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
       switchMap(([amount, details]) => this.placeBidService.place({
         amount,
         auctionId: details.id,
-        userName: `manuel_m`,
+        userName: localStorage.getItem('username') || '',
       })),
   );
 
