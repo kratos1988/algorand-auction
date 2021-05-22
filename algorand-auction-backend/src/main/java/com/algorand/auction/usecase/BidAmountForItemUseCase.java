@@ -15,18 +15,21 @@ import static io.vavr.control.Either.right;
 public class BidAmountForItemUseCase {
     private final BidRepository bidRepository;
     private final UserRepository userRepository;
+    private final UserTokenRetriever userTokenRetriever;
 
     public BidAmountForItemUseCase(
-            BidRepository bidRepository, UserRepository userRepository) {
+            BidRepository bidRepository, UserRepository userRepository, UserTokenRetriever userTokenRetriever) {
 
         this.bidRepository = bidRepository;
         this.userRepository = userRepository;
+        this.userTokenRetriever = userTokenRetriever;
     }
 
-    public Either<FailureError, Void> bid(BigDecimal amount, int auctionId, String userName) {
+    public Either<FailureError, Void> bid(BigDecimal amount, int auctionId, String userToken) {
         return bidRepository.getHighestBidFor(auctionId)
-                .flatMap(highestBid -> checkBidIsValid(amount, auctionId, userName, highestBid))
-                .flatMap(x ->  userRepository.getIdByUsername(userName))
+                .flatMap(highestBid -> checkBidIsValid(amount, auctionId, userToken, highestBid))
+                .flatMap(result -> userTokenRetriever.getUsernameByToken(userToken))
+                .flatMap(userRepository::getIdByUsername)
                 .flatMap(userId -> bidRepository.saveBid(amount, userId, auctionId));
     }
 

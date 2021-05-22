@@ -9,22 +9,24 @@ import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import io.vavr.control.Either;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static io.vavr.control.Either.right;
-import static java.util.UUID.randomUUID;
 
 public class RetrieveUserDataUseCase {
-    private Map<String, String> userTokenMap = new HashMap();
 
     private final UserRepository userRepository;
     private final TransactionHistoryRepository transactionHistoryRepository;
+    private final UserTokenRetriever userTokenRetriever;
 
-    public RetrieveUserDataUseCase(UserRepository userRepository, TransactionHistoryRepository transactionHistoryRepository) {
+    public RetrieveUserDataUseCase(
+            UserRepository userRepository,
+            TransactionHistoryRepository transactionHistoryRepository,
+            UserTokenRetriever userTokenRetriever
+    ) {
         this.userRepository = userRepository;
         this.transactionHistoryRepository = transactionHistoryRepository;
+        this.userTokenRetriever = userTokenRetriever;
     }
 
     public Either<FailureError,AuthenticationResponse> authenticate(
@@ -38,11 +40,6 @@ public class RetrieveUserDataUseCase {
     }
 
     private Either<FailureError, AuthenticationResponse> buildResponse(User user, List<Transaction> transactions) {
-        String token = userTokenMap.get(user.getUserName());
-        if (token == null) {
-            token = randomUUID().toString();
-            userTokenMap.put(user.getUserName(), token);
-        }
-        return right(new AuthenticationResponse(user.getUserName(), token, transactions));
+        return right(new AuthenticationResponse(user.getUserName(), userTokenRetriever.generateTokenFor(user.getUserName()), transactions));
     }
 }

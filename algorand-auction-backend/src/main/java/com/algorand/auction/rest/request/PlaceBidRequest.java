@@ -3,7 +3,7 @@ package com.algorand.auction.rest.request;
 import java.math.BigDecimal;
 
 public class PlaceBidRequest {
-    private String userName;
+    private String token;
     private BigDecimal amount;
     private int auctionId;
 
@@ -23,11 +23,11 @@ public class PlaceBidRequest {
         this.auctionId = auctionId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getToken() {
+        return token;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setToken(String token) {
+        this.token = token;
     }
 }

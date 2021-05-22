@@ -32,20 +32,20 @@ class BidControllerTest {
     @Test
     void placeBid() throws Exception {
 
-        when(useCase.bid(BigDecimal.TEN, 1, "AN_USER_NAME")).thenReturn(right(null));
+        when(useCase.bid(BigDecimal.TEN, 1, "A_TOKEN")).thenReturn(right(null));
         mockMvc.perform(
                     post("/api/bid/place")
                         .contentType(APPLICATION_JSON)
                         .content(readJson("json/place_bid_request.json")))
                 .andExpect(status().isCreated());
 
-        verify(useCase, times(1)).bid(BigDecimal.TEN, 1, "AN_USER_NAME");
+        verify(useCase, times(1)).bid(BigDecimal.TEN, 1, "A_TOKEN");
     }
 
     @Test
     void noPlacingBid() throws Exception {
 
-        when(useCase.bid(BigDecimal.TEN, 1, "AN_USER_NAME")).thenReturn(left(null));
+        when(useCase.bid(BigDecimal.TEN, 1, "A_TOKEN")).thenReturn(left(null));
         mockMvc.perform(
                 post("/api/bid/place")
                         .contentType(APPLICATION_JSON)

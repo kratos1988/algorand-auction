@@ -17,11 +17,12 @@ class BidAmountForItemUseCaseTest {
 
     private BidRepository bidRepository = mock(BidRepository.class);
     private UserRepository userRepository = mock(UserRepository.class);
+    private UserTokenRetriever userTokenRetriever = mock(UserTokenRetriever.class);
     private BidAmountForItemUseCase underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new BidAmountForItemUseCase(bidRepository, userRepository);
+        underTest = new BidAmountForItemUseCase(bidRepository, userRepository, userTokenRetriever);
     }
 
     @Test
@@ -29,14 +30,16 @@ class BidAmountForItemUseCaseTest {
         int auctionId = 1;
         int userId = 100;
         String userName = "AN_USER_NAME";
+        String token = "A_TOKEN";
         BigDecimal amount = new BigDecimal("11");
         Bid bid = aBid().withAmount(TEN).build();
 
 
         when(bidRepository.getHighestBidFor(auctionId)).thenReturn(right(bid));
         when(userRepository.getIdByUsername(userName)).thenReturn(right(userId));
+        when(userTokenRetriever.getUsernameByToken(token)).thenReturn(right(userName));
 
-        underTest.bid(amount, auctionId, userName);
+        underTest.bid(amount, auctionId, token);
 
         verify(bidRepository, times(1)).saveBid(amount, userId, auctionId);
     }

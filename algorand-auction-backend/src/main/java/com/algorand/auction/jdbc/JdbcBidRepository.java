@@ -71,7 +71,10 @@ public class JdbcBidRepository implements BidRepository {
     public Either<FailureError,List<Bid>> getAllBidsFor(int auctionId) {
         try {
             return right(namedParameterJdbcTemplate.query(
-                    "SELECT * FROM BIDS WHERE AUCTION_ID = " + auctionId,
+                    "SELECT * " +
+                            "FROM BIDS " +
+                            "WHERE AUCTION_ID = " + auctionId + " " +
+                            "ORDER BY INSERTION_DATE DESC",
                     new BidRowMapper()
             ));
         } catch (Exception e) {
@@ -84,7 +87,11 @@ public class JdbcBidRepository implements BidRepository {
     public Either<FailureError, List<Bid>> getLastBidsFor(int auctionId) {
         try {
             return right(namedParameterJdbcTemplate.query(
-                    "SELECT * FROM BIDS WHERE AUCTION_ID = " + auctionId + " LIMIT 5",
+                    "SELECT * " +
+                            "FROM BIDS " +
+                            "WHERE AUCTION_ID = " + auctionId + " " +
+                            "ORDER BY INSERTION_DATE DESC " +
+                            "LIMIT 5",
                     new BidRowMapper()
             ));
         } catch (Exception e) {

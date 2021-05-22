@@ -29,7 +29,7 @@ public class BidController {
     public ResponseEntity placeBid(
             @RequestBody PlaceBidRequest request
     ) {
-        Either<FailureError, Void> result = useCase.bid(request.getAmount(), request.getAuctionId(), request.getUserName());
+        Either<FailureError, Void> result = useCase.bid(request.getAmount(), request.getAuctionId(), request.getToken());
         if (result.isRight())
             return created(null).build();
         else

@@ -8,6 +8,7 @@ import com.algorand.auction.rest.request.CredentialsRequest;
 import com.algorand.auction.rest.response.AuthenticationResponse;
 import com.algorand.auction.usecase.RetrieveUserDataUseCase;
 import com.algorand.auction.usecase.TransactionHistoryRepository;
+import com.algorand.auction.usecase.UserTokenRetriever;
 import com.algorand.auction.usecase.repository.UserRepository;
 import io.vavr.control.Either;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,8 +17,8 @@ import org.junit.jupiter.api.Test;
 import static com.algorand.auction.model.TransactionBuilder.aTransaction;
 import static io.vavr.control.Either.left;
 import static io.vavr.control.Either.right;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +34,7 @@ class RetrieveUserDataUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new RetrieveUserDataUseCase(userRepository, transactionHistoryRepository);
+        underTest = new RetrieveUserDataUseCase(userRepository, transactionHistoryRepository, new UserTokenRetriever());
     }
 
     @Test
@@ -45,7 +46,7 @@ class RetrieveUserDataUseCaseTest {
         Transaction transaction = aTransaction().build();
 
         when(userRepository.authenticate(username, password)).thenReturn(right(user));
-        when(transactionHistoryRepository.retrieveTransactionListFor(user)).thenReturn(right(asList(transaction)));
+        when(transactionHistoryRepository.retrieveTransactionListFor(user)).thenReturn(right(singletonList(transaction)));
         final CredentialsRequest credentials = new CredentialsRequest(username, password);
         Either<FailureError, AuthenticationResponse> result = underTest.authenticate(credentials.username, credentials.password);
         assertTrue(result.isRight());

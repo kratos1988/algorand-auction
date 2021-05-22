@@ -34,17 +34,24 @@ public class AppConfiguration {
     @Bean
     public BidAmountForItemUseCase bidAmountForItemUseCase(
             BidRepository bidRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            UserTokenRetriever userTokenRetriever
     ) {
-        return new BidAmountForItemUseCase(bidRepository, userRepository);
+        return new BidAmountForItemUseCase(bidRepository, userRepository, userTokenRetriever);
     }
 
     @Bean
     public RetrieveUserDataUseCase userAuthenticator(
             UserRepository userRepository,
-            TransactionHistoryRepository transactionHistoryRepository
+            TransactionHistoryRepository transactionHistoryRepository,
+            UserTokenRetriever userTokenRetriever
     ) {
-        return new RetrieveUserDataUseCase(userRepository, transactionHistoryRepository);
+        return new RetrieveUserDataUseCase(userRepository, transactionHistoryRepository, userTokenRetriever);
+    }
+
+    @Bean
+    public UserTokenRetriever userTokenRetriever() {
+        return new UserTokenRetriever();
     }
 
     @Bean
