@@ -1,4 +1,4 @@
-<article class="row" *ngIf="(details | async) as details">
+<article class="row around-xs" *ngIf="(details$ | async) as details">
     <section class="col-xs-4">
         <div class="row center-xs">
             <div class="col-xs-10 item-img">
@@ -16,21 +16,46 @@
             <p class="mat-body-1 detail-card-description">{{details.description}}</p>
             <p class="row between-xs"> 
                 <span class="mat-subheading-1">Highest bid: </span>
-                <span class="mat-h1">{{details.highestBid}}</span>
+                <span class="mat-h1">{{highestBid}}</span>
             </p>
-            <form [formGroup]="bidForm" class="row">
+            <p class="row between-xs"> 
+                <span class="mat-subheading-1">Initial value: </span>
+                <span class="mat-h1">{{details.initialValue}}</span>
+            </p>
+            
+            <form [formGroup]="bidForm" class="row" (ngSubmit)="bid()" *ngIf="details.status === 'OPEN'">
                 <mat-form-field appearance="outline" class="col-xs-12">
                     <mat-label>Your next offer:</mat-label>
                     <input matInput type="number" placeholder="" formControlName="bid">
                     <mat-icon matSuffix>trending_up</mat-icon>
                 </mat-form-field>
-            </form>
-            <button 
+                <button 
                     mat-flat-button 
                     color="primary" class="full-width"
                     [disabled]="!bidForm.value?.bid"
-                    (click)="bid()">Place</button>
+                    type="submit">
+                    Place
+                </button>
+            </form>
         </div>
+        <mat-chip-list aria-label="auction status">
+            <mat-chip color="warn" *ngIf="details.status === 'SOLD';" selected>{{details.status}}</mat-chip>
+        </mat-chip-list>
+    </section>
+    <section class="col-xs-3 mat-elevation-z3">
+        <table mat-table [dataSource]="datasource" class="bid-list">
+            <ng-container matColumnDef="user">
+                <th mat-header-cell *matHeaderCellDef> User </th>
+                <td mat-cell *matCellDef="let row"> {{row.userId}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef> Bid </th>
+                <td mat-cell *matCellDef="let row"> {{row.amount}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
     </section>
 </article>
-

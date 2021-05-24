@@ -10,6 +10,7 @@ export interface Auction {
     itemName: string;
     title: string;
     userId: number;
+    status: string;
 }
 
 export interface AuctionDetails {

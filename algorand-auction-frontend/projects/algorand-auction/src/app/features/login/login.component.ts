@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           next: (v) => {
             this.loading$.next(false);
             localStorage.setItem('token', v.token);
+            localStorage.setItem('username', this.loginForm.get('username')?.value);
             this.router.navigate(['/auctions']);
           },
           error: (error) => {
