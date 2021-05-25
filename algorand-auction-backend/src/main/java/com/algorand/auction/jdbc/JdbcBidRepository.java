@@ -7,6 +7,7 @@ import com.algorand.auction.usecase.repository.BidRepository;
 import io.vavr.control.Either;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -53,16 +54,15 @@ public class JdbcBidRepository implements BidRepository {
                     "SELECT b1.*, u.user_name " +
                             "FROM bids b1 " +
                             "LEFT OUTER JOIN bids b2 ON (b1.auction_id = b2.auction_id and b1.amount < b2.amount) " +
-                            "JOIN users u ON b1.USER_ID = u.ID " +
+                            "JOIN users u ON b1.user_id = u.id " +
                             "where b2.id is null and b1.auction_id = :auctionId",
                     sqlParams,
                     new BidRowMapper()
             );
-            if (bid == null) {
-                return left(new NoRecordError(auctionId));
-            }
             logger.info("Retrieved highest bid for {}: {}", auctionId, bid);
             return right(bid);
+        } catch (EmptyResultDataAccessException e) {
+            return left(new NoRecordError(auctionId));
         } catch (Exception e) {
             logger.error("Error retrieving highest bid for {}: {}", auctionId, e);
             return left(new DatabaseError(e));
