@@ -15,6 +15,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {PlaceBidService} from '../../services/place-bid.service';
 import {MatTableModule} from '@angular/material/table';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatDividerModule,
@@ -24,6 +25,7 @@ const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule,
   MatTableModule,
   MatChipsModule,
+  MatProgressSpinnerModule,
 ];
 
 @NgModule({
