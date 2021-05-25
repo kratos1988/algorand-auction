@@ -35,26 +35,6 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Either<FailureError, User> getUserById(int userId) {
-        try {
-            MapSqlParameterSource sqlParams = new MapSqlParameterSource()
-                    .addValue("userId", userId);
-            User user = namedParameterJdbcTemplate.queryForObject(
-                    "SELECT * FROM USERS WHERE ID=:userId",
-                    sqlParams,
-                    new UserRowMapper()
-            );
-            if (user == null)
-                return left(new NoRecordError(userId));
-            logger.info("Found user by id: {}", userId, user);
-            return right(user);
-        } catch (Exception e) {
-            logger.error("Error retrieving user by id: {}", userId, e);
-            return left(new DatabaseError(e));
-        }
-    }
-
-    @Override
     public Either<FailureError, Integer> getIdByUsername(String userName) {
         try {
             MapSqlParameterSource sqlParams = new MapSqlParameterSource()
@@ -102,6 +82,26 @@ public class JdbcUserRepository implements UserRepository {
                 return left(new NoRecordError(0)); // TODO fix field
             return right(user);
         } catch (Exception e) {
+            return left(new DatabaseError(e));
+        }
+    }
+
+    @Override
+    public Either<FailureError, User> getUserByUsername(String username) {
+        try {
+            MapSqlParameterSource sqlParams = new MapSqlParameterSource()
+                    .addValue("username", username);
+            User user = namedParameterJdbcTemplate.queryForObject(
+                    "SELECT * FROM USERS WHERE USER_NAME=:username",
+                    sqlParams,
+                    new UserRowMapper()
+            );
+            if (user == null)
+                return left(new NoRecordError(0));
+            logger.info("Found user by id: {}", username, user);
+            return right(user);
+        } catch (Exception e) {
+            logger.error("Error retrieving user by id: {}", username, e);
             return left(new DatabaseError(e));
         }
     }

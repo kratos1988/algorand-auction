@@ -1,4 +1,4 @@
-SET MODE PostgreSQL;
+SET MODE TO PostgreSQL;
 insert into AUCTIONS (ID, ITEM_NAME, DESCRIPTION, TITLE, INITIAL_VALUE, STATUS, EXPIRATION_DATE,IMAGE_URL, USER_ID)
 VALUES
 (1,'Mona Lisa painting','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua','Mona Lisa',1936.27,'SOLD','2021-05-10 18:46','https://www.everypainterpaintshimself.com/images/made/article_images_new/Mona_Lisa_Large_440_666.jpg', 100);

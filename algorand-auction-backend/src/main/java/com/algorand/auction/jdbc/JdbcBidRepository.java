@@ -50,8 +50,10 @@ public class JdbcBidRepository implements BidRepository {
             MapSqlParameterSource sqlParams = new MapSqlParameterSource()
                     .addValue("auctionId", auctionId);
             Bid bid = namedParameterJdbcTemplate.queryForObject(
-                    "SELECT b1.* FROM BIDS b1 " +
-                            "LEFT OUTER JOIN BIDS b2 ON (b1.auction_id = b2.auction_id and b1.amount < b2.amount) " +
+                    "SELECT b1.*, u.user_name " +
+                            "FROM bids b1 " +
+                            "LEFT OUTER JOIN bids b2 ON (b1.auction_id = b2.auction_id and b1.amount < b2.amount) " +
+                            "JOIN users u ON b1.USER_ID = u.ID " +
                             "where b2.id is null and b1.auction_id = :auctionId",
                     sqlParams,
                     new BidRowMapper()
@@ -71,8 +73,9 @@ public class JdbcBidRepository implements BidRepository {
     public Either<FailureError,List<Bid>> getAllBidsFor(int auctionId) {
         try {
             return right(namedParameterJdbcTemplate.query(
-                    "SELECT * " +
-                            "FROM BIDS " +
+                    "SELECT b.*, u.USER_NAME " +
+                            "FROM BIDS b " +
+                            "JOIN USERS u ON b.USER_ID = u.ID " +
                             "WHERE AUCTION_ID = " + auctionId + " " +
                             "ORDER BY INSERTION_DATE DESC",
                     new BidRowMapper()
@@ -87,8 +90,9 @@ public class JdbcBidRepository implements BidRepository {
     public Either<FailureError, List<Bid>> getLastBidsFor(int auctionId) {
         try {
             return right(namedParameterJdbcTemplate.query(
-                    "SELECT * " +
-                            "FROM BIDS " +
+                    "SELECT b.*, u.USER_NAME " +
+                            "FROM BIDS b " +
+                            "JOIN USERS u ON b.USER_ID = u.ID " +
                             "WHERE AUCTION_ID = " + auctionId + " " +
                             "ORDER BY INSERTION_DATE DESC " +
                             "LIMIT 5",

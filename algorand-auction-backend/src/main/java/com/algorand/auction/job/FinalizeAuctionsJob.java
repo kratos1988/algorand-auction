@@ -86,11 +86,11 @@ public class FinalizeAuctionsJob {
     }
 
     private Either<FailureError, Tuple3<Item, Bid, User>> getSeller(Item item, Bid bid) {
-        return userRepository.getUserById(item.getUserId()).flatMap(seller -> right(Tuple.of(item, bid, seller)));
+        return userRepository.getUserByUsername(item.getSeller()).flatMap(seller -> right(Tuple.of(item, bid, seller)));
     }
 
     private Either<FailureError, Tuple4<Item, Bid, User, User>> getBuyer(Item expiredItem, Bid bid, User seller) {
-        return userRepository.getUserById(bid.getUserId()).flatMap(buyer -> right(Tuple.of(expiredItem, bid, seller, buyer)));
+        return userRepository.getUserByUsername(bid.getUsername()).flatMap(buyer -> right(Tuple.of(expiredItem, bid, seller, buyer)));
     }
 
 }

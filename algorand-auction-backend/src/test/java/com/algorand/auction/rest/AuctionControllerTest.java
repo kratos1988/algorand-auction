@@ -54,6 +54,7 @@ class AuctionControllerTest {
                         .withExpirationDate(LocalDateTime.of(2021, 4, 12, 7, 20))
                         .withImageUrl("https://www.everypainterpaintshimself.com/images/made/article_images_new/Mona_Lisa_Large_440_666.jpg")
                         .withUserId(100)
+                        .withSeller("manuel_m")
                         .withStatus("OPEN")
                         .build();
 
@@ -72,7 +73,7 @@ class AuctionControllerTest {
                         .withAmount(new BigDecimal("11.99"))
                         .withAuctionId(1)
                         .withStatus("INSERTED")
-                        .withUserId(1)
+                        .withUsername("manuel_m")
                         .build();
 
         Bid anotherBid =
@@ -80,7 +81,7 @@ class AuctionControllerTest {
                         .withAmount(new BigDecimal("13.99"))
                         .withAuctionId(1)
                         .withStatus("INSERTED")
-                        .withUserId(2)
+                        .withUsername("luigi_c")
                         .build();
         when(useCase.retrieveLastBidsFor(1)).thenReturn(right(asList(aBid, anotherBid)));
 
@@ -105,7 +106,7 @@ class AuctionControllerTest {
                         .withAmount(new BigDecimal("11.99"))
                         .withAuctionId(1)
                         .withStatus("INSERTED")
-                        .withUserId(1)
+                        .withUsername("manuel_m")
                         .build();
 
         Bid anotherBid =
@@ -113,7 +114,7 @@ class AuctionControllerTest {
                         .withAmount(new BigDecimal("13.99"))
                         .withAuctionId(1)
                         .withStatus("INSERTED")
-                        .withUserId(2)
+                        .withUsername("luigi_c")
                         .build();
 
         Item item =
@@ -126,7 +127,7 @@ class AuctionControllerTest {
                         .withHighestBid(new BigDecimal("11"))
                         .withExpirationDate(LocalDateTime.of(2021, 4, 12, 7, 20))
                         .withImageUrl("https://www.everypainterpaintshimself.com/images/made/article_images_new/Mona_Lisa_Large_440_666.jpg")
-                        .withUserId(100)
+                        .withSeller("manuel_m")
                         .withStatus("OPEN")
                         .build();
 

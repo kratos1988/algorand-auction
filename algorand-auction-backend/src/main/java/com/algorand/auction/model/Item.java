@@ -13,8 +13,8 @@ public class Item {
     private String title;
     private LocalDateTime expirationDate;
     private String imageUrl;
-    private int userId;
     private String status;
+    private String seller;
 
 
     public int getId() {
@@ -81,19 +81,19 @@ public class Item {
         this.imageUrl = imageUrl;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public void setStatus(String status) {
         this.status = status;
     }
 
     public String getStatus() {
         return status;
+    }
+
+    public void setSeller(String seller) {
+        this.seller = seller;
+    }
+
+    public String getSeller() {
+        return seller;
     }
 }

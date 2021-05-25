@@ -7,7 +7,7 @@ public class Bid {
     private int auctionId;
     private BigDecimal amount;
     private String status;
-    private int userId;
+    private String username;
 
     public int getAuctionId() {
         return auctionId;
@@ -33,12 +33,12 @@ public class Bid {
         this.status = status;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -46,12 +46,12 @@ public class Bid {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Bid bid = (Bid) o;
-        return auctionId == bid.auctionId && userId == bid.userId && Objects.equals(amount, bid.amount) && Objects.equals(status, bid.status);
+        return auctionId == bid.auctionId && Objects.equals(amount, bid.amount) && Objects.equals(status, bid.status) && Objects.equals(username, bid.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(auctionId, amount, status, userId);
+        return Objects.hash(auctionId, amount, status, username);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class Bid {
                 "auctionId=" + auctionId +
                 ", amount=" + amount +
                 ", status='" + status + '\'' +
-                ", userId=" + userId +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

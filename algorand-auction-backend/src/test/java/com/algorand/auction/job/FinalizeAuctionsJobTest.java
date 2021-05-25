@@ -36,15 +36,15 @@ class FinalizeAuctionsJobTest {
 
     @Test
     void finalizeAuctions() {
-        Item firstExpired = anItem().withId(1).withUserId(3).build();
+        Item firstExpired = anItem().withId(1).withSeller("THIRD_USER").build();
         BigDecimal firstAmount = new BigDecimal("10.99");
-        Bid firstHighestBid = aBid().withUserId(1).withAmount(firstAmount).build();
+        Bid firstHighestBid = aBid().withUsername("FIRST_USER").withAmount(firstAmount).build();
         User firstBuyer = anUser().withUserName("FIRST_USER").build();
         User firstSeller = anUser().withUserName("THIRD_USER").build();
 
-        Item secondExpired = anItem().withId(2).withUserId(4).build();
+        Item secondExpired = anItem().withId(2).withSeller("FOURTH_USER").build();
         BigDecimal secondAmount = new BigDecimal("10.99");
-        Bid secondHighestBid = aBid().withUserId(2).withAmount(secondAmount).build();
+        Bid secondHighestBid = aBid().withUsername("SECOND_USER").withAmount(secondAmount).build();
         User secondBuyer = anUser().withUserName("SECOND_USER").build();
         User secondSeller = anUser().withUserName("FOURTH_USER").build();
 
@@ -65,10 +65,10 @@ class FinalizeAuctionsJobTest {
         when(itemRepository.retrieveExpired()).thenReturn(right(asList(firstExpired, secondExpired)));
         when(bidRepository.getHighestBidFor(1)).thenReturn(right(firstHighestBid));
         when(bidRepository.getHighestBidFor(2)).thenReturn(right(secondHighestBid));
-        when(userRepository.getUserById(1)).thenReturn(right(firstBuyer));
-        when(userRepository.getUserById(3)).thenReturn(right(firstSeller));
-        when(userRepository.getUserById(2)).thenReturn(right(secondBuyer));
-        when(userRepository.getUserById(4)).thenReturn(right(secondSeller));
+        when(userRepository.getUserByUsername("FIRST_USER")).thenReturn(right(firstBuyer));
+        when(userRepository.getUserByUsername("THIRD_USER")).thenReturn(right(firstSeller));
+        when(userRepository.getUserByUsername("SECOND_USER")).thenReturn(right(secondBuyer));
+        when(userRepository.getUserByUsername("FOURTH_USER")).thenReturn(right(secondSeller));
         when(itemRepository.setStatusFinished(asList(1, 2))).thenReturn(right(null));
         when(useCase.execute(any())).thenReturn(right(""));
 
@@ -77,10 +77,10 @@ class FinalizeAuctionsJobTest {
         verify(itemRepository).retrieveExpired();
         verify(bidRepository).getHighestBidFor(1);
         verify(bidRepository).getHighestBidFor(2);
-        verify(userRepository).getUserById(1);
-        verify(userRepository).getUserById(3);
-        verify(userRepository).getUserById(2);
-        verify(userRepository).getUserById(4);
+        verify(userRepository).getUserByUsername("FIRST_USER");
+        verify(userRepository).getUserByUsername("THIRD_USER");
+        verify(userRepository).getUserByUsername("SECOND_USER");
+        verify(userRepository).getUserByUsername("FOURTH_USER");
         verify(useCase, times(1)).execute(eq(expectedFirstTransaction));
         verify(useCase, times(1)).execute(eq(expectedSecondTransaction));
         verify(itemRepository, times(1)).setStatusFinished(asList(1, 2));

@@ -14,6 +14,7 @@ public class ItemBuilder {
     private String status;
     private BigDecimal highestBid;
     private int userId;
+    private String seller;
 
     public static ItemBuilder anItem() {
         return new ItemBuilder();
@@ -28,6 +29,12 @@ public class ItemBuilder {
         this.userId = userId;
         return this;
     }
+
+    public ItemBuilder withSeller(String seller) {
+        this.seller = seller;
+        return this;
+    }
+
 
     public ItemBuilder withTitle(String title) {
         this.title = title;
@@ -80,8 +87,8 @@ public class ItemBuilder {
         item.setExpirationDate(expirationDate);
         item.setImageUrl(imageUrl);
         item.setHighestBid(highestBid);
-        item.setUserId(userId);
         item.setStatus(status);
+        item.setSeller(seller);
         return item;
     }
 }

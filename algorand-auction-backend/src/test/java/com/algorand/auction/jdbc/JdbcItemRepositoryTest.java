@@ -84,7 +84,7 @@ class JdbcItemRepositoryTest {
         assertThat(item.getTitle(), equalTo("A_TITLE"));
         assertThat(item.getExpirationDate(), is(equalTo(EXPIRATION_DATE)));
         assertThat(item.getImageUrl(), equalTo("AN_IMAGE_URL"));
-        assertThat(item.getUserId(), equalTo(100));
+        assertThat(item.getSeller(), equalTo("AN_USERNAME"));
 
     }
 
@@ -107,7 +107,7 @@ class JdbcItemRepositoryTest {
         assertThat(expiredItem.getTitle(), equalTo("A_TITLE"));
         assertThat(expiredItem.getExpirationDate(), is(equalTo(EXPIRATION_DATE)));
         assertThat(expiredItem.getImageUrl(), equalTo("AN_IMAGE_URL"));
-        assertThat(expiredItem.getUserId(), equalTo(100));
+        assertThat(expiredItem.getSeller(), equalTo("AN_USERNAME"));
 
     }
 }

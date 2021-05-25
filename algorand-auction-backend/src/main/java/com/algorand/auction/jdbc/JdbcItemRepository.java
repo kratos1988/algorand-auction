@@ -16,9 +16,9 @@ import static io.vavr.control.Either.left;
 import static io.vavr.control.Either.right;
 
 public class JdbcItemRepository implements ItemRepository {
-    public static final String SELECT_ALL_AUCTIONS = "SELECT * FROM AUCTIONS";
-    public static final String SELECT_AUCTION_BY_ID = "SELECT * FROM AUCTIONS WHERE ID = :id";
-    public static final String SELECT_EXPIRED_AUCTIONS = "SELECT * FROM AUCTIONS WHERE EXPIRATION_DATE < NOW() AND STATUS = 'OPEN'";
+    public static final String SELECT_ALL_AUCTIONS = "SELECT a.*, u.user_name FROM auctions a JOIN users u ON a.user_id = u.id";
+    public static final String SELECT_AUCTION_BY_ID = "SELECT a.*, u.user_name FROM auctions a JOIN users u ON a.user_id = u.id WHERE a.id = :id";
+    public static final String SELECT_EXPIRED_AUCTIONS = "SELECT a.*, u.user_name FROM auctions a JOIN users u ON a.user_id = u.id WHERE a.expiration_date < NOW() AND a.status = 'OPEN'";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
