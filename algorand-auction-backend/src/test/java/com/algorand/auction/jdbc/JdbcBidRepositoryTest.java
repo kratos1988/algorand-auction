@@ -120,4 +120,11 @@ class JdbcBidRepositoryTest {
         assertThat(highestBid.getAuctionId(), equalTo(1));
         assertThat(highestBid.getUsername(), equalTo("ANOTHER_USERNAME"));
     }
+
+    @Test
+    void getHighestBidAmount() {
+        Either<FailureError, BigDecimal> result = underTest.getHighestBidAmountFor(1);
+        assertTrue(result.isRight());
+        assertThat(result.get(), comparesEqualTo(new BigDecimal("25.99")));
+    }
 }

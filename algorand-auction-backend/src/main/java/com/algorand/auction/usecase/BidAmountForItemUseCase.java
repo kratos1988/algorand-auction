@@ -1,6 +1,5 @@
 package com.algorand.auction.usecase;
 
-import com.algorand.auction.model.Bid;
 import com.algorand.auction.model.FailureError;
 import com.algorand.auction.usecase.error.BidAmountLessThanHighestError;
 import com.algorand.auction.usecase.repository.BidRepository;
@@ -26,15 +25,15 @@ public class BidAmountForItemUseCase {
     }
 
     public Either<FailureError, Void> bid(BigDecimal amount, int auctionId, String userToken) {
-        return bidRepository.getHighestBidFor(auctionId)
+        return bidRepository.getHighestBidAmountFor(auctionId)
                 .flatMap(highestBid -> checkBidIsValid(amount, auctionId, userToken, highestBid))
                 .flatMap(result -> userTokenRetriever.getUsernameByToken(userToken))
                 .flatMap(userRepository::getIdByUsername)
                 .flatMap(userId -> bidRepository.saveBid(amount, userId, auctionId));
     }
 
-    private Either<FailureError, Void> checkBidIsValid(BigDecimal amount, int auctionId, String userName, Bid highestBid) {
-        if(highestBid.getAmount().compareTo(amount) >= 0) {
+    private Either<FailureError, Void> checkBidIsValid(BigDecimal amount, int auctionId, String userName, BigDecimal highestBid) {
+        if(highestBid.compareTo(amount) >= 0) {
             return left(new BidAmountLessThanHighestError(userName, auctionId, amount));
         }
         return right(null);

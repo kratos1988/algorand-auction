@@ -19,6 +19,22 @@ import static io.vavr.control.Either.right;
 
 public class JdbcBidRepository implements BidRepository {
 
+    public static final String SELECT_BID_QUERY = "SELECT b.*, u.USER_NAME FROM bids b JOIN users u ON b.user_id = u.id WHERE auction_id = ";
+    public static final String INSERT_BID_QUERY = "INSERT INTO BIDS (AUCTION_ID, AMOUNT, USER_ID) VALUES (:auctionId, :amount, :userId)";
+
+    public static final String SELECT_HIGHEST_BID_AMOUNT_QUERY =
+            "SELECT b1.amount " +
+            "FROM bids b1 " +
+            "LEFT OUTER JOIN bids b2 ON (b1.auction_id = b2.auction_id and b1.amount < b2.amount) " +
+            "where b2.id is null and b1.auction_id = :auctionId";
+
+    public static final String SELECT_HIGHEST_BID_QUERY =
+            "SELECT b1.*, u.user_name " +
+            "FROM bids b1 " +
+            "LEFT OUTER JOIN bids b2 ON (b1.auction_id = b2.auction_id and b1.amount < b2.amount) " +
+            "JOIN users u ON b1.user_id = u.id " +
+            "where b2.id is null and b1.auction_id = :auctionId";
+
     private final Logger logger = LoggerFactory.getLogger(JdbcBidRepository.class);
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -36,11 +52,39 @@ public class JdbcBidRepository implements BidRepository {
                     .addValue("userId", userId)
                     .addValue("auctionId", auctionId);
             namedParameterJdbcTemplate.update(
-                    "INSERT INTO BIDS (AUCTION_ID, AMOUNT, USER_ID) VALUES (:auctionId, :amount, :userId)",
+                    INSERT_BID_QUERY,
                     sqlParams);
             return right(null);
         } catch (Exception e) {
             logger.error("Error saving the bid", e);
+            return left(new DatabaseError(e));
+        }
+    }
+
+    @Override
+    public Either<FailureError,List<Bid>> getAllBidsFor(int auctionId) {
+        try {
+            return right(namedParameterJdbcTemplate.query(
+                    SELECT_BID_QUERY + auctionId + " ORDER BY insertion_date DESC",
+                    new BidRowMapper()
+            ));
+        } catch (Exception e) {
+            logger.error("Error retrieving all bids for {}: {}", auctionId, e);
+            return left(new DatabaseError(e));
+        }
+    }
+
+    @Override
+    public Either<FailureError, List<Bid>> getLastBidsFor(int auctionId) {
+        try {
+            return right(namedParameterJdbcTemplate.query(
+                    SELECT_BID_QUERY + auctionId + " " +
+                            "ORDER BY INSERTION_DATE DESC " +
+                            "LIMIT 5",
+                    new BidRowMapper()
+            ));
+        } catch (Exception e) {
+            logger.error("Error retrieving last bids for {}: {}", auctionId, e);
             return left(new DatabaseError(e));
         }
     }
@@ -51,11 +95,7 @@ public class JdbcBidRepository implements BidRepository {
             MapSqlParameterSource sqlParams = new MapSqlParameterSource()
                     .addValue("auctionId", auctionId);
             Bid bid = namedParameterJdbcTemplate.queryForObject(
-                    "SELECT b1.*, u.user_name " +
-                            "FROM bids b1 " +
-                            "LEFT OUTER JOIN bids b2 ON (b1.auction_id = b2.auction_id and b1.amount < b2.amount) " +
-                            "JOIN users u ON b1.user_id = u.id " +
-                            "where b2.id is null and b1.auction_id = :auctionId",
+                    SELECT_HIGHEST_BID_QUERY,
                     sqlParams,
                     new BidRowMapper()
             );
@@ -70,36 +110,21 @@ public class JdbcBidRepository implements BidRepository {
     }
 
     @Override
-    public Either<FailureError,List<Bid>> getAllBidsFor(int auctionId) {
+    public Either<FailureError, BigDecimal> getHighestBidAmountFor(int auctionId) {
         try {
-            return right(namedParameterJdbcTemplate.query(
-                    "SELECT b.*, u.USER_NAME " +
-                            "FROM BIDS b " +
-                            "JOIN USERS u ON b.USER_ID = u.ID " +
-                            "WHERE AUCTION_ID = " + auctionId + " " +
-                            "ORDER BY INSERTION_DATE DESC",
-                    new BidRowMapper()
-            ));
+            MapSqlParameterSource sqlParams = new MapSqlParameterSource()
+                    .addValue("auctionId", auctionId);
+            BigDecimal amount = namedParameterJdbcTemplate.queryForObject(
+                    SELECT_HIGHEST_BID_AMOUNT_QUERY,
+                    sqlParams,
+                    BigDecimal.class
+            );
+            logger.info("Retrieved highest bid for {}: {}", auctionId, amount);
+            return right(amount);
+        } catch (EmptyResultDataAccessException e) {
+            return left(new NoRecordError(auctionId));
         } catch (Exception e) {
-            logger.error("Error retrieving all bids for {}: {}", auctionId, e);
-            return left(new DatabaseError(e));
-        }
-    }
-
-    @Override
-    public Either<FailureError, List<Bid>> getLastBidsFor(int auctionId) {
-        try {
-            return right(namedParameterJdbcTemplate.query(
-                    "SELECT b.*, u.USER_NAME " +
-                            "FROM BIDS b " +
-                            "JOIN USERS u ON b.USER_ID = u.ID " +
-                            "WHERE AUCTION_ID = " + auctionId + " " +
-                            "ORDER BY INSERTION_DATE DESC " +
-                            "LIMIT 5",
-                    new BidRowMapper()
-            ));
-        } catch (Exception e) {
-            logger.error("Error retrieving last bids for {}: {}", auctionId, e);
+            logger.error("Error retrieving highest bid for {}: {}", auctionId, e);
             return left(new DatabaseError(e));
         }
     }
