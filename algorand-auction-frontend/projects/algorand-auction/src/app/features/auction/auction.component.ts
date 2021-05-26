@@ -37,7 +37,6 @@ export class AuctionComponent implements OnInit, OnDestroy {
             }),
         );
       }),
-      map((bids) => bids.reverse()),
       tap((bids) => this.highestBid = bids[0]?.amount),
   );
 

@@ -22,13 +22,13 @@ export const auction: AuctionDetails = {
       'auctionId': 1,
       'amount': 11.99,
       'status': 'INSERTED',
-      'userId': '1',
+      'username': '1',
     },
     {
       'auctionId': 1,
       'amount': 13.99,
       'status': 'INSERTED',
-      'userId': '2',
+      'username': '2',
     },
   ],
 };
