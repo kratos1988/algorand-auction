@@ -16,6 +16,7 @@ import java.util.List;
 
 import static io.vavr.control.Either.left;
 import static io.vavr.control.Either.right;
+import static java.math.BigDecimal.ZERO;
 
 public class JdbcBidRepository implements BidRepository {
 
@@ -34,6 +35,7 @@ public class JdbcBidRepository implements BidRepository {
             "LEFT OUTER JOIN bids b2 ON (b1.auction_id = b2.auction_id and b1.amount < b2.amount) " +
             "JOIN users u ON b1.user_id = u.id " +
             "where b2.id is null and b1.auction_id = :auctionId";
+    public static final String ORDER_BY_QUERY = " ORDER BY insertion_date DESC";
 
     private final Logger logger = LoggerFactory.getLogger(JdbcBidRepository.class);
 
@@ -65,7 +67,7 @@ public class JdbcBidRepository implements BidRepository {
     public Either<FailureError,List<Bid>> getAllBidsFor(int auctionId) {
         try {
             return right(namedParameterJdbcTemplate.query(
-                    SELECT_BID_QUERY + auctionId + " ORDER BY insertion_date DESC",
+                    SELECT_BID_QUERY + auctionId + ORDER_BY_QUERY,
                     new BidRowMapper()
             ));
         } catch (Exception e) {
@@ -79,8 +81,8 @@ public class JdbcBidRepository implements BidRepository {
         try {
             return right(namedParameterJdbcTemplate.query(
                     SELECT_BID_QUERY + auctionId + " " +
-                            "ORDER BY INSERTION_DATE DESC " +
-                            "LIMIT 5",
+                            ORDER_BY_QUERY +
+                            " LIMIT 5",
                     new BidRowMapper()
             ));
         } catch (Exception e) {
@@ -122,7 +124,8 @@ public class JdbcBidRepository implements BidRepository {
             logger.info("Retrieved highest bid for {}: {}", auctionId, amount);
             return right(amount);
         } catch (EmptyResultDataAccessException e) {
-            return left(new NoRecordError(auctionId));
+            logger.warn("No bids for auction:{}", auctionId);
+            return right(ZERO);
         } catch (Exception e) {
             logger.error("Error retrieving highest bid for {}: {}", auctionId, e);
             return left(new DatabaseError(e));

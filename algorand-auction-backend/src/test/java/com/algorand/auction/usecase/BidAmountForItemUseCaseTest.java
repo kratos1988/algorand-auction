@@ -34,7 +34,7 @@ class BidAmountForItemUseCaseTest {
 
         when(bidRepository.getHighestBidAmountFor(auctionId)).thenReturn(right(TEN));
         when(userRepository.getIdByUsername(userName)).thenReturn(right(userId));
-        when(userTokenRetriever.getUsernameByToken(token)).thenReturn(right(userName));
+        when(userTokenRetriever.getUserNameBy(token)).thenReturn(right(userName));
 
         underTest.bid(amount, auctionId, token);
 

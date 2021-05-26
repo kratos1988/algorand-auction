@@ -14,6 +14,10 @@ import static io.vavr.control.Either.left;
 import static io.vavr.control.Either.right;
 
 public class JdbcUserRepository implements UserRepository {
+    public static final String SELECT_BY_USERNAME_QUERY = "SELECT * FROM USERS WHERE USER_NAME=:username";
+    public static final String SELECT_BY_USERNAME_AND_PASSWORD_QUERY = "SELECT * FROM USERS WHERE USER_NAME=:username AND PASSWORD=:password";
+    public static final String SELECT_BY_PUBLIC_KEY_QUERY = "SELECT * FROM USERS WHERE PUBLIC_KEY=:publicKey";
+
     private final Logger logger = LoggerFactory.getLogger(JdbcUserRepository.class);
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -22,16 +26,6 @@ public class JdbcUserRepository implements UserRepository {
             NamedParameterJdbcTemplate namedParameterJdbcTemplate
     ) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-    }
-
-    @Override
-    public String getPublicKeyFor(String userName) {
-        MapSqlParameterSource sqlParams = new MapSqlParameterSource()
-                .addValue("userName", userName);
-        return namedParameterJdbcTemplate.queryForObject(
-                "SELECT PUBLIC_KEY FROM USERS WHERE USER_NAME=:userName",
-                sqlParams,
-                String.class);
     }
 
     @Override
@@ -58,7 +52,7 @@ public class JdbcUserRepository implements UserRepository {
                     .addValue("username", username)
                     .addValue("password", password);
             User user = namedParameterJdbcTemplate.queryForObject(
-                    "SELECT * FROM USERS WHERE USER_NAME=:username AND PASSWORD=:password",
+                    SELECT_BY_USERNAME_AND_PASSWORD_QUERY,
                     sqlParams,
                     new UserRowMapper());
             if (user == null)
@@ -75,7 +69,7 @@ public class JdbcUserRepository implements UserRepository {
             MapSqlParameterSource sqlParams = new MapSqlParameterSource()
                     .addValue("publicKey", publicKey);
             User user = namedParameterJdbcTemplate.queryForObject(
-                    "SELECT * FROM USERS WHERE PUBLIC_KEY=:publicKey",
+                    SELECT_BY_PUBLIC_KEY_QUERY,
                     sqlParams,
                     new UserRowMapper());
             if (user == null)
@@ -92,7 +86,7 @@ public class JdbcUserRepository implements UserRepository {
             MapSqlParameterSource sqlParams = new MapSqlParameterSource()
                     .addValue("username", username);
             User user = namedParameterJdbcTemplate.queryForObject(
-                    "SELECT * FROM USERS WHERE USER_NAME=:username",
+                    SELECT_BY_USERNAME_QUERY,
                     sqlParams,
                     new UserRowMapper()
             );

@@ -32,8 +32,7 @@ public class BidController {
         Either<FailureError, Void> result = useCase.bid(request.getAmount(), request.getAuctionId(), request.getToken());
         if (result.isRight())
             return created(null).build();
-        else
-            return notFound().build();
+        return notFound().build();
     }
 
 }

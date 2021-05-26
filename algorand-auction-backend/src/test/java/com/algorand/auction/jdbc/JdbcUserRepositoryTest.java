@@ -37,12 +37,6 @@ class JdbcUserRepositoryTest {
     }
 
     @Test
-    void getPublicKey() {
-        String publicKey = underTest.getPublicKeyFor("AN_USERNAME");
-        assertThat(publicKey, is("A_PUBLIC_KEY"));
-    }
-
-    @Test
     void getUserIdByUserName() {
         Either<FailureError, Integer> result = underTest.getIdByUsername("AN_USERNAME");
         assertTrue(result.isRight());

@@ -61,6 +61,7 @@ class RetrieveUserDataUseCaseTest {
         String username = "AN_USERNAME";
         String password = "A_PASSWORD";
         User user = new User();
+        user.setUserName(username);
 
         when(userRepository.authenticate(username, password)).thenReturn(right(user));
         when(transactionHistoryRepository.retrieveTransactionListFor(user)).thenReturn(right(emptyList()));
