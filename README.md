@@ -40,7 +40,9 @@ These are the following features the application takes advantage of:
 * Indexer: when logging, the user receives the history of the executed transactions
 * Asset (in progress): the application creates fidelity points as Algorand Blockchain assets that are send to the users
 
+### Front-End module
 
+The front-end module is built in Angular v11 using Angular Material as UI component library.
 
-
+Each view is part of a different module to allow the lazy loading of each chunk of the application, in order to save user bandwitch, especially when using mobile device. Every module is then used inside the *app-routing.module.ts* with a guard in order to prevent user to access route is not allowed to see. 
 
